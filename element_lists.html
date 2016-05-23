@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Georgia Rare Natural Elements</title>
+
+<style type="text/css" media="print">
+
+.customize_button { 
+display: none;
+}
+
+</style>
+
+<style>
+
+body {
+background-color:#403000;
+color:#6f4e0f;
+font-family:sans-serif;
+}
+
+a {
+text-decoration: none; /* Gets rid of dirty default underline */
+}
+
+img.button, img.top-button {
+padding: 5px;
+margin: 5px;
+border-radius: 10px;
+box-shadow: 3px 3px 4px 2px #000000;
+}
+
+.range_map_button, .species_profile_button, .natureserve_explorer, .button_link {
+position: relative;
+top: 2px;
+border-radius: 2px;
+box-shadow: 1px 1px 1px 1px #000000;
+}
+
+.customize_button {
+margin: 10px 0px 0px 10px;
+box-shadow: 1px 1px 1px 1px #000000;
+}
+
+header, section, text {
+background-color: #f0f0c3;
+width: 900px;
+margin: auto;
+}
+
+section {
+margin-top: 0;
+padding: 1em 0 0 0;
+}
+
+h1 {
+margin-bottom: 0.2em;
+margin-top: 0.2em;
+margin-left: 0.4em;
+}
+
+h3, h2 {
+margin-top: 0;
+margin-bottom: 0;
+padding: 10px;
+color:white;
+background-color:#2a4137;
+}
+
+h4.an_pl_hdr {
+margin: 0 0 0.4em 1em;
+}
+
+.an_pl_hr {
+border-width: 3px;
+margin: 1em 0 0 -2em;
+}
+
+#main_title {
+margin: 0.1em 0.3em 0.3em 0.5em;
+font-weight: bold;
+font-size: 170%;
+font-family: "Times New Roman", Times, serif;
+}
+
+#exported_on {
+margin-left: 1em; 
+}
+
+ul {
+list-style-type: none;
+margin-left: 1em; 
+margin-right: 1em;
+padding-left: 2em;
+text-indent: -3em;
+}
+
+li { 
+padding-left: 1.5em;
+}
+
+input {
+margin-left: 1em;
+}
+
+#wrd-logo{
+/*display: none;*/
+}
+
+#loading-image {
+padding: 20px 0px 0px 90px;
+}
+
+#loading {
+padding: 0px 0px 10px 20px;
+font-weight: bold;
+}
+
+.code-box {
+color: black;
+background-color: white;
+border-style: solid;
+}
+
+#sql_query {
+background-color: white;
+border: 5px;
+}
+
+@media screen and (max-width:900px) {
+
+section, header {
+width: 100%;    
+}
+
+}
+
+</style>
+
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+
+<script id="el_tpt" type="text/template">
+    <ul>
+        {{#.}}
+            {{{breakHdr}}}
+            <li id="{{elcode}}"><b>{{{name1}}}</b> ({{{name2}}}){{>el_rank}}{{>el_status}}{{>el_swap_status}}{{>eo_amount}}{{{sshabitat}}}{{{species_profile}}}{{{range_map}}}{{{ns_explorer}}} </li>
+        {{/.}}
+    </ul>
+    <p id="exported_on">{{>dateOfData}}</p>
+</script>
+
+<script id="hdr_tpt" type="text/template">
+    <div id='logo_area'>
+        <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+    </div>
+    {{{area_name}}}
+    <div id="main_title">Georgia Rare Natural Elements</div>
+    <h2>{{rank}} {{group}} {{{status}}}</h2>
+    <a href="customize.html"><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
+
+</script> <!-- end hdr_tpt (header template) -->
+
+<script>
+
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
+    }
+
+var filters = {
+"all_statuses": ["With or Without Protection Status", "WHERE es.sname IS NOT NULL"],
+"us": ["With Federal Protection Status", "WHERE es.usesa != ''"],
+"ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
+"no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
+"no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
+"swap": ["Tracked, SWAP High Priority Species ", "WHERE s.sname IS NOT NULL"],
+"all_ranks": ["", " AND es.srank IS NOT NULL"],
+"s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
+"g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
+"shsx": ["Not seen in Georgia for over 20 years (SH & SX) ", " AND es.rnd_srank IN ('SH', 'SX')"],
+"all_groups": ["All Tracked Natural Elements", " AND es.elcode IS NOT NULL"],
+"animal": ["Rare Animals ", " AND SUBSTR(es.elcode, 1, 1) in ('A', 'I')"],
+"plant": ["Rare Plants ", " AND SUBSTR(es.elcode, 1, 1) in ('P', 'N')"],
+"bird": ["Rare Birds ", " AND SUBSTR(es.elcode, 1, 2) = 'AB'"],
+"fish": ["Rare Fishes ", " AND SUBSTR(es.elcode, 1, 2) = 'AF'"],
+"mammal": ["Rare Mammals ", " AND SUBSTR(es.elcode, 1, 2) = 'AM'"],
+"bat": ["Rare Bats ", " AND substr(es.elcode,1,5) in ('AMACC', 'AMACD')"],
+"mollusk": ["Rare Mollusks ", " AND SUBSTR(es.elcode, 1, 2) = 'IM'"],
+"aquatic": ["Fishes, Mollusks and Crayfishes ", " AND (SUBSTR(es.elcode, 1, 2) in ('AF', 'IM') OR es.sgenus IN ('Cambarus', 'Distocambarus', 'Fallicambarus', 'Faxonella', 'Orconectes', 'Procambarus'))"],
+"rep-amp": ["Rare Reptiles and Amphibians ", " AND SUBSTR(es.elcode, 1, 2) in ('AR', 'AA')"],
+"arthropod": ["Rare Arthropods ", " AND SUBSTR(es.elcode, 1, 2) in ('IL', 'IC', 'II')"],
+"community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
+}
+
+var areas = {
+'cnty': 'County',
+'qq': 'Quarter Quad',
+'huc8': 'HUC8 Watershed',
+'huc10': 'HUC10 Watershed',
+'eco3': 'Level 3 Ecoregion',
+'eco4': 'Level 4 Ecoregion',
+'hex24': '24 km Hexagon'
+}
+
+var groups = {
+'Animal': 'ANIMALS',
+'Plant': 'PLANTS',
+'Community': 'NATURAL COMMUNITIES',
+'Other': "OTHER NATURAL ELEMENTS (Includes newly tracked elements without an ELCODE)"
+}
+
+// store the sname, scomname and exportdate into local storage.
+function reply_click(es_id) {
+    // get the element subnational id
+    var el_sql = "SELECT es_id, sname ,scomname ,exportdate ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
+    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
+        var el_obj = element_object.rows[0];
+        // put all of the element field values as JSON string object into the localStorage
+        localStorage.el_obj = JSON.stringify(el_obj);
+    })
+}
+
+function setDefaultsInStorage() {
+    localStorage.order_by = 'sname';
+    localStorage.group = 'all_groups';
+    localStorage.status = 'all_statuses';
+    localStorage.rank = 'all_ranks';
+    localStorage.show_rank = 'true';
+    localStorage.show_status = 'true';
+    localStorage.show_swap = 'true';
+    localStorage.show_eo_count = 'true';
+    localStorage.show_range_map_link = 'true';
+    localStorage.show_ns_explorer_link = 'true';
+    localStorage.show_sshabitat = 'true';
+    localStorage.show_sql_query = 'true';
+}
+  
+function putURLParametersIntoLocalStorage() {
+    setDefaultsInStorage();
+    if (getURLParameter('status')) {localStorage.status = getURLParameter('status');}
+    if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
+    if (getURLParameter('rank')) {localStorage.rank = getURLParameter('rank');}
+}
+
+function loadData(){
+
+    if (getURLParameter('request_src') == 'area_link') {
+        localStorage.report_type = 'area';
+        localStorage.area_type = getURLParameter('area_type');
+        localStorage.area_name = getURLParameter('area_name');
+        // Set local storage to defaults on user's first page visit.
+        if (localStorage.order_by == undefined) {
+            setDefaultsInStorage();
+            }
+        }
+    else if (getURLParameter('request_src') == 'customize') {
+        // Don't change anything when coming from filter sort
+    } else if (getURLParameter('request_src') == 'external_link') {
+        putURLParametersIntoLocalStorage();
+    } else if (getURLParameter('request_src') == 'reset_rank_status') {
+        localStorage.rank='all_ranks';
+        localStorage.status='all_statuses';
+    } else if (getURLParameter('request_src') == 'reset_group') {
+        localStorage.group='all_groups';
+    } else {
+        localStorage.report_type = 'general';
+        setDefaultsInStorage();
+        localStorage.area_type = '';
+        localStorage.area_name = '';
+    }
+
+    if (localStorage.order_by == undefined) {
+        window.open("element_filter_sort.html");
+        return;
+    }
+
+    // Create a user friendly filter description for the title of the page
+    var header_values = {
+        'rank': filters[localStorage.rank][0],
+        'group': filters[localStorage.group][0],
+        'status': ' <br> ' + filters[localStorage.status][0]
+        }
+    if (localStorage.report_type == 'area') {
+            header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
+        }
+    
+    if (localStorage.status != 'all_statuses' || localStorage.rank != 'all_ranks') {
+        header_values.showAllRanksStatuses = '<a href="element_lists.html?request_src=reset_rank_status"><img src="all_ranks_statuses.png" class="customize_button" alt="show elements with all ranks and statuses"></a>';
+    }
+    if (localStorage.group != 'all_groups') {
+        header_values.showAllElementGroups = '<a href="element_lists.html?request_src=reset_group"><img src="all_elements.png" class="customize_button" alt="show all element groups"></a>';
+    }
+    
+    if (localStorage.group == 'community') {header_values.status = '';}
+    var hdr_tpt = document.getElementById('hdr_tpt').innerHTML;
+    var header_html = Mustache.render(hdr_tpt, header_values);
+    document.getElementById('headerArea').innerHTML = header_html;
+
+    // Create the SQL script for selecting and sorting records
+    var whereClause = filters[localStorage.status][1] + filters[localStorage.group][1] + filters[localStorage.rank][1];
+    // Additional WHERE when generating an area report
+    if (localStorage.report_type == 'area') {
+        whereClause += " AND eo.area_name = '" + localStorage.area_name + "'";
+    }
+    var orderBy = localStorage.order_by;
+    if (localStorage.group == 'all_groups') {orderBy = 'an_pl, ' + orderBy;}
+    if (localStorage.report_type == 'area') {
+        // Base query for when needing to generate an area report
+        var sqlQuery = "SELECT eo.area_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname WHERE map_areas = '"  + localStorage.area_type + "' ";
+                } else {
+        // Base query for when NOT needing to generate an area report
+        var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
+        }
+    sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
+    if (localStorage.show_sql_query == 'true') {
+        document.getElementById('queryArea').innerHTML = '<h3>PostgreSQL/PostGIS SQL Selection Query</h3><text id="sql_query">' + sqlQuery + '</text>';
+        }
+    
+    // Get the template for the elements
+    var el_tpt = document.getElementById('el_tpt').innerHTML;
+    
+    // Create the Mustache partial templates
+    var partials = {
+        el_rank: ', <span title="Global and state rarity ranks"><b>Rank:</b> {{grank}}/{{srank}}</span>',
+        el_status: ', <span title="Georgia protection status"><b>GA:</b> {{sprot}}</span>, <span title="U.S. Endangered Species Act Status"><b>US:</b> {{usesa}}</span>',
+        el_swap_status: ', <span title="State Wildlife Action Plan (SWAP) Status for Georgia"><b>SWAP:</b> {{swap}}</span>',
+        eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>, ',
+        with_range_map: ' <a href="range_maps2.html" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="range_map3.png" class="range_map_button" alt="range map button"> </a> ',
+        no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span>, ',
+        species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
+        ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
+        ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ',
+        }
+
+    if (localStorage.show_rank != 'true') {partials.el_rank = '';}
+    if (localStorage.show_status != 'true') {partials.el_status = '';}
+    if (localStorage.show_swap != 'true') {partials.swap = '';}
+    if (localStorage.show_eo_count != 'true') {partials.eo_amount = '';}
+    if (localStorage.show_sshabitat != 'true') {partials.sshabitat = '';}
+    // the following, show ns_explorer may be redundant as it is handled inside loop below.
+    if (localStorage.show_ns_explorer_link != 'true') {partials.ns_explorer = '';}
+    if (localStorage.show_range_map_link != 'true') {
+        partials.with_range_map = '';
+        partials.no_range_map = '';
+        }
+
+   // Communiuties don't have protection status
+    if (localStorage.group == 'community') {partials.el_status = '';}
+        
+    // Get JSON data from CartoDB using SQL script and generate list of elements for webpage.
+    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+sqlQuery, function(data) {
+        partials.recordCount = data.rows.length;
+        if (data.rows.length == 0) {
+            partials.dateOfData = '';
+        } else {
+            partials.dateOfData = 'Exported from Biotics conservation database on ' +  data.rows[0].exportdate;
+        }
+
+        var recs = [];
+        var an_pl = ''
+        var last_an_pl = '';
+        for (row in data.rows) {
+            var rec = data.rows[row];
+            // When group == all_groups then show breaks by animal, community, plant or other
+            if (localStorage.group == 'all_groups') {
+                if (rec.an_pl != last_an_pl) {
+                    rec.breakHdr = '<hr class="an_pl_hr"><h4 class="an_pl_hdr">' + groups[rec.an_pl] + '</h4>';
+                }
+                last_an_pl = rec.an_pl;
+            }
+            rec.sname_bare = rec.sname;
+            rec.sname = '<i>' + rec.sname + '</i>';
+
+            if (rec.sprot == "") {rec.sprot = "none"};
+            if (rec.usesa == "") {rec.usesa = "none"};
+            
+            // Set up display order from sorting order
+            if (localStorage.order_by == 'sname') {
+                rec.name1 = rec.sname;
+                rec.name2 = rec.scomname;
+            } else { 
+                rec.name1 = rec.scomname;
+                rec.name2 = rec.sname;
+            }
+
+            //Test to see whether to show range map image link or no range map image
+            if (rec.eo_count > 0) {
+                rec.range_map = Mustache.render(partials.with_range_map, rec)
+            } else {
+                rec.range_map = partials.no_range_map
+            }
+
+             // Set up species profile
+             if (localStorage.show_profile_link === 'true') {
+                if (rec.profile_url != null) {
+                    rec.species_profile = Mustache.render(partials.species_profile, rec);
+                } else {
+                    rec.species_profile = '<span title="GA-DNR natural element profile report"><b>Profile:</b> None</span>, ';
+                }
+             } else {
+                rec.species_profile = ''
+             }
+                
+             // **** SET UP TO NOT SHOW SWAP STATUS OR EXPLORER LINK FOR COMMUNITIES *****
+                
+             // Set up SWAP status
+             if (localStorage.show_swap === 'true') {
+                //alert(JSON.stringify(rec));
+                if (rec.swap_status != null) {
+                    rec.swap = "Yes";
+                } else {
+                    rec.swap = "No";
+                }
+             } else {
+                partials.el_swap_status = '';
+             }
+             //alert(JSON.stringify(rec));
+
+             // Don't show sshabitat for communities
+             if (rec['an_pl'] == 'Community') {
+                rec['sshabitat'] = '';
+             } else {
+                rec['sshabitat'] = ' <span title="Habitat of element in Georgia"><b>Habitat:</b> ' + rec['sshabitat'] + '</span>, ';
+             }
+             
+             //ns_exploere_search_name
+             if (localStorage.show_ns_explorer_link === 'true') {
+                ////////////////rec.sshabitat = '';
+                // Communities
+                if (rec['an_pl'] == 'Community') {
+                    // Choose assemblage, "C" (default), or system, "A" community type
+                    rec['ns_explorer_search_name'] = "searchCommunityUid=ELEMENT_GLOBAL.2." + rec.com_id;
+                    if (rec['com_type'] == 'S' ) {
+                        rec['ns_explorer_search_name'] = "searchSystemUid=ELEMENT_GLOBAL.2." + rec.com_id;
+                    } else {
+                    // No available Explorer community profile
+                        rec['ns_explorer'] = ' <b>NS Explorer Report:</b> None ';
+                    }
+                    // Exact or approximate Explorer community match
+                    if (rec['com_match'] == 'yes') {
+                        rec.ns_explorer = Mustache.render(partials.ns_explorer, rec);
+                    } else if (rec['com_match'] == 'approx') {
+                        rec.ns_explorer = Mustache.render(partials.ns_explorer_approx, rec);
+                    } else {
+                        //Should not get here.
+                    }
+
+                    // Non communities
+                } else {
+                    rec.ns_explorer_search_name = "searchName=" + rec.sname_bare.split(' ').join('+');
+                    rec.ns_explorer = Mustache.render(partials.ns_explorer, rec);
+                }
+             } else {
+                rec.ns_explorer = '';
+             }
+
+           // add record to records
+           recs.push(rec);
+        }
+        var list_html = Mustache.render(el_tpt, recs, partials);
+        document.getElementById('listArea').innerHTML = list_html;
+        document.getElementById('row_count').innerHTML = '&nbsp;&nbsp;&nbsp;' + partials.recordCount + ' element records in list';
+    }) //getJSON
+} //End load data
+
+</script>
+
+</head>
+<body onload="loadData()">
+    <header id="headerArea"></header>
+    <section>
+        <div id=row_count></div>
+        <div id="listArea"><img id="loading-image" src="ajax-loader.gif"  alt="Loading..." /> <p id='loading'>LOADING RECORDS . . .</p>  </div>
+        <div class="code-box" id="queryArea"></div>
+    </section>
+</body>
+</html>

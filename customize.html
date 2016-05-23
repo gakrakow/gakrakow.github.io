@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<style>
+
+body {
+background-color:#403000;
+color:#6f4e0f;
+font-family:sans-serif;
+}
+
+header, section {
+background-color: #dfdcb3;
+width: 900px;
+margin: auto;
+padding: 7px;
+}
+
+h3, h2 {
+margin-top: 0;
+margin-bottom: 0;
+padding: 10px;
+color:white;
+background-color:#2a4137;
+}
+
+img.button,img.top-button {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 4px 2px #000000;
+}
+
+button, input {
+margin: 7px;
+}
+
+@media screen and (max-width:900px) {
+
+section,header {
+    width: 100%;
+}
+}
+
+</style>
+    
+</head>
+<body onload="onLoad()">
+
+<header>
+    <div id='logo_area'>
+        <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+    </div>
+
+    <h3>Customize Rare Element List</h3>
+</header>
+
+<section>
+<form action="element_lists.html" method="get" onsubmit="saveValues()">
+  <input type="submit" value="Generate List of Elements">
+    <button type="button" onclick="setDefaults()">Reset to default values</button>
+    <button type="button" onclick="displayJustNames()">Display just names</button>
+    <button type="button" onclick="displayAllInfo()">Display all information</button>
+  <fieldset>
+     <legend>Select Sorting Method</legend>
+        <input type="radio" name="order_by" value="sname" id="sname"> Sort by Scientific Name <br>
+        <input type="radio" name="order_by" value="scomname" id="scomname"> Sort by Common Name <br>
+  </fieldset>
+  <fieldset>
+    <legend>Select Element Group or Groups</legend>
+        <input type="radio" name="group" value="all_groups" id="all_groups"> All Element Groups <br>
+        <input type="radio" name="group" value="animal" id="animal"> Animals <br>
+        <input type="radio" name="group" value="plant" id="plant"> Plants <br>
+        <input type="radio" name="group" value="bird" id="bird"> Birds <br>
+        <input type="radio" name="group" value="fish" id="fish"> Fishes <br>
+        <input type="radio" name="group" value="mammal" id="mammal"> Mammals <br>        
+        <input type="radio" name="group" value="bat" id="bat"> Bats <br>
+        <input type="radio" name="group" value="mollusk" id="mollusk"> Mollusks <br>
+        <input type="radio" name="group" value="aquatic" id="aquatic"> Fishes, Mollusks & Crayfish<br>
+        <input type="radio" name="group" value="rep-amp" id="rep-amp"> Reptiles & Amphibians <br>
+        <input type="radio" name="group" value="arthropod" id="arthropod"> Insects & other Arthropods <br>
+        <input type="radio" name="group" value="community" id="community"> Natural Plant Communities 
+  </fieldset>
+  <fieldset>
+    <legend>Select to Show Elements by Status</legend>
+      <input type="radio" name="status" value="all_statuses" id="all_statuses"> All tracked elements with or without protection<br>
+      <input type="radio" name="status" value="us" id="us"> With federal protection status in Georgia (includes candidates)<br>
+      <input type="radio" name="status" value="ga" id="ga"> With Georgia protection status <br>
+      <input type="radio" name="status" value="swap" id="swap"> With State Wildlife Action Plan (SWAP) high priority status <br>
+      <input type="radio" name="status" value="no-ga-status" id="no-ga-status"> No Georgia protection status <br>
+      <input type="radio" name="status" value="no-us-status" id="no-us-status"> No federal protection status
+  </fieldset>
+  <fieldset>
+    <legend>Select to Show Elements by Rarity Rank Groups</legend>
+      <input type="radio" name="rank" value="all_ranks" id="all_ranks"> All rare tracked elements with any rank <br>
+      <input type="radio" name="rank" value="s1s2" id="s1s2"> Georgia's rarest elements, ranked S1 & S2<br>
+      <input type="radio" name="rank" value="g1g2" id="g1g2"> Globally rarest elements, ranked G1, G2, T1 & T2<br>
+      <input type="radio" name="rank" value="shsx" id="shsx"> Not seen in Georgia in over 20 years, ranked SH & SX
+  </fieldset>
+  <input type="checkbox" name="show_rank" value=true id="show_rank"> Show state and global rarity ranks<br>
+  <input type="checkbox" name="show_status" value=true id="show_status"> Show federal and Georgia protection status<br>
+  <input type="checkbox" name="show_swap" value=true id="show_swap"> Show State Wildlife Action Plan (SWAP) hight priority status<br>
+  <input type="checkbox" name="show_eo_count" value=true id="show_eo_count"> Show Georgia EO count<br>
+  <input type="checkbox" name="show_profile_link" value=true id='show_profile_link' > Show link to species profile<br>
+  <input type="checkbox" name="show_range_map_link" value=true id='show_range_map_link' > Show link to range map<br>
+  <input type="checkbox" name="show_ns_explorer_link" value=true id="show_ns_explorer_link"> Show link to NatureServe Explorer<br>
+  <input type="checkbox" name="show_sshabitat" value=true id="show_sshabitat"> Show Georgia short habitat description<br>
+  <input type="checkbox" name="show_sql_query" value=true id="show_sql_query"> Show PostgreSQL/PostGIS query<br>
+
+  <input type="submit" value="Generate List of Elements">
+ 
+  <button type="button" onclick="setDefaults()">Reset to default values</button>
+  <button type="button" onclick="displayJustNames()">Display just names</button>
+  <button type="button" onclick="displayAllInfo()">Display all information</button>
+
+  <input type="hidden" name="request_src" value="customize" />
+
+</form>
+</section>
+
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+
+<script>
+
+function saveValues() {
+    localStorage.order_by = $('input[name="order_by"]:checked').val();
+    localStorage.group = $('input[name="group"]:checked').val();
+    localStorage.status = $('input[name="status"]:checked').val();
+    localStorage.rank = $('input[name="rank"]:checked').val();
+    localStorage.show_rank = $('input[name="show_rank"]:checked').val();
+    localStorage.show_status = $('input[name="show_status"]:checked').val();
+    localStorage.show_swap = $('input[name="show_swap"]:checked').val();
+    localStorage.show_eo_count = $('input[name="show_eo_count"]:checked').val();
+    localStorage.show_profile_link = $('input[name="show_profile_link"]:checked').val();
+    localStorage.show_range_map_link = $('input[name="show_range_map_link"]:checked').val();
+    localStorage.show_ns_explorer_link = $('input[name="show_ns_explorer_link"]:checked').val();
+    localStorage.show_sshabitat = $('input[name="show_sshabitat"]:checked').val();
+    localStorage.show_sql_query = $('input[name="show_sql_query"]:checked').val();
+}
+
+function setDefaultsInStorage() {
+    localStorage.order_by = 'sname';
+    localStorage.group = 'all_groups';
+    localStorage.status = 'all_statuses';
+    localStorage.rank = 'all_ranks';
+    localStorage.show_rank = 'true';
+    localStorage.show_status = 'true';
+    localStorage.show_swap = 'true';
+    localStorage.show_eo_count = 'true';
+    localStorage.show_range_map_link = 'true';
+    localStorage.show_profile_link = 'true';
+    localStorage.show_ns_explorer_link = 'true';
+    localStorage.show_sshabitat = 'true';
+    localStorage.show_sql_query = 'true';
+}
+
+function refreshFromStorage() {
+    // Set radio buttons from localStorage
+    document.getElementById(localStorage.order_by).checked = true;
+    document.getElementById(localStorage.group).checked = true;
+    document.getElementById(localStorage.status).checked = true;
+    document.getElementById(localStorage.rank).checked = true;
+
+    // Set check boxes from localStorage
+    document.getElementById('show_rank').checked = eval(localStorage.show_rank);
+    document.getElementById('show_status').checked = eval(localStorage.show_status);
+    document.getElementById('show_swap').checked = eval(localStorage.show_swap);
+    document.getElementById('show_eo_count').checked = eval(localStorage.show_eo_count);
+    document.getElementById('show_range_map_link').checked = eval(localStorage.show_range_map_link);
+    document.getElementById('show_profile_link').checked = eval(localStorage.show_profile_link);
+    document.getElementById('show_ns_explorer_link').checked = eval(localStorage.show_ns_explorer_link);
+    document.getElementById('show_sshabitat').checked = eval(localStorage.show_sshabitat);
+    document.getElementById('show_sql_query').checked = eval(localStorage.show_sql_query);
+}
+
+function onLoad() {
+    if (localStorage.order_by === undefined) {setDefaults();}
+    refreshFromStorage();
+}
+
+function setDefaults() {
+    setDefaultsInStorage();
+    refreshFromStorage();
+}
+
+function displayJustNames() {
+    document.getElementById('show_rank').checked = false;
+    document.getElementById('show_status').checked = false;
+    document.getElementById('show_swap').checked = false;
+    document.getElementById('show_eo_count').checked = false;
+    document.getElementById('show_profile_link').checked = false;
+    document.getElementById('show_range_map_link').checked = false;
+    document.getElementById('show_ns_explorer_link').checked = false;
+    document.getElementById('show_sshabitat').checked = false;
+    document.getElementById('show_sql_query').checked = false;
+    saveValues();
+}
+
+function displayAllInfo() {
+    document.getElementById('show_rank').checked = true;
+    document.getElementById('show_status').checked = true;
+    document.getElementById('show_swap').checked = true;
+    document.getElementById('show_eo_count').checked = true;
+    document.getElementById('show_profile_link').checked = true;
+    document.getElementById('show_range_map_link').checked = true;
+    document.getElementById('show_ns_explorer_link').checked = true;
+    document.getElementById('show_sshabitat').checked = true;
+    document.getElementById('show_sql_query').checked = true;
+    saveValues();
+}
+
+</script>
+
+</body>
+
+</html>
