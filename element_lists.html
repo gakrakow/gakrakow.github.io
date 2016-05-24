@@ -157,7 +157,7 @@ width: 100%;
     {{{area_name}}}
     <div id="main_title">Georgia Rare Natural Elements</div>
     <h2>{{rank}} {{group}} {{{status}}}</h2>
-    <a href="customize.html"><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
+    <a href="customize.html"><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{showStatewideSearch}}}{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
 
 </script> <!-- end hdr_tpt (header template) -->
 
@@ -252,9 +252,12 @@ function loadData(){
         if (localStorage.order_by == undefined) {
             setDefaultsInStorage();
             }
-        }
-    else if (getURLParameter('request_src') == 'customize') {
-        // Don't change anything when coming from filter sort
+    } else if (getURLParameter('request_src') == 'customize') {
+        // Coming from filter sort so don't change anything 
+    } else if (getURLParameter('request_src') == 'reset_report_type') {
+        localStorage.report_type = 'general';
+        localStorage.area_type = '';
+        localStorage.area_name = '';        
     } else if (getURLParameter('request_src') == 'external_link') {
         putURLParametersIntoLocalStorage();
     } else if (getURLParameter('request_src') == 'reset_rank_status') {
@@ -289,6 +292,9 @@ function loadData(){
     }
     if (localStorage.group != 'all_groups') {
         header_values.showAllElementGroups = '<a href="element_lists.html?request_src=reset_group"><img src="all_elements.png" class="customize_button" alt="show all element groups"></a>';
+    }
+    if (localStorage.report_type != 'general') {
+        header_values.showStatewideSearch = '<a href="element_lists.html?request_src=reset_report_type"><img src="statewide_search.png" class="customize_button" alt="show statewide search"></a>';
     }
     
     if (localStorage.group == 'community') {header_values.status = '';}
