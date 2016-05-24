@@ -288,13 +288,13 @@ function loadData(){
         }
     
     if (localStorage.status != 'all_statuses' || localStorage.rank != 'all_ranks') {
-        header_values.showAllRanksStatuses = '<a href="element_lists.html?request_src=reset_rank_status"><img src="all_ranks_statuses.png" class="customize_button" alt="show elements with all ranks and statuses"></a>';
+        header_values.showAllRanksStatuses = '<a href="element_lists.html?request_src=reset_rank_status" title="Reset to show all elements regardless of protection status"><img src="all_ranks_statuses.png" class="customize_button" alt="show elements with all ranks and statuses"></a>';
     }
     if (localStorage.group != 'all_groups') {
-        header_values.showAllElementGroups = '<a href="element_lists.html?request_src=reset_group"><img src="all_elements.png" class="customize_button" alt="show all element groups"></a>';
+        header_values.showAllElementGroups = '<a href="element_lists.html?request_src=reset_group" title="Reset to show rare elements from all element groups"><img src="all_elements.png" class="customize_button" alt="show all element groups"></a>';
     }
     if (localStorage.report_type != 'general') {
-        header_values.showStatewideSearch = '<a href="element_lists.html?request_src=reset_report_type"><img src="statewide_search.png" class="customize_button" alt="show statewide search"></a>';
+        header_values.showStatewideSearch = '<a href="element_lists.html?request_src=reset_report_type" title="Reset to show rare elements from throughout Georgia"><img src="statewide_search.png" class="customize_button" alt="show statewide search"></a>';
     }
     
     if (localStorage.group == 'community') {header_values.status = '';}
@@ -426,6 +426,8 @@ function loadData(){
              if (rec['an_pl'] == 'Community') {
                 rec['sshabitat'] = '';
              } else {
+                // Fix butchered non escaped "&" in sshabitat
+                rec['sshabitat'] = rec['sshabitat'].replace('%26', 'or')
                 rec['sshabitat'] = ' <span title="Habitat of element in Georgia"><b>Habitat:</b> ' + rec['sshabitat'] + '</span>, ';
              }
              
