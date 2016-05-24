@@ -300,13 +300,13 @@ function loadData(){
     var whereClause = filters[localStorage.status][1] + filters[localStorage.group][1] + filters[localStorage.rank][1];
     // Additional WHERE when generating an area report
     if (localStorage.report_type == 'area') {
-        whereClause += " AND eo.area_name = '" + localStorage.area_name + "'";
+        whereClause += " AND eo.area_name = '" + localStorage.area_name + "' AND map_areas = '"  + localStorage.area_type + "' ";
     }
     var orderBy = localStorage.order_by;
     if (localStorage.group == 'all_groups') {orderBy = 'an_pl, ' + orderBy;}
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
-        var sqlQuery = "SELECT eo.area_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname WHERE map_areas = '"  + localStorage.area_type + "' ";
+        var sqlQuery = "SELECT eo.area_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
                 } else {
         // Base query for when NOT needing to generate an area report
         var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
