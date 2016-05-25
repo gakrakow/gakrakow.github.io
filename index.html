@@ -44,9 +44,15 @@ section,header {
 
   </style>
 <body>
-<h2>Draft Tests of Links to Rare Element Lists</h2>
+<div id='logo_area'>
+    <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+</div>
+<h2>Georgia Rare Species and Natural Community Lists<br>
+(with downloads of data tables used to generate the lists)</h2>
 
-<p>Please note that this draft page, links on this page and lists generated from these links may have bugs and are subject to change at any time.</p>
+<p style="color:red;"><b>Please note this is draft page!</b><br> Links on this page and lists generated from these links may have bugs and are subject to change at any time. Last edited May 25 2016.</p>
+
+<p>Data used to generate these lists is derived from rare species and natural community element subnational (ES) records and element occurrence (EO) records in GA-DNR, Wildlife Resources Division, Nongame Conservation Section's instance of <a href="http://www.natureserve.org/conservation-tools/biotics-5">NatureServe Biotics</a> biodiversity conservation database.</p>
 
 <h3>Element Occurrence Lists by Clicking on Map Areas</h3>
 <a href="https://gakrakow.cartodb.com/viz/4f33625a-ed3c-11e5-9eba-0e787de82d45/public_map">Georgia counties</a><br>
@@ -85,14 +91,37 @@ section,header {
 <a href="element_lists.html?request_src=external_link&rank=g1g2" target="_blank">Globally rarest elements, ranked G1, G2, T1 & T2</a><br>
 <a href="element_lists.html?request_src=external_link&rank=shsx" target="_blank">Not seen in Georgia in over 20 years, ranked SH & SX</a><br>
 
-<h3>Data tables used to generate data lists from this page</h3>
-<p><a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=es_web&q=SELECT%20*%20FROM%20es_web&format=CSV">
-    Rare Natural Elements of Georgia</a>: A CSV file of rare species and natural communities tracked by Georgia DNR, Nongame Conservation Section. This file can be imported into almost any database, spreadsheet or GIS program.</p>
+<h3>Download CSV data tables used to generate element lists in this data portal</h3>
+<p>These CSV (comma separated value) files can be imported into virtually all database, spreadsheet or GIS programs created in the last 20 years including Excel, Access, ArcGIS, QGIS and many more.</p>
 
 <p><a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=eo_web&q=SELECT%20*%20FROM%20eo_web&format=CSV">
-    Rare Natural Element Occurrences (EOs) of Georgia</a>: A CSV file of rare species and natural community locations by county, HUC10 watershed and other unit areas . This file can be imported into almost any database, spreadsheet or GIS program.</p>
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=es_web&q=SELECT%20*%20FROM%20es_web&format=CSV">es_web.csv</a> - 
+    <b>Rare Natural Elements of Georgia</b> -  Rare species and natural communities tracked by Georgia DNR, Nongame Conservation Section.</p>
 
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=eo_web&q=SELECT%20*%20FROM%20eo_web&format=CSV">eo_web.csv</a> - 
+    <b>Locations of Rare Natural Element of Georgia</b> - Rare species and natural community element occurrences (EOs) by county, HUC10 watershed and other unit areas with shapefile download links below.</p>
+
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=es_vw&q=SELECT%20*%20FROM%20es_vw&format=CSV">es_vw.csv</a> -  <b>Database query view used to generate element lists</b> - The CartoDB/PostGIS database SQL query view used for generating element lists. This query view joins information from es_web, eo_web and several other tables with information used for generating rare element lists in this data portal.
+    </p>
+    
+<h3>Download index shapefiles used to do analysis and make maps for this data portal</h3>
+<p>These ESRI shapefiles are exported from the geospatial data layers used to join and filter rare element data used in this data portal. The coordinate reference system is WGS84 (epsg:4326), also know as World Geodetic System of 1984 or just latitude/longitude. 
+    <p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=cnty&q=SELECT%20*%20FROM%20cnty&format=SHP">cnty.shp</a> - <b>Georgia Counties</b></p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=qq&q=SELECT%20*%20FROM%20qq&format=SHP">qq.shp</a> - <b>Quarter quads</b> - One fourth of a USGS 7.5 minute quadrangle map</p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc8&q=SELECT%20*%20FROM%20huc8&format=SHP">huc8.shp</a> - <b>USGS Hydrological Unit Code 8 Digit Watersheds</b></p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc10&q=SELECT%20*%20FROM%20huc10&format=SHP">huc10.shp</a> - <b>USGS Hydrological Unit Code 10 Digit Watersheds</b></p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco3&q=SELECT%20*%20FROM%20eco3&format=SHP">eco3.shp</a> - <b>EPA Level III Ecoregions</b></p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco4&q=SELECT%20*%20FROM%20eco4&format=SHP">eco4.shp</a> - <b>EPA Level IV Ecoregions</b></p>
+<p><a href=
+    "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP">hex24.shp</a> - <b>24 km Hexagon Grid</b></p>
+    
   </body>
 </html>
