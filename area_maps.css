@@ -1,0 +1,130 @@
+    html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #map_title {
+        border-style: solid;
+        border-color: #999;
+        border-width: 2px;
+        outline-width: 2px;
+        position: absolute;
+        left: 65px;
+        top: 20px;
+        color: #777;
+        background-color: #F8F8F8;
+        padding: 5px 20px;
+        border-radius: 10px;
+        font-family: "Helvetica", Arial;
+    }
+
+    span.element, span.area {
+        font-size: 18px;
+        font-style: italic;
+        font-weight: bold;
+        color: #444;
+    }
+
+    span.scomname, span.action {
+        font-size: 15px;
+        font-weight: normal;
+        color: #444;
+    }
+
+    #export_date {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        font-size: 11px;
+        color: #333;
+        background-color: rgba(254, 254, 254, .7);
+        padding: 1px 6px;
+        font-family: "Helvetica", Arial;
+    }
+
+    #dnr_logo {
+        background-image: url(wrd_logo.png);
+        border-style: solid;
+        border-color: #999;
+        border-width: 2px;
+        border-radius: 10px;
+        outline-width: 2px;
+        position: absolute;
+        width: 160px;
+        height: 60px;
+        left: 10px;
+        bottom: 30px;
+        padding: 10px 20px;
+        box-shadow: 0 0 10px #999;
+    }
+
+
+      #layer_selector {
+        position: absolute;
+        top: 65px;
+        right: 20px;
+        padding: 0;
+      }
+
+      #layer_selector ul {
+        padding: 0; margin: 0;
+        list-style-type: none;
+      }
+
+      #layer_selector li {
+        border-bottom: 1px solid #999;
+        padding: 10px;
+        font-family: "Helvetica", Arial;
+        font-size: 12px;
+        color: #444;
+        cursor: auto;
+      }
+
+      #layer_selector li:hover {
+        background-color: #F0F0F0;
+        cursor: pointer;
+      }
+
+      #layer_selector li.selected {
+        background-color: #EEE;
+      }
+
+@media screen and (max-width: 600px), (max-height: 475px) {
+    #map_title {
+        border-radius: 6px;
+        left: 5px;
+        padding: 4px;
+        top: 5px;
+        font-size: 85%;
+    }
+
+    span.element {
+        font-size: 15px;
+    }
+
+    span.scomname {
+        font-size: 12px;
+    }
+
+    #dnr_logo {
+        border-radius: 5px;
+        background-size: 87px 35px;
+        width: 43px;
+        height: 8px;
+        left: 2px;
+        bottom: 16px;
+        padding: 14px 22px;
+    }
+
+    #layer_selector {
+        top: 65px;
+        right: 2px;
+    }
+
+      #layer_selector li {
+        padding: 7px;
+        font-size: 11px;
+    }
+
+}
