@@ -173,7 +173,7 @@ var filters = {
 "ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
 "no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
 "no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
-"swap": ["Tracked, SWAP High Priority Species ", "WHERE es.sname IS NOT NULL"],
+"swap": ["Tracked, SWAP High Priority Species ", "WHERE es.swap_status IS NOT NULL"],
 "all_ranks": ["", " AND es.srank IS NOT NULL"],
 "s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
 "g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
