@@ -407,21 +407,16 @@ function loadData(){
              } else {
                 rec.species_profile = ''
              }
-                
-             // **** SET UP TO NOT SHOW SWAP STATUS OR EXPLORER LINK FOR COMMUNITIES *****
-                
+
              // Set up SWAP status
              if (localStorage.show_swap === 'true') {
-                //alert(JSON.stringify(rec));
-                if (rec.swap_status != null) {
-                    rec.swap = "Yes";
-                } else {
-                    rec.swap = "No";
-                }
+               // *** Will have to change this when Communities have been mapped to SWAP *** //
+               if (rec.an_pl == "Community") {rec.swap = "To be determined";}
+               else if (rec.swap_status != null) {rec.swap = "Yes";}
+               else {rec.swap = "No";}
              } else {
                 partials.el_swap_status = '';
              }
-             //alert(JSON.stringify(rec));
 
              // Don't show sshabitat for communities
              if (rec['an_pl'] == 'Community') {
@@ -479,7 +474,7 @@ function loadData(){
     <header id="headerArea"></header>
     <section>
         <div id=row_count></div>
-        <div id="listArea"><img id="loading-image" src="ajax-loader.gif"  alt="Loading..." /> <p id='loading'>LOADING RECORDS . . .</p>  </div>
+        <div id="listArea"><img id="loading-image" src="monarch_butterfly.gif"  alt="Loading..." /> <p id='loading'>Loading records. Please wait . . .</p>  </div>
         <div class="code-box" id="queryArea"></div>
     </section>
 </body>
