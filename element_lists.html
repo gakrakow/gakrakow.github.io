@@ -164,7 +164,7 @@ width: 100%;
     <ul>
         {{#.}}
             {{{breakHdr}}}
-            <li id="{{elcode}}"><b>{{{name1}}}</b> ({{{name2}}}){{>el_rank}}{{>el_status}}{{>el_swap_status}}{{>eo_amount}}{{{sshabitat}}}{{{species_profile}}}{{{range_map}}}{{{ns_explorer}}} </li>
+            <li id="{{elcode}}"><b>{{{name1}}}</b> ({{{name2}}}){{>el_rank}}{{>el_status}}{{>el_swap_status}}{{>eo_amount}}{{{el_sshabitat}}}{{{species_profile}}}{{{range_map}}}{{{ns_explorer}}} </li>
         {{/.}}
     </ul>
     <p id="exported_on">{{>dateOfData}}</p>
@@ -357,7 +357,7 @@ function loadData(){
         no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span>, ',
         species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
-        ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ',
+        ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> '        
         }
 
     if (localStorage.show_rank != 'true') {partials.el_rank = '';}
@@ -372,7 +372,7 @@ function loadData(){
         partials.no_range_map = '';
         }
 
-   // Communiuties don't have protection status
+   // Communities don't have protection status
     if (localStorage.group == 'community') {partials.el_status = '';}
         
     // Get JSON data from CartoDB using SQL script and generate list of elements for webpage.
@@ -446,13 +446,12 @@ function loadData(){
 
              // Don't show sshabitat for communities
              if (rec['an_pl'] == 'Community') {
-                rec['sshabitat'] = '';
+                 rec.el_sshabitat = '';
              } else {
-                // Fix butchered non escaped "&" in sshabitat
-                rec['sshabitat'] = rec['sshabitat'].replace('%26', 'or')
-                rec['sshabitat'] = ' <span title="Habitat of element in Georgia"><b>Habitat:</b> ' + rec['sshabitat'] + '</span>, ';
+                // Setup sshabitat to show for other groups.
+                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia"><b>Habitat:</b> {{sshabitat}}</span>, ', rec);
              }
-             
+
              //ns_exploere_search_name
              if (localStorage.show_ns_explorer_link === 'true') {
                 ////////////////rec.sshabitat = '';
