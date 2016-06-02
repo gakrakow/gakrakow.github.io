@@ -250,6 +250,10 @@
                 });
             subLayer.setSQL(query1);
 
+            // Setup export shapefile of map
+            tplt = '<p><a href="http://gakrakow.cartodb.com/api/v2/sql?filename={{sname}}&q={{query1}}">Download range map of {{sname}}</a></p>'
+            ////////****** Need to add mustache render for tplt. ************* ///////////////
+            
             // Set export date from Biotics
             export_date_template = 'Exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on {{exportdate}}';
             export_date_statment = Mustache.render(export_date_template, {"exportdate": el_obj.exportdate});

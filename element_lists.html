@@ -257,7 +257,7 @@ function setDefaultsInStorage() {
 }
   
 function putURLParametersIntoLocalStorage() {
-    setDefaultsInStorage();
+    //setDefaultsInStorage(); //*** May have to use this *** Check out the logic.
     if (getURLParameter('status')) {localStorage.status = getURLParameter('status');}
     if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
     if (getURLParameter('rank')) {localStorage.rank = getURLParameter('rank');}
@@ -444,17 +444,17 @@ function loadData(){
                 partials.el_swap_status = '';
              }
 
-             // Don't show sshabitat for communities
+             // Don't show sshabitat for communities or if user chooses not to show it.
              if (rec['an_pl'] == 'Community') {
                  rec.el_sshabitat = '';
+             } else if (localStorage.show_sshabitat === 'true') {
+                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia"><b>Habitat:</b> {{sshabitat}}</span>, ', rec);                
              } else {
-                // Setup sshabitat to show for other groups.
-                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia"><b>Habitat:</b> {{sshabitat}}</span>, ', rec);
-             }
-
+                 rec.el_sshabitat = '';
+             } 
+             
              //ns_exploere_search_name
              if (localStorage.show_ns_explorer_link === 'true') {
-                ////////////////rec.sshabitat = '';
                 // Communities
                 if (rec['an_pl'] == 'Community') {
                     // Choose assemblage, "C" (default), or system, "A" community type
