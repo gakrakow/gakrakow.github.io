@@ -168,7 +168,7 @@
     </script>
     
     <script id="shp_download_tpl" type='text/template'>
-            <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=element_range&q={{query1}}&format=SHP">Download shapefile of range</a>
+            <a href="http://gakrakow.cartodb.com/api/v2/sql?filename={{el_id}}_{{area}}_range{{today}}&q={{query}}&format=SHP">Download shapefile of range</a>
     </script>
   
   </head>
@@ -194,6 +194,24 @@
 
     <script>
 
+    function exportRangeShapefile (query, el_name, area) {
+        alert('here: ' + el_name);
+        var link_tpl = $('#shp_download_tpl').html();
+        query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
+        var today = new Date().toISOString().substr(0, 10).replace(/-/g, "");
+        var el_id = el_name.replace(/\//g, '-').replace(/ - /g,"-").replace(/ /g,"_").replace(/\./g,"");
+        el_id = el_id.replace(/,/g,"").replace(/\(/g,"").replace(/\)/g,"");
+        el_id = el_id.toLowerCase();
+        var shp_link = Mustache.render(link_tpl, {
+                query : query,
+                el_name : el_name,
+                area: area,
+                el_id: el_id,
+                today: today
+            });
+        $('#shp_link').html(shp_link);        
+        }
+    
     // create layer selector
     function createSelector(layer, element) {
         var $options = $('#layer_selector li');
@@ -214,16 +232,19 @@
                 });
             layer.setSQL(query);
             
+            alert('in selector: ' + element);
+            exportRangeShapefile(query, element, area);
+            
             // Setup export shapefile of map
             /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
-            var link_tpl = $('#shp_download_tpl').html();
-            query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
-            var shp_link = Mustache.render(link_tpl, {
-                    query1 : query,
-                    sname : element
-                });
-            //alert(shp_link);
-            $('#shp_link').html(shp_link);
+//            var link_tpl = $('#shp_download_tpl').html();
+//            query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
+//            var shp_link = Mustache.render(link_tpl, {
+//                    query1 : query,
+//                    sname : element
+//                });
+//            //alert(shp_link);
+//            $('#shp_link').html(shp_link);
 
         });
     }
@@ -278,14 +299,16 @@
 
             // Setup export shapefile of map
             /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
-            var link_tpl = $('#shp_download_tpl').html();
-            query1 = query1.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
-            var shp_link = Mustache.render(link_tpl, {
-                    query1 : query1,
-                    sname : el_obj.sname
-                });
-            $('#shp_link').html(shp_link);
+//            var link_tpl = $('#shp_download_tpl').html();
+//            query1 = query1.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
+//            var shp_link = Mustache.render(link_tpl, {
+//                    query1 : query1,
+//                    sname : el_obj.sname
+//                });
+//            $('#shp_link').html(shp_link);
             
+            ///// ########### Need to export communities as ELCode instead of sname
+            exportRangeShapefile(query1, el_obj.sname, 'cnty', el_obj.sname);
             
             // Set export date from Biotics
             export_date_template = 'Exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on {{exportdate}}';

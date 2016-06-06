@@ -52,6 +52,30 @@ section,header {
 
 <p style="color:red;"><b>Please note this is a draft page!</b><br> Links on this page and lists generated from these links may have bugs and are subject to change at any time. <br>Last edited June 4 2016.</p>
 
+<script>
+function resetLocalStorage() {
+    localStorage.clear();
+    localStorage.order_by = 'sname';
+    localStorage.group = 'all_groups';
+    localStorage.status = 'all_statuses';
+    localStorage.rank = 'all_ranks';
+    localStorage.show_rank = 'true';
+    localStorage.show_status = 'true';
+    localStorage.show_swap = 'true';
+    localStorage.show_eo_count = 'true';
+    localStorage.show_range_map_link = 'true';
+    localStorage.show_ns_explorer_link = 'true';
+    localStorage.show_sshabitat = 'true';
+    localStorage.show_sql_query = 'true';
+}
+</script>
+<p  style="color: red;">If you encounter problems while navigating links from this page please press the following reset button: 
+
+<button onclick="clearLocalStorage()">Reset all settings</button>
+</p>
+
+<p  style="color: red;">If you receive a blank page or null values try refreshing the page.</p>
+
 <p>Data used to generate these lists is derived from rare species and natural community element subnational (ES) records and element occurrence (EO) records in GA-DNR, Wildlife Resources Division, Nongame Conservation Section's instance of <a href="http://www.natureserve.org/conservation-tools/biotics-5">NatureServe Biotics</a> biodiversity conservation database.</p>
 
 <h3>Element Occurrence Lists by Clicking on Map Areas</h3>
