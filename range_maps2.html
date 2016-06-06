@@ -39,6 +39,17 @@
         color: #444;
     }
 
+    #shp_link {
+        position: absolute;
+        left: 0px;
+        bottom: 18px;
+        font-size: 11px;
+        color: #333;
+        background-color: #FAEB7D;
+        padding: 1px 6px;
+        font-family: "Helvetica", Arial;
+    }
+
     #export_date {
         position: absolute;
         left: 0px;
@@ -61,11 +72,10 @@
         width: 160px;
         height: 60px;
         left: 10px;
-        bottom: 30px;
+        bottom: 38px;
         padding: 10px 20px;
         box-shadow: 0 0 10px #999;
     }
-
 
       #layer_selector {
         position: absolute;
@@ -120,7 +130,7 @@
         width: 43px;
         height: 8px;
         left: 2px;
-        bottom: 16px;
+        bottom: 35px;
         padding: 14px 22px;
     }
 
@@ -156,7 +166,11 @@
         RIGHT JOIN {{area}}_eos ON {{area}}.rpt_name = {{area}}_eos.rpt_name
         WHERE es_id = '{{es_id}}'
     </script>
-
+    
+    <script id="shp_download_tpl" type='text/template'>
+            <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=element_range&q={{query1}}&format=SHP">Download shapefile of range</a>
+    </script>
+  
   </head>
   <body>
     <div id="map"></div>
@@ -173,6 +187,7 @@
       </ul>
     </div>
     <a href="http://www.georgiawildlife.com"><div id="dnr_logo"></div></a>
+    <div id="shp_link"></div>
     <div id='export_date'></div>
 
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
@@ -198,6 +213,17 @@
                     es_id: element
                 });
             layer.setSQL(query);
+            
+            // Setup export shapefile of map
+            /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
+            var link_tpl = $('#shp_download_tpl').html();
+            query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
+            var shp_link = Mustache.render(link_tpl, {
+                    query1 : query,
+                    sname : element
+                });
+            //alert(shp_link);
+            $('#shp_link').html(shp_link);
 
         });
     }
@@ -238,21 +264,28 @@
             el_obj.element = el_obj.sname
 
             // Set map title
-            title_template = "<span class='element'>{{sname}}</span><br/><span class='scomname'> {{scomname}}</span>";
+            var title_template = "<span class='element'>{{sname}}</span><br/><span class='scomname'> {{scomname}}</span>";
             map_title = Mustache.render(title_template, el_obj);
             $('#map_title').html(map_title);
 
             // Set cnty as default range map when opening the page
-            template = $('#query_template').html();
-            var query1 = Mustache.render(template, {
+            var query_tpl = $('#query_template').html();
+            var query1 = Mustache.render(query_tpl, {
                     area : 'cnty',
                     es_id : el_obj.es_id
                 });
             subLayer.setSQL(query1);
 
             // Setup export shapefile of map
-            tplt = '<p><a href="http://gakrakow.cartodb.com/api/v2/sql?filename={{sname}}&q={{query1}}">Download range map of {{sname}}</a></p>'
-            ////////****** Need to add mustache render for tplt. ************* ///////////////
+            /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
+            var link_tpl = $('#shp_download_tpl').html();
+            query1 = query1.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
+            var shp_link = Mustache.render(link_tpl, {
+                    query1 : query1,
+                    sname : el_obj.sname
+                });
+            $('#shp_link').html(shp_link);
+            
             
             // Set export date from Biotics
             export_date_template = 'Exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on {{exportdate}}';
