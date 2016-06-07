@@ -195,7 +195,7 @@
     <script>
 
     function exportRangeShapefile (query, el_name, area) {
-        alert('here: ' + el_name);
+        //alert('here: ' + el_name);
         var link_tpl = $('#shp_download_tpl').html();
         query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
         var today = new Date().toISOString().substr(0, 10).replace(/-/g, "");
