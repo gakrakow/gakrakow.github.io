@@ -335,7 +335,7 @@ function loadData(){
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
         var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
-        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}}, es.sname, es.scomname, es.sprot, es.usesa, es.srank, es.grank, es.swap_status, es.eo_count, es.sshabitat, es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname", {area: localStorage.area_type});
+        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}}, es.sname, es.scomname, es.sprot, es.usesa, es.srank, es.grank, es.swap_status, es.eo_count, es.sshabitat, es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
         var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
