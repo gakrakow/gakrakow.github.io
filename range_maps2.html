@@ -213,7 +213,7 @@
         }
     
     // create layer selector
-    function createSelector(layer, element) {
+    function createSelector(layer, es_id, sname) {
         //alert('in selector: ' + element);
         var $options = $('#layer_selector li');
         $options.click(function (e) {
@@ -229,23 +229,12 @@
             template = $('#query_template').html();
             var query = Mustache.render(template, {
                     area : area,
-                    es_id: element
+                    es_id: es_id
                 });
             layer.setSQL(query);
             
-            exportRangeShapefile(query, element, area);
+            exportRangeShapefile(query, sname, area);
             
-            // Setup export shapefile of map
-            /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
-//            var link_tpl = $('#shp_download_tpl').html();
-//            query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
-//            var shp_link = Mustache.render(link_tpl, {
-//                    query1 : query,
-//                    sname : element
-//                });
-//            //alert(shp_link);
-//            $('#shp_link').html(shp_link);
-
         });
     }
 
@@ -296,18 +285,7 @@
                     es_id : el_obj.es_id
                 });
             subLayer.setSQL(query1);
-
-            // Setup export shapefile of map
-            /////***** NEED TO WRITE A FUNCTION TO DO THIS ****************
-//            var link_tpl = $('#shp_download_tpl').html();
-//            query1 = query1.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
-//            var shp_link = Mustache.render(link_tpl, {
-//                    query1 : query1,
-//                    sname : el_obj.sname
-//                });
-//            $('#shp_link').html(shp_link);
             
-            ///// ########### Need to export communities as ELCode instead of sname
             exportRangeShapefile(query1, el_obj.sname, 'cnty', el_obj.sname);
             
             // Set export date from Biotics
@@ -318,7 +296,7 @@
             // Set web page title
             document.title = (el_obj.element + " Range Map");
             
-            createSelector(subLayer, el_obj.es_id);
+            createSelector(subLayer, el_obj.es_id, el_obj.sname);
 
         })
         
