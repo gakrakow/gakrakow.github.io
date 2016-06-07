@@ -214,6 +214,7 @@
     
     // create layer selector
     function createSelector(layer, element) {
+        //alert('in selector: ' + element);
         var $options = $('#layer_selector li');
         $options.click(function (e) {
             // get the range map unit area of the selected layer
@@ -232,7 +233,6 @@
                 });
             layer.setSQL(query);
             
-            alert('in selector: ' + element);
             exportRangeShapefile(query, element, area);
             
             // Setup export shapefile of map
