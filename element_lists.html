@@ -331,7 +331,7 @@ function loadData(){
         whereClause += " AND eo.rpt_name = '" + localStorage.rpt_name + "' AND map_areas = '"  + localStorage.area_type + "' ";
     }
     var orderBy = localStorage.order_by;
-    if (localStorage.group == 'all_groups') {orderBy = 'an_pl, ' + orderBy;}
+    if (localStorage.group == 'all_groups') {orderBy = 'es.an_pl, ' + orderBy;}
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
         var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
@@ -411,7 +411,7 @@ function loadData(){
             if (rec.usesa == "") {rec.usesa = "none"};
             
             // Set up display order from sorting order
-            if (localStorage.order_by == 'sname') {
+            if (localStorage.order_by == 'es.sname') {
                 rec.name1 = rec.sname;
                 rec.name2 = rec.scomname;
             } else { 
