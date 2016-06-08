@@ -396,8 +396,8 @@ function loadData(){
                                   date_stamp: filenameDate(data.rows[0].exportdate)
                                   };
             var filename = Mustache.render('{{area_name}} {{area_type}} {{csv_filename}}{{date_stamp}}', filename_parts);
-            filename = filename.toLowerCase().replace(/ /g,'-');
-            filename = filename.replace(/^-*/, '');
+            filename = filename.toLowerCase().replace(/ /g,'-').replace(/\_/g,'-');
+            filename = filename.replace(/^-*/, '').replace(/--/g,'-').replace(/\:/g,'');
             partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV">Download file of elements on this page for use in a spreadsheet, database or GIS (CSV format)</a>'
         }
         var recs = [];
