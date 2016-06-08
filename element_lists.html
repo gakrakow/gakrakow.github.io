@@ -159,6 +159,7 @@ width: 100%;
 </style>
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script src="rare_elements.js"></script>    
 
 <script id="el_tpt" type="text/template">
     <ul>
@@ -305,6 +306,9 @@ function loadData(){
         'group': filters[localStorage.group][0],
         'status': ' <br> ' + filters[localStorage.status][0]
         }
+
+    var csv_filename = makeCsvFilename(header_values);
+    
     if (localStorage.report_type == 'area') {
             header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
         }
@@ -335,7 +339,7 @@ function loadData(){
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
         var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
-        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}}, es.sname, es.scomname, es.sprot, es.usesa, es.srank, es.grank, es.swap_status, es.eo_count, es.sshabitat, es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
+        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}}, es.an_pl, es.sname, es.scomname, es.sprot, es.usesa, es.srank, es.grank, es.swap_status, es.eo_count, es.sshabitat, es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
         var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
@@ -385,12 +389,16 @@ function loadData(){
             partials.dateOfData = '';
         } else {
             partials.dateOfData = 'Exported from Biotics conservation database on ' +  data.rows[0].exportdate;
-            // Make date time stamp (dt) for export file name. Creates a sequence of 
-            // 4 digit year, then 2 digit month, date, hour, minute, and second (no spaces).
-            var dt = new Date().toISOString().substr(0, 19);
-            dt = dt.replace('T', '').replace(/-/g, "").replace(/:/g, "");
             // Make link for downloading CSV file of page rare elements
-            partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=ga_rare_elements' + dt + '&q=' + sqlQuery4Export + '&format=CSV">Download file of elements on this page for use in a spreadsheet, database or GIS (CSV format)</a>'
+            var filename_parts = {area_name: localStorage.area_name,
+                                  area_type: areas[localStorage.area_type],
+                                  csv_filename: csv_filename,
+                                  date_stamp: filenameDate(data.rows[0].exportdate)
+                                  };
+            var filename = Mustache.render('{{area_name}} {{area_type}} {{csv_filename}}{{date_stamp}}', filename_parts);
+            filename = filename.toLowerCase().replace(/ /g,'-');
+            filename = filename.replace(/^-*/, '');
+            partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV">Download file of elements on this page for use in a spreadsheet, database or GIS (CSV format)</a>'
         }
         var recs = [];
         var an_pl = ''
