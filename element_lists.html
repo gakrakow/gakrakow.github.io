@@ -339,14 +339,22 @@ function loadData(){
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
         var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
-        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}}, es.an_pl, es.sname, es.scomname, es.sprot, es.usesa, es.srank, es.grank, es.swap_status, es.eo_count, es.sshabitat, es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
+        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.sname ,es.scomname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
         var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
-        var sqlQuery4Export = "SELECT sname, scomname, sprot, usesa, srank, grank, swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
+        var sqlQuery4Export = "SELECT sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
+        var sqlQuery4ExportComname = "SELECT scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         }
+        
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
-    sqlQuery4Export += whereClause + ' ORDER BY ' + orderBy;
+    //Set up export query for either scomname and sname sorted elements.
+    if (orderBy.indexOf('sname') == -1) {
+        sqlQuery4Export = sqlQuery4ExportComname + whereClause + ' ORDER BY ' + orderBy;
+        } else {
+        sqlQuery4Export += whereClause + ' ORDER BY ' + orderBy;
+        }
+        
     if (localStorage.show_sql_query == 'true') {
         document.getElementById('queryArea').innerHTML = '<h3>PostgreSQL/PostGIS SQL Selection Query</h3><text id="sql_query">' + sqlQuery + '</text>';
         }
@@ -405,6 +413,13 @@ function loadData(){
         var last_an_pl = '';
         for (row in data.rows) {
             var rec = data.rows[row];
+            
+            // Get rid of %26 (&) in sshabitat.
+            ////// *********** NEED TO DO THE SAME FOR EXPORTED SSHABITAT VALUES ******
+            if (rec.sshabitat.indexOf('%26') > -1) {
+                rec.sshabitat = rec.sshabitat.replace(/\%26/g, " and ")
+            }
+            
             // When group == all_groups then show breaks by animal, community, plant or other
             if (localStorage.group == 'all_groups') {
                 if (rec.an_pl != last_an_pl) {
@@ -419,12 +434,13 @@ function loadData(){
             if (rec.usesa == "") {rec.usesa = "none"};
             
             // Set up display order from sorting order
-            if (localStorage.order_by == 'es.sname') {
-                rec.name1 = rec.sname;
-                rec.name2 = rec.scomname;
-            } else { 
+            // If localStorage.order_by does not contain the string sname'.
+            if (localStorage.order_by.indexOf('sname') == -1) {
                 rec.name1 = rec.scomname;
                 rec.name2 = rec.sname;
+            } else { 
+                rec.name1 = rec.sname;
+                rec.name2 = rec.scomname;
             }
 
             //Test to see whether to show range map image link or no range map image
@@ -459,7 +475,7 @@ function loadData(){
              if (rec['an_pl'] == 'Community') {
                  rec.el_sshabitat = '';
              } else if (localStorage.show_sshabitat === 'true') {
-                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia"><b>Habitat:</b> {{sshabitat}}</span>, ', rec);                
+                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia"><b>Habitat:</b> {{sshabitat}}</span>, ', rec);
              } else {
                  rec.el_sshabitat = '';
              } 
