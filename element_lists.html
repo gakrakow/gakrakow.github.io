@@ -6,7 +6,7 @@
 
 <style type="text/css" media="print">
 
-.customize_button, #download_link { 
+.customize_button, #bottom_buttons { 
 display: none;
 }
 
@@ -104,8 +104,8 @@ a:active {
 text-decoration: underline;
 }
 
-#download_link {
-margin-left: 1em; 
+#bottom_buttons {
+margin-left: 10px; 
 }
 
 ul {
@@ -169,7 +169,7 @@ width: 100%;
         {{/.}}
     </ul>
     <p id="exported_on">{{>dateOfData}}</p>
-    <p id="download_link">{{>downloadLink}}</p>
+    <div id="bottom_buttons">{{>downloadLink}} <a href="about-this-data.html"><image src="about-this-data.png"></a></div>
 </script>
 
 <script id="hdr_tpt" type="text/template">
@@ -406,7 +406,7 @@ function loadData(){
             var filename = Mustache.render('{{area_name}} {{area_type}} {{csv_filename}}{{date_stamp}}', filename_parts);
             filename = filename.toLowerCase().replace(/ /g,'-').replace(/\_/g,'-');
             filename = filename.replace(/^-*/, '').replace(/--/g,'-').replace(/\:/g,'');
-            partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV">Download file of elements on this page for use in a spreadsheet, database or GIS (CSV format)</a>'
+            partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="download-csv.png" class="download_csv" alt="Download CSV Button"></a>'
         }
         var recs = [];
         var an_pl = ''
