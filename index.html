@@ -4,9 +4,19 @@
     <meta charset="utf-8" />
     <title>Test area links to lists</title>
   </head>
-  <style>
+
+<style>
+
+p.draft {
+outline-color:red;
+outline-style:solid;
+padding:5px;
+margin: 20px;
+background-color:pink;
+}
+
 body {
-background-color: beige;
+background-color:#403000;
 color:#6f4e0f;
 font-family:sans-serif;
 }
@@ -25,24 +35,31 @@ border-radius: 10px;
 box-shadow: 3px 3px 4px 2px #000000;
 }
 
-h2.lists_header {
-@color: white;
-@background-color: #663300;
-border-style: solid black;
-border-bottom:0;
-padding: 0 0 0 40px;
-font-weight: boldest;
-font-size: 150%;
-}
-
 #about-this-data {
 margin-left:20px;
 }
 
-h3 {
+h1 {
+margin: -7px;
+padding: 10px;
+color:white;
+background-color: #663300;
+font-size: 1.7em;
+}
+
+h2, h3{
+margin: -7px;
 padding: 10px;
 color:white;
 background-color:#2a4137;
+font-size: 1.1em;
+}
+
+h2 {
+background-color: #666666;
+margin-bottom: 5px;
+margin-top: 20px;
+font-size: 1.4em;
 }
 
 .map_click_eos {
@@ -67,13 +84,22 @@ section,header {
 }
 }
 
-  </style>
+</style>
+
 <body>
+<header>
 <div id='logo_area'>
     <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+    <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" alt="Georgia Rare Natural Element Logo"></a>
 </div>
-<h1 style="margin-bottom:0;">Georgia Rare Natural Elements Data Portal</h1>
-<h2 style="margin-top:0;">Element and location lists of rare species, natural plant communities and other natural elements important for biodiversity conservation</h2>
+</header>
+<section>
+<h1>Georgia Rare Natural Elements Data Portal</h1>
+
+<p>Rare natural elements are plant and animal populations, natural plant communities, bird nesting colonies, caves and other elements in nature that are important for biodiversity conservation.</p>
+
+<p>This page contains links  to lists with <a href="#rare-natural-elements">General Information About Rare Natural Elements</a> as well as <a href="#rare-element-locations">Locations of Rare Natural Elements</a>.</p>
+
 
 <script>
 function resetLocalStorage() {
@@ -93,13 +119,12 @@ function resetLocalStorage() {
 }
 </script>
 
-<p style="outline-color:red; outline-style:solid; padding:5px; margin: 0 20px;background-color:pink;"><b>Please note this is a draft page!</b> Links on this page and lists generated from these links may have bugs and are subject to change at any time. If you receive a blank page or null values try refreshing the page. If you encounter problems while navigating links from this page please press the following reset button. <br><button onclick="clearLocalStorage()">Reset all settings</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last updated June 29, 2016.</p>
+<p class="draft"><b>Please note this is a draft page!</b> Links on this page and lists generated from these links may have bugs and are subject to change at any time. If you receive a blank page or null values try refreshing the page. If you encounter problems while navigating links from this page please press the following reset button. <br><button onclick="clearLocalStorage()">Reset all settings</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last updated July 9, 2016.</p>
 
-<br>
 <div id="about-this-data"><a href="about-this-data.html"><img src="about-this-data.png"></img></a></div>
 
 <hr>
-<h2 class="lists_header">Rare Element Lists</h2>
+<h2 id="rare-natural-elements" class="lists_header">General Information about Rare Elements</h2>
 
 <h3>Element Lists by Taxonomic Group</h3>
 <ul>
@@ -136,7 +161,7 @@ function resetLocalStorage() {
 </ul>
 
 <hr>
-<h2 class="lists_header">Rare Element Location Lists</h2>
+<h2 id="rare-element-locations" class="lists_header">Locations of Rare Natural Elements</h2>
 
 <h3>Element Locations by Clicking on Map Areas</h3>
 <a href="cnty_rare_elements_map.html" class="map_click_eos" title="Georgia county EOs by clicking on map">
@@ -171,19 +196,19 @@ function resetLocalStorage() {
 <p>When opened in Google Earth, these KMZ (zipped KML) map layers allow the user to click on locations and get rare natural elements found there. This works best if the Google Earth menu item Tools/Options/General Tab/Display is set to "Show results in external browser".
 <ul class="data_link">
 <li><span>Georgia Counties:</span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=cnty&q=SELECT%20*%20FROM%20cnty&format=SHP"> cnty.kmz</a></li>
+    "kmz/cnty.kmz"> cnty.kmz</a></li>
 <li><span>Quarter quads: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=qq&q=SELECT%20*%20FROM%20qq&format=SHP">qq.kmz</a></li>
+    "kmz/qq.kmz">qq.kmz</a></li>
 <li><span>HUC8 Watersheds: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc8&q=SELECT%20*%20FROM%20huc8&format=SHP">huc8.kmz</a></li>
+    "kmz/huc8.kmz">huc8.kmz</a></li>
 <li><span>HUC10 Watersheds: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc10&q=SELECT%20*%20FROM%20huc10&format=SHP">huc10.kmz</a></li>
+    "kmz/huc10">huc10.kmz</a></li>
 <li><span>Level 3 Ecoregions: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco3&q=SELECT%20*%20FROM%20eco3&format=SHP">eco3.kmz</a></li>
+    "kmz/huc10">eco3.kmz</a></li>
 <li><span>Level 4 Ecoregions: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco4&q=SELECT%20*%20FROM%20eco4&format=SHP">eco4.kmz</a></li>
+    "kmz/eco4">eco4.kmz</a></li>
 <li><span>24 km Hexagon Grid: </span> <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP">hex24.kmz</a></li>
+    "kmz/hex24.kmz">hex24.kmz</a></li>
 </ul>
 
 <h3>Shapefiles of map layers used in this data portal</h3>
@@ -205,5 +230,6 @@ function resetLocalStorage() {
     "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP">hex24.shp</a></li>
 </ul>
 
+</section>
   </body>
 </html>
