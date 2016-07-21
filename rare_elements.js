@@ -8,10 +8,12 @@ function filenameDate(dateval) {
     }
 
 function makeCsvFilename(header_vals) {
-    // Some day you are gonna have to figure out how to do this with much fewer regular expression.
-    csv_filename = header_vals.rank + ' ' + header_vals.group + ' ' + header_vals.status;
+    // This cleans up and formats CSV file names.
+    // Some day you are gonna have to figure out how to do this with much fewer regular expressions.
+    var csv_filename = header_vals.rank + ' ' + header_vals.group + ' ' + header_vals.status;
     csv_filename = csv_filename.replace(/,/g,"").replace(/\(/g,"").replace(/\)/g,"");
     csv_filename = csv_filename.replace(/ /g,"-").replace(/\&/,"-").replace('<br>',"-");
     csv_filename = csv_filename.replace(/--/g,"-").replace(/--/g,"-").replace(/--/g,"-").toLowerCase();
     return csv_filename
     }
+
