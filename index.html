@@ -28,13 +28,6 @@ margin: auto;
 padding: 7px;
 }
 
-img.button, img.top-button {
-padding: 5px;
-margin: 5px;
-border-radius: 10px;
-box-shadow: 3px 3px 4px 2px #000000;
-}
-
 #about-this-data {
 margin-left:20px;
 }
@@ -47,28 +40,40 @@ background-color: #663300;
 font-size: 1.7em;
 }
 
-h2, h3{
-margin: -7px;
-padding: 10px;
-color:white;
-background-color:#2a4137;
-font-size: 1.1em;
-}
 
 h2 {
-background-color: #666666;
-margin-bottom: 5px;
-margin-top: 20px;
+color:white;
 font-size: 1.4em;
+background-color: #525564;
+padding: 10px;
+margin: 10px -7px 5px -7px;
+border-style: solid;
+border-color: #C25B56;
+border-width: 9px 8px 11px 8px;
+}
+
+h3 {
+color:white;
+font-size: 1.1em;
+background-color:#2a4137;
+margin: -7px;
+padding: 10px;
 }
 
 .map_click_eos {
 padding: 0 1px 0 0
 }
 
-img.button,img.top-button {
+img.button, img.top-button {
     padding: 5px;
     margin: 5px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 4px 2px #000000;
+}
+
+.map_click_eos_button {
+    padding: 3px;
+    margin: 10px 4px 8px 4px;
     border-radius: 10px;
     box-shadow: 3px 3px 4px 2px #000000;
 }
@@ -119,12 +124,14 @@ function resetLocalStorage() {
 }
 </script>
 
-<p class="draft"><b>Please note this is a draft page!</b> Links on this page and lists generated from these links may have bugs and are subject to change at any time. If you receive a blank page or null values try refreshing the page. If you encounter problems while navigating links from this page please press the following reset button. <br><button onclick="clearLocalStorage()">Reset all settings</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last updated July 9, 2016.</p>
+<p class="draft"><b>Please note this is a draft page!</b> Links on this page and lists generated from these links may have bugs and are subject to change at any time. If you receive a blank page or null values try refreshing the page. If you encounter problems while navigating links from this page please press the following reset button. <br><button onclick="clearLocalStorage()">Reset all settings</button>. To report bugs, or otherwise comment on this data portal please contact <a href="http://www.natureserve.org/profile/942">Greg Krakow</a>. <br>Last updated July 18, 2016.
+
+</p>
 
 <div id="about-this-data"><a href="about-this-data.html"><img src="about-this-data.png"></img></a></div>
 
 <hr>
-<h2 id="rare-natural-elements" class="lists_header">General Information about Rare Elements</h2>
+<h2 id="rare-natural-elements" class="lists_header">General Information about Rare Natural Elements</h2>
 
 <h3>Element Lists by Taxonomic Group</h3>
 <ul>
@@ -165,69 +172,62 @@ function resetLocalStorage() {
 
 <h3>Element Locations by Clicking on Map Areas</h3>
 <a href="cnty_rare_elements_map.html" class="map_click_eos" title="Georgia county EOs by clicking on map">
-    <img src="cnty.png" class="button" alt="Georgia county EOs by clicking on map"></a>
+    <img src="cnty.png" class="map_click_eos_button" alt="Georgia county EOs by clicking on map"></a>
 <a href="qq_rare_elements_map.html" class="map_click_eos" title="Georgia Quarter Quad EOs by clicking on map">
-    <img src="qq.png" class="button" alt="Georgia Quarter Quad EOs by clicking on map"></a>
+    <img src="qq.png" class="map_click_eos_button" alt="Georgia Quarter Quad EOs by clicking on map"></a>
 <a href="huc10_rare_elements_map.html" class="map_click_eos" title="Georgia HUC10 watershed EOs by clicking on map">
-    <img src="huc10.png" class="button" alt="Georgia HUC10 watershed EOs by clicking on map"></a>
+    <img src="huc10.png" class="map_click_eos_button" alt="Georgia HUC10 watershed EOs by clicking on map"></a>
 <a href="huc8_rare_elements_map.html" class="map_click_eos" title="Georgia HUC8 watershed EOs by clicking on map">
-    <img src="huc8.png" class="button" alt="Georgia HUC8 watershed EOs by clicking on map"></a>
+    <img src="huc8.png" class="map_click_eos_button" alt="Georgia HUC8 watershed EOs by clicking on map"></a>
 <a href="eco3_rare_elements_map.html" class="map_click_eos" title="Georgia Level 3 Ecoregion EOs by clicking on map">
-    <img src="eco3.png" class="button" alt="Georgia Level 3 Ecoregion EOs by clicking on map"></a>
+    <img src="eco3.png" class="map_click_eos_button" alt="Georgia Level 3 Ecoregion EOs by clicking on map"></a>
 <a href="eco4_rare_elements_map.html" class="map_click_eos" title="Georgia Level 4 Ecoregion EOs by clicking on map">
-    <img src="eco4.png" class="button" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
+    <img src="eco4.png" class="map_click_eos_button" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
 <a href="hex24_rare_elements_map.html" class="map_click_eos" title="Georgia 24 km Hexagon EOs by clicking on map">
-    <img src="hex24.png" class="button" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
+    <img src="hex24.png" class="map_click_eos_button" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
 
 <h3>CSV data tables for viewing rare element locations</h3>
 <p>CSV (comma separated value) files that can be imported into most database, spreadsheet or GIS programs including Excel, Access, ArcGIS, QGIS and many more. The user can then filter and sort the data by many criteria as well as join the data to map layer shapefiles below to do GIS analysis.</p>
 
 <ul class="data_link">
-<li><span>Georgia Counties:</span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=cnty-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'cnty'&format=CSV">cnty-eos.csv</a></li>
-<li><span>Quarter quads: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=qq-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'qq'&format=CSV">qq-eos.csv</a></li>
-<li><span>HUC8 Watersheds: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc8-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20e'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc8'&format=CSV">huc8-eos.csv</a></li>
-<li><span>HUC10 Watersheds: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc10-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc10'&format=CSV">huc10-eos.csv</a></li>
-<li><span>Level 3 Ecoregions: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco3-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco3'&format=CSV">eco3-eos.csv</a></li>
-<li><span>Level 4 Ecoregions: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco4-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco4'&format=CSV">eco4-eos.csv</a></li>
-<li><span>24 km Hexagon Grid: </span> <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=hex24-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'hex24'&format=CSV">hex24-eos.csv</a></li>
-</ul>
-
-<h3>Google Earth files for viewing rare element locations</h3>
-<p>When opened in Google Earth, these KMZ (zipped KML) map layers allow the user to click on locations and get rare natural elements found there. This works best if the Google Earth menu item Tools/Options/General Tab/Display is set to "Show results in external browser".
-<ul class="data_link">
-<li><span>Georgia Counties:</span> <a href=
-    "kmz/cnty.kmz"> cnty.kmz</a></li>
-<li><span>Quarter quads: </span> <a href=
-    "kmz/qq.kmz">qq.kmz</a></li>
-<li><span>HUC8 Watersheds: </span> <a href=
-    "kmz/huc8.kmz">huc8.kmz</a></li>
-<li><span>HUC10 Watersheds: </span> <a href=
-    "kmz/huc10">huc10.kmz</a></li>
-<li><span>Level 3 Ecoregions: </span> <a href=
-    "kmz/huc10">eco3.kmz</a></li>
-<li><span>Level 4 Ecoregions: </span> <a href=
-    "kmz/eco4">eco4.kmz</a></li>
-<li><span>24 km Hexagon Grid: </span> <a href=
-    "kmz/hex24.kmz">hex24.kmz</a></li>
+<li>Georgia Counties: <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=cnty-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'cnty'&format=CSV">cnty-eos.csv</a></li>
+<li>Quarter quads:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=qq-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'qq'&format=CSV">qq-eos.csv</a></li>
+<li>HUC8 Watersheds:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc8-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20e'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc8'&format=CSV">huc8-eos.csv</a></li>
+<li>HUC10 Watersheds:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc10-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc10'&format=CSV">huc10-eos.csv</a></li>
+<li>Level 3 Ecoregions:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco3-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco3'&format=CSV">eco3-eos.csv</a></li>
+<li>Level 4 Ecoregions:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco4-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco4'&format=CSV">eco4-eos.csv</a></li>
+<li>24 km Hexagon Grid:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=hex24-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'hex24'&format=CSV">hex24-eos.csv</a></li>
 </ul>
 
 <h3>Shapefiles of map layers used in this data portal</h3>
 <p>ESRI shapefiles of the map layers used in this data portal. These can be joined with CSV files above to do GIS analysis and make maps. 
 <ul class="data_link">
-<li><span>Georgia Counties:</span> <a href=
+<li>Georgia Counties: <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=cnty&q=SELECT%20*%20FROM%20cnty&format=SHP"> cnty.shp</a></li>
-<li><span>Quarter quads: </span> <a href=
+<li>Quarter quads:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=qq&q=SELECT%20*%20FROM%20qq&format=SHP">qq.shp</a></li>
-<li><span>HUC8 Watersheds: </span> <a href=
+<li>HUC8 Watersheds:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=huc8&q=SELECT%20*%20FROM%20huc8&format=SHP">huc8.shp</a></li>
-<li><span>HUC10 Watersheds: </span> <a href=
+<li>HUC10 Watersheds:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=huc10&q=SELECT%20*%20FROM%20huc10&format=SHP">huc10.shp</a></li>
-<li><span>Level 3 Ecoregions: </span> <a href=
+<li>Level 3 Ecoregions:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=eco3&q=SELECT%20*%20FROM%20eco3&format=SHP">eco3.shp</a></li>
-<li><span>Level 4 Ecoregions: </span> <a href=
+<li>Level 4 Ecoregions:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=eco4&q=SELECT%20*%20FROM%20eco4&format=SHP">eco4.shp</a></li>
-<li><span>24 km Hexagon Grid: </span> <a href=
+<li>24 km Hexagon Grid:  <a href=
     "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP">hex24.shp</a></li>
+</ul>
+
+<h3>Google Earth files for viewing rare element locations</h3>
+<p>When opened in Google Earth, these KMZ (zipped KML) map layers allow the user to click on locations and get rare natural elements found there. This works best if the Google Earth menu item Tools/Options/General Tab/Display is set to "Show results in external browser".
+<ul class="data_link">
+<li>Georgia Counties: <a href="kmz/cnty.kmz"> cnty.kmz</a></li>
+<li>Quarter quads: <a href="kmz/qq.kmz">qq.kmz</a></li>
+<li>HUC8 Watersheds: <a href="kmz/huc8.kmz">huc8.kmz</a></li>
+<li>HUC10 Watersheds: <a href="kmz/huc10.kmz">huc10.kmz</a></li>
+<li>Level 3 Ecoregions: <a href="kmz/huc10.kmz">eco3.kmz</a></li>
+<li>Level 4 Ecoregions: <a href="kmz/eco4.kmz">eco4.kmz</a></li>
+<li>24 km Hexagon Grid: <a href="kmz/hex24.kmz">hex24.kmz</a></li>
 </ul>
 
 </section>
