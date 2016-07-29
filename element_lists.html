@@ -406,8 +406,10 @@ function loadData(){
                                   date_stamp: filenameDate(data.rows[0].exportdate)
                                   };
             var filename = Mustache.render('{{area_name}} {{area_type}} {{csv_filename}}{{date_stamp}}', filename_parts);
-            filename = filename.toLowerCase().replace(/ /g,'-').replace(/\_/g,'-');
-            filename = filename.replace(/^-*/, '').replace(/--/g,'-').replace(/\:/g,'');
+            filename = filename.toLowerCase();
+            filename = filename.replace(/\s|\.|,|:|\(|\)|&|(<br>)/g,"-");
+            filename = filename.replace(/-+/g,"-");
+            filename = filename.replace(/^-|-$/,"");
             partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="download-csv.png" class="download_csv" alt="Download CSV Button"></a>'
         }
         var recs = [];

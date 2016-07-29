@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Test</title>
+  </head>
+  <body>
+ 
+  <script>
+      // function makeCsvFilename(input) {
+        // // Replace space, period, comma, colon, (, ), &, and "<br>" with dash
+        // var csv_filename = input.replace(/\s|\.|,|:|\(|\)|&|(<br>)/g,"-")
+        // // Replace multiple dashes with single dash
+        // csv_filename = csv_filename.replace(/-+/g,"-")
+        // // Get rid of dash at end of string
+        // csv_filename = csv_filename.replace(/-$/g,"")
+        // return csv_filename
+        // }
+
+        function makeCsvFilename(header_vals) {
+            var csv_filename = header_vals.replace(/\s|\.|,|:|\(|\)|&|(<br>)/g,"-")
+            csv_filename = csv_filename.replace(/-+/g,"-")
+            csv_filename = csv_filename.replace(/-$/g,"")
+            return csv_filename
+            }
+        
+        var header_vals = "Oconee R., Upper: Apalachee & River 1, Lake (Oconee) HUC10 Watershed<br>";
+        header_vals = makeCsvFilename(header_vals)
+        alert(header_vals);
+  </script>
+  </body>
+</html>
