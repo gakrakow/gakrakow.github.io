@@ -26,24 +26,32 @@ margin-top: 0;
 padding: 1em 0 1em 0;
 }
 
-table, th, td {
-border: 1px solid black;
+p {
+padding: 0 1em;
 }
 
-table, p {
-margin: 10px;
+a {
+color: SaddleBrown;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
 td {
-padding: 4px;
+    text-align: left;
+    padding: 8px;
 }
 
 th {
-text-align: right;
-valign="top";
-color: green;
-padding: 5px;
-}
+    color: green;
+    text-align:left;
+    padding: 8px 8px 8px 12px;
+    }
+
+tr:nth-child(odd){background-color: #E8E4B0}
+tr:nth-child(even){background-color: #F5F7E1}
 
 h1 {
 margin: 0;
@@ -88,11 +96,32 @@ width: 100%;
 
 <section>
 <h1>About Georgia Rare Natural Elements Conservation Data</h1>
-<p id="intro">Rare natural elements are plant and animal populations, natural plant communities, bird nesting colonies, caves and other features in nature that are important for biodiversity conservation.</p>
+<p><b>Rare natural elements:</b> Plant and animal populations, natural plant communities, bird nesting colonies, caves and other features in nature that are considered important for biodiversity conservation.</p>
 
-<p id="intro">Data used to generate information in this portal comes from GA-DNR, Wildlife Resources Division, Nongame Conservation Section's instance of <a href="http://www.natureserve.org/conservation-tools/biotics-5">NatureServe Biotics</a> biodiversity conservation database.</p>
+<p><b><a href="http://www.natureserve.org/conservation-tools/biotics-5">Biotics</a>:</b> A biodiversity conservation database developed and maintained by <a href="http://www.natureserve.org/" title="NatureServe Link">NatureServe, Arlington Virginia</a>, that is used by Georgia DNR to hold and interpret information about rare natural elements in Georgia. Biotics data is widely used by many private and public agencies.</p>
 
-<h2>Georgia conservation database attributes</h2>
+<p><b><a href="http://www.natureserve.org/conservation-tools/standards-methods/element-occurrence-data-standard"title="NatureServe Biotics Element Occurrence Data Standard">Element Occurrences (EOs)</a>:</b> Locations of rare natural elements that are monitored in the field and recorded in the Biotics database.</p>
+
+<p><b><a href="http://teaming.com/state-wildlife-action-plans-swaps" title="State Wildlife Action Plans (SWAPs)">State Wildlife Action Plan (SWAP)</a>:</b> A plan developed by each state for conserving wildlife and habitats before they become too rare or expensive to restore. Get <a href="http://www.georgiawildlife.com/conservation/wildlife-action-plan">more information</a> about Georgia's Swap.</p>
+
+<figure>
+  <img src="hierarchy-of-statuses.png" alt="Hierarchy of Georgia Biodiversity Conservation Statuses">
+  <figcaption>Georgia Biodiversity Conservation Statuses Hierarchy</figcaption>
+</figure> 
+
+<p><b>Tracked Special Concern:</b> Rare natural elements with occurrence data (EOs) maintained in the Biotics conservation database. Contains protected and SWAP species, but also unprotected species, rare plant communities and other rare natural elements considered important for biodiversity conservation.</p>
+
+<p><b>SWAP High Priority:</b> Species considered of greatest conservation need in Georgia’s SWAP. Contains both protected and unprotected species.</p>
+
+<p><b>Georgia Protected:</b> Species with protection status under <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0ahUKEwiR_KW5sqPOAhUTySYKHWnmAvoQFggcMAA&url=http%3A%2F%2Fwww1.gadnr.org%2Fcwcs%2FPDF%2FAppendix_G.pdf&usg=AFQjCNGiNcge7aq4RNOP6j4AocXhRwdr1w&sig2=LhHd_G6w8IaQTYUUv1t9mw&bvm=bv.128617741,d.eWE&cad=rja">Georgia’s Endangered Wildlife Act or Wildflower Preservation Act</a>. Georgia’s protected species include U.S. protected species.</p>
+
+<p><b>U.S. Protected:</b> Species protected by the <a href="https://www.fws.gov/endangered/laws-policies/">U.S. Endangered Species Act (ESA)</a>.</p>
+
+<hr>
+
+<p>Data used to generate information in this data portal comes from <a href="http://www.gadnr.org/">Georgia Department of Natural Resources</a>, <a href="http://www.georgiawildlife.org/">Wildlife Resources Division</a>, <a href="http://www.georgiawildlife.org/wildlife">Nongame Conservation Section's</a> instance of <a href="http://www.natureserve.org/conservation-tools/biotics-5">NatureServe Biotics biodiversity conservation database</a>.</p>
+
+<h2>Georgia Rare Element Conservation Database Attributes</h2>
 
 <table>
 <tbody>
@@ -417,9 +446,6 @@ Status</a>.</p>
 <p>Descriptions of global rank on this page have been adapted from information
 provided by NatureServe. Deteils can be found at <a href="http://www.natureserve.org/explorer/ranking.htm">NatureServe Conservation
 Status</a>.</p>
-
-<h2 id="swap">SWAP Species of Greatest Conservation Need</h2>
-<p>A <a href="http://teaming.com/state-wildlife-action-plans-swaps">State Wildlife Action Plan (SWAP)</a> is developed for conserving wildlife and habitats before they become too rare or costly to restore. Each plan includes the identification of Species of Greatest Conservation Need for that state. See <a href="http://www.georgiawildlife.com/conservation/wildlife-action-plan"> Georgia's SWAP</a> for details.</p>
 
 <h2 id="map-unit-sets-used-in-this-data-portal">Map unit sets used in this data portal</h2>
 <table>
