@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bat IDs from anabat routes 2015</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #dnr_logo {
+        background-image: url(wrd_logo.png);
+        border-style: solid;
+        border-color: #999;
+        border-width: 2px;
+        outline-width: 2px;
+        position: absolute;
+        width: 165px;
+        height: 60px;
+        left: 10px;
+        bottom: 66px;
+        font-size: 20px;
+        color: #777;
+        background-color: #F8F8F8;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-family: "Helvetica", Arial;
+      }
+      #disclaimer {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        font-size: 11px;
+        color: #333;
+        background-color: rgba(254, 254, 254, .7);
+        background-color: white;
+        width: 370px;
+        padding: 2px;
+        border: 1px solid navy;
+        margin: 2px;
+        font-family: "Helvetica", Arial;
+        }
+@media screen and (max-width: 600px), (max-height: 475px) {
+      #dnr_logo {
+        border-radius: 5px;
+       	background-size: 87px 35px;
+        width: 43px;
+        height: 8px;
+        left: 2px;
+        bottom: 45px;
+        padding: 14px 22px;
+        }
+      #disclaimer {
+        font-size: 8px;
+        width: 260px;
+        }
+    }
+      
+    </style>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="disclaimer">&#42; All information represented on this map regarding specific bat species and locations have been determined by GA DNR and are subject to change as more information and newer identification methods become available.</div>
+    <a href="http://www.georgiawildlife.com"><div id="dnr_logo"></div></a>
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+
+    <script>
+      function main() {
+
+        // Change the zoom level if small screen
+        var zoom_level = 7;
+        if  ((($(window).width() ) < 550)||(($(window).height()) < 425)) {
+            zoom_level = 6;
+        }
+
+        cartodb.createVis('map', 'https://gadnrbats.carto.com/api/v2/viz/5121485a-5e59-11e6-8524-0ef24382571b/viz.json', {
+            legends: true,
+            cartodb_logo: false,
+            search: true,
+            searchControl: true,
+            zoomControl: true,
+            mobile_layout: true,
+            fullscreen: true,
+            shareable: true,
+            title: false,
+            description: false,
+            search: true,
+            tiles_loader: true,
+            center_lat: 33,
+            center_lon: -83,
+            zoom: zoom_level,
+        })
+        .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          // setInteraction is disabled by default
+          layers[1].setInteraction(true);
+          layers[1].on('featureOver', function(e, pos, latlng, data) {
+            cartodb.log.log(e, pos, latlng, data);
+          });
+
+          // you can get the native map to work with it
+          var map = vis.getNativeMap();
+
+          // now, perform any operations you need
+          //map.setZoom(6);
+          //map.panTo([50.5, 30.5]);
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+      }
+
+      window.onload = main;
+    </script>
+  </body>
+</html>
