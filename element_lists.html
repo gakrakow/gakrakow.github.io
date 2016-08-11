@@ -459,7 +459,7 @@ function loadData(){
                 if (rec.profile_url != null) {
                     rec.species_profile = Mustache.render(partials.species_profile, rec);
                 } else {
-                    rec.species_profile = '<span title="GA-DNR natural element profile report"><b>Profile:</b> None</span>, ';
+                    rec.species_profile = '<span title="GA-DNR natural element profile report"> <b>Profile:</b> None</span>, ';
                 }
              } else {
                 rec.species_profile = ''
