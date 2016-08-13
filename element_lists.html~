@@ -479,7 +479,7 @@ function loadData(){
              if (rec['an_pl'] == 'Community') {
                  rec.el_sshabitat = '';
              } else if (localStorage.show_sshabitat === 'true') {
-                rec.el_sshabitat = Mustache.render('<span title="Habitat of element in Georgia">, <b>Habitat:</b> {{sshabitat}}</span>', rec);
+                rec.el_sshabitat = Mustache.render(' <span title="Habitat of element in Georgia">, <b>Habitat:</b> {{sshabitat}}</span>', rec);
              } else {
                  rec.el_sshabitat = '';
              } 
