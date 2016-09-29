@@ -174,11 +174,11 @@ width: 100%;
 
 <script id="hdr_tpt" type="text/template">
     <div id='logo_area'>
-        <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
-        <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" alt="Georgia Rare Natural Element Logo"></a>
+        <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
+        <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a><img src="img/{{el_group}}.gif" class="top-button" title="{{group}}"></img>
     </div>
     {{{area_name}}}
-    <div id="main_title">Georgia Rare Natural Elements</div>
+    <!--<div id="main_title">Georgia Rare Natural Elements</div>-->
     <h2>{{rank}} {{group}} {{{status}}}</h2>
     <a href="customize.html" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{showStatewideSearch}}}{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
 
@@ -305,6 +305,8 @@ function loadData(){
     var header_values = {
         'rank': filters[localStorage.rank][0],
         'group': filters[localStorage.group][0],
+        //Probably need to change local storage group to el_group
+        'el_group': localStorage.group,
         'status': ' <br> ' + filters[localStorage.status][0]
         }
 
@@ -323,7 +325,7 @@ function loadData(){
     if (localStorage.report_type != 'general') {
         header_values.showStatewideSearch = '<a href="element_lists.html?request_src=reset_report_type" title="Show elements throughout Georgia"><img src="statewide_search.png" class="customize_button" alt="show statewide search"></a>';
     }
-    
+        
     if (localStorage.group == 'community') {header_values.status = '';}
     var hdr_tpt = document.getElementById('hdr_tpt').innerHTML;
     var header_html = Mustache.render(hdr_tpt, header_values);
