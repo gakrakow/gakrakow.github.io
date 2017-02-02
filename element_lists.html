@@ -333,6 +333,9 @@ function loadData(){
 
     // Create the SQL script for selecting and sorting records
     var whereClause = filters[localStorage.status][1] + filters[localStorage.group][1] + filters[localStorage.rank][1];
+    //###################################
+    whereClause += " AND es.seotrack = 'Y' "
+    //###################################
     // Additional WHERE when generating an area report
     if (localStorage.area_name) {
         whereClause += " AND eo.rpt_name = '" + localStorage.rpt_name + "' AND map_areas = '"  + localStorage.area_type + "' ";
@@ -352,6 +355,7 @@ function loadData(){
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
+
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
         sqlQuery4Export = sqlQuery4ExportComname + whereClause + ' ORDER BY ' + orderBy;
