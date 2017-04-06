@@ -31,6 +31,21 @@ function makeCsvFilename(header_vals) {
     return csv_filename;
     }
 
-
-
-
+function SetElObjFromEsIdParam() {
+    if (getURLParameter('es_id')) {
+        var es_id_value = getURLParameter('es_id');
+        var jsonCall = "https://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id, sname ,scomname ,exportdate ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id_value;
+        $.getJSON(jsonCall, function(result){
+            el_obj_str = JSON.stringify(result.rows[0]);
+            if (typeof el_obj_str != 'undefined') {
+                console.log('eo_obj: ' + el_obj_str);
+                localStorage.setItem("el_obj", el_obj_str);
+            } else {
+                console.log('ERROR!!! el_obj is not defined. Probably, the es_id parameter value does match an es_id in the es_web data table');
+            };
+        });
+    } else {
+        var noEsIdError = 'ERROR!!! No element subnational ID in URL parameter.';
+        console.log(noEsIdError);
+    };
+};
