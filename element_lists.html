@@ -288,7 +288,6 @@ function loadData(){
     } else {
         localStorage.report_type = 'general';
         setDefaultsInStorage();
-        localStorage.area_type = '';
         localStorage.area_name = '';
     }
 
@@ -372,7 +371,7 @@ function loadData(){
         el_status: ', <span title="Georgia protection status"><b>GA:</b> {{sprot}}</span>, <span title="U.S. Endangered Species Act Status"><b>US:</b> {{usesa}}</span>',
         el_swap_status: ', <span title="State Wildlife Action Plan (SWAP) Status for Georgia"><b>SWAP:</b> {{swap}}</span>',
         eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>',
-        with_range_map: ' <a href="range_maps2.html?es_id={{es_id}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="range_map3.png" class="range_map_button" alt="range map button"> </a> ',
+        with_range_map: ' <a href="range_maps2_TESTING.html?es_id={{es_id}}&area_type={{area_type}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="range_map3.png" class="range_map_button" alt="range map button"> </a> ',
         no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span>',
         species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
@@ -427,6 +426,15 @@ function loadData(){
         var last_an_pl = '';
         for (row in data.rows) {
             var rec = data.rows[row];
+            
+            // Add area_type from localStorage.area_type to rec
+            if (!localStorage.area_type) {
+                //alert('setting area_type to ""');
+                rec.area_type = ''
+            } else {
+                //alert('setting area_type in rec');
+                rec.area_type = localStorage.area_type;
+            };
             
             // Get rid of %26 (&) in sshabitat.
             ////// *********** NEED TO DO THE SAME FOR EXPORTED SSHABITAT VALUES ******

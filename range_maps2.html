@@ -179,7 +179,7 @@
     <div id="map_title"></div>
     <div id="layer_selector" class="cartodb-infobox">
       <ul>
-        <li data="cnty" class="selected">Counties</li>
+        <li data="cnty">Counties</li>
         <li data="qq">Quarter Quads</li>
         <li data="huc10">HUC10 Watersheds</li>
         <li data="huc8">HUC8 Watersheds</li>
@@ -222,6 +222,7 @@
             // get the range map unit area of the selected layer
             var $li = $(e.target);
             var area = $li.attr('data');
+            localStorage.area_type = area
 
             // deselect all and select the clicked one
             $options.removeClass('selected');
@@ -280,12 +281,27 @@
             map_title = Mustache.render(title_template, el_obj);
             $('#map_title').html(map_title);
 
-            // Set cnty as default range map when opening the page
+            // Set cnty as default range map type unless area type is defined in URL parameter or localStorage.
+            var area_type;
+            if (getURLParameter('area_type')) {
+                area_type = getURLParameter('area_type');
+            } else if (localStorage.area_type) {
+                area_type = localStorage.area_type;
+            } else {
+                area_type = 'cnty';
+            }            
+            
+            // Set selector for area type.
+            var selection_button = $("[data=" + area_type + "]");
+            selection_button.addClass('selected');
+            
+            // Set the default range map area type
             var query_tpl = $('#query_template').html();
             var query1 = Mustache.render(query_tpl, {
-                    area : 'cnty',
+                    area : area_type,
                     es_id : el_obj.es_id
                 });
+            //alert(query1);
             subLayer.setSQL(query1);
             
             exportRangeShapefile(query1, el_obj.sname, 'cnty', el_obj.exportdate);
