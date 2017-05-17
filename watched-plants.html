@@ -50,10 +50,11 @@ function makeList() {
 	$.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+sqlQuery, function(data) {
         var wList = `<p>${data.rows.length} records in list</p>`;
         data.rows.forEach(function(row) {
-            let ns_explorer_link = `<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName="${row.sname.split(' ').join('+')}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>`;
+            let ns_explorer_link = `<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=${row.sname.split(' ').join('+')}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>`;
             let el_rank = `<span title="Global and state rarity ranks"><b>Rank:</b> ${row.grank}/${row.srank}</span>`;
             wList += `<i>${row.sname}</i>, ${row.scomname}, ${el_rank} ${ns_explorer_link}<br/>`;
         });
+        //alert(wList);
         wList += `<p>Exported from Bioitcs Conservation Database on ${data.rows[0].exportdate}</p>`;
         document.getElementById('listArea').innerHTML = wList;
     });
