@@ -180,7 +180,7 @@ width: 100%;
     {{{area_name}}}
     <!--<div id="main_title">Georgia Rare Natural Elements</div>-->
     <h2>{{rank}} {{group}} {{{status}}}</h2>
-    <a href="customize.html" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{showStatewideSearch}}}{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
+    <a href="customize.html" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{clearAllFilters}}}{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
 
 </script> <!-- end hdr_tpt (header template) -->
 
@@ -188,11 +188,11 @@ width: 100%;
 
 var filters = {
 "all_statuses": ["With or Without Protection Status", "WHERE es.sname IS NOT NULL"],
-"us": ["With Federal Protection Status", "WHERE es.usesa != ''"],
+"us": ["With Federal Protection Status", "WHERE es.usesa IS NOT NULL"],
 "ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
 "no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
 "no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
-"swap": ["Tracked, SWAP High Priority Species ", "WHERE es.swap_status IS TRUE"],
+"swap": ["Tracked, SWAP Species of Greatest Conservation Need (SGCN)", "WHERE es.swap_status IS TRUE"],
 "all_ranks": ["", " AND es.srank IS NOT NULL"],
 "s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
 "g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
@@ -208,6 +208,7 @@ var filters = {
 "aquatic": ["Fishes, Mollusks and Crayfishes ", " AND (SUBSTR(es.elcode, 1, 2) in ('AF', 'IM') OR es.sgenus IN ('Cambarus', 'Distocambarus', 'Fallicambarus', 'Faxonella', 'Orconectes', 'Procambarus'))"],
 "rep-amp": ["Rare Reptiles and Amphibians ", " AND SUBSTR(es.elcode, 1, 2) in ('AR', 'AA')"],
 "arthropod": ["Rare Arthropods ", " AND SUBSTR(es.elcode, 1, 2) in ('IL', 'IC', 'II')"],
+"community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
 "community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
 }
 
@@ -225,7 +226,7 @@ var groups = {
 'Animal': 'ANIMALS',
 'Plant': 'PLANTS',
 'Community': 'NATURAL COMMUNITIES',
-'Other': "OTHER NATURAL ELEMENTS (Includes newly tracked elements without an ELCODE)"
+'Other': "OTHER NATURAL ELEMENTS"
 }
 
 // store the sname, scomname and exportdate into local storage.
@@ -238,22 +239,7 @@ function reply_click(es_id) {
         localStorage.el_obj = JSON.stringify(el_obj);
     })
 }
-
-function setDefaultsInStorage() {
-    localStorage.order_by = 'sname';
-    localStorage.group = 'all_groups';
-    localStorage.status = 'all_statuses';
-    localStorage.rank = 'all_ranks';
-    localStorage.show_rank = 'true';
-    localStorage.show_status = 'true';
-    localStorage.show_swap = 'true';
-    localStorage.show_eo_count = 'true';
-    localStorage.show_range_map_link = 'true';
-    localStorage.show_ns_explorer_link = 'true';
-    localStorage.show_sshabitat = 'true';
-    localStorage.show_sql_query = 'false';
-}
-  
+ 
 function putURLParametersIntoLocalStorage() {
     //setDefaultsInStorage(); //*** May have to use this *** Check out the logic.
     if (getURLParameter('status')) {localStorage.status = getURLParameter('status');}
@@ -280,6 +266,8 @@ function loadData(){
         localStorage.area_name = '';        
     } else if (getURLParameter('request_src') == 'external_link') {
         putURLParametersIntoLocalStorage();
+    } else if (getURLParameter('request_src') == 'clear-all-filters') {
+        clearAllFilters();    
     } else if (getURLParameter('request_src') == 'reset_rank_status') {
         localStorage.rank='all_ranks';
         localStorage.status='all_statuses';
@@ -311,16 +299,13 @@ function loadData(){
     
     if (localStorage.report_type == 'area') {
             header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
-        }
-    
-    if (localStorage.status != 'all_statuses' || localStorage.rank != 'all_ranks') {
-        header_values.showAllRanksStatuses = '<a href="element_lists.html?request_src=reset_rank_status" title="Show elements regardless of rarity rank or protection status"><img src="all_ranks_statuses.png" class="customize_button" alt="show elements with all ranks and statuses"></a>';
-    }
-    if (localStorage.group != 'all_groups') {
-        header_values.showAllElementGroups = '<a href="element_lists.html?request_src=reset_group" title="Show elements from all groups"><img src="all_elements.png" class="customize_button" alt="show all element groups"></a>';
-    }
-    if (localStorage.report_type != 'general') {
-        header_values.showStatewideSearch = '<a href="element_lists.html?request_src=reset_report_type" title="Show elements throughout Georgia"><img src="statewide_search.png" class="customize_button" alt="show statewide search"></a>';
+        }    
+    if (localStorage.report_type != 'general' ||
+        localStorage.group != 'all_groups' ||
+        localStorage.status != 'all_statuses' ||
+        localStorage.rank != 'all_ranks')
+    {
+        header_values.clearAllFilters = '<a href="element_lists.html?request_src=clear-all-filters" title="Show all elements, display default values, sort by scientific name and clear any location filters"><img src="clear-all-filters.png" class="customize_button" alt="Clear all filters"></a>';
     }
         
     if (localStorage.group == 'community') {header_values.status = '';}
@@ -342,13 +327,13 @@ function loadData(){
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
         var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.el_group, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
-        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.sname ,es.scomname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status IS TRUE THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
-        sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status IS TRUE THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
+        var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.sname ,es.scomname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
+        sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
         var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
-        var sqlQuery4Export = "SELECT el_group, sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status IS TRUE THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
-        var sqlQuery4ExportComname = "SELECT el_group, scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status IS TRUE THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
+        var sqlQuery4Export = "SELECT el_group, sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
+        var sqlQuery4ExportComname = "SELECT el_group, scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
@@ -374,10 +359,10 @@ function loadData(){
         el_swap_status: ', <span title="State Wildlife Action Plan (SWAP) Status for Georgia"><b>SWAP:</b> {{swap}}</span>',
         eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>',
         with_range_map: ' <a href="range_maps2.html?es_id={{es_id}}&area_type={{area_type}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="range_map3.png" class="range_map_button" alt="range map button"> </a> ',
-        no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span>',
+        no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span> ',
         species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
-        ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> '        
+        ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ' 
         }
 
     if (localStorage.show_rank != 'true') {partials.el_rank = '';}
@@ -489,7 +474,7 @@ function loadData(){
              if (localStorage.show_swap === 'true') {
                // *** Will have to change this when Communities have been mapped to SWAP *** //
                if (rec.an_pl == "Community") {rec.swap = "To be determined";}
-               else if (rec.swap_status == true) {rec.swap = "Yes";}
+               else if (rec.swap_status === true) {rec.swap = "Yes";}
                else {rec.swap = "No";}
              } else {
                 partials.el_swap_status = '';

@@ -1,3 +1,4 @@
+
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
     }
@@ -49,3 +50,25 @@ function SetElObjFromEsIdParam() {
         console.log(noEsIdError);
     };
 };
+
+function setDefaultsInStorage() {
+    localStorage.order_by = 'sname';
+    localStorage.group = 'all_groups';
+    localStorage.status = 'all_statuses';
+    localStorage.rank = 'all_ranks';
+    localStorage.show_rank = 'true';
+    localStorage.show_status = 'true';
+    localStorage.show_swap = 'true';
+    localStorage.show_eo_count = 'true';
+    localStorage.show_range_map_link = 'true';
+    localStorage.show_ns_explorer_link = 'true';
+    localStorage.show_sshabitat = 'true';
+    localStorage.show_sql_query = 'false';
+};
+
+function clearAllFilters() {
+    setDefaultsInStorage();
+    localStorage.report_type = 'general';
+    localStorage.area_type = '';
+    localStorage.area_name = '';
+}

@@ -153,20 +153,20 @@
     <script src="rare_elements.js"></script>
 
     <script id='query_template'  type='text/template'>
-        SELECT {{area}}.cartodb_id
-            ,{{area}}.area_code
-            ,{{area}}.rpt_name
-            ,{{area}}.area_name
-            ,{{area}}_eos.es_id
-            ,{{area}}_eos.sname
-            ,{{area}}_eos.scomname
-            ,{{area}}_eos.age_class
-            ,{{area}}_eos.age_text
-            ,{{area}}.the_geom_webmercator
-            ,{{area}}.the_geom
-        FROM {{area}}
-        RIGHT JOIN {{area}}_eos ON {{area}}.rpt_name = {{area}}_eos.rpt_name
-        WHERE es_id = '{{es_id}}'
+        SELECT area.cartodb_id
+            ,area.area_code
+            ,area.rpt_name
+            ,area.area_name
+            ,eo.es_id
+            ,eo.sname
+            ,eo.scomname
+            ,eo.age_class
+            ,eo.age_text
+            ,area.the_geom_webmercator
+            ,area.the_geom
+        FROM {{area}} area
+        RIGHT JOIN eo_web eo ON area.rpt_name = eo.rpt_name
+        WHERE eo.es_id = '{{es_id}}'
     </script>
     
     <script id="shp_download_tpl" type='text/template'>
@@ -216,7 +216,6 @@
     
     // create layer selector
     function createSelector(layer, es_id, sname, exportdate) {
-        //alert('in selector: ' + element);
         var $options = $('#layer_selector li');
         $options.click(function (e) {
             // get the range map unit area of the selected layer
@@ -301,7 +300,6 @@
                     area : area_type,
                     es_id : el_obj.es_id
                 });
-            //alert(query1);
             subLayer.setSQL(query1);
             
             exportRangeShapefile(query1, el_obj.sname, 'cnty', el_obj.exportdate);

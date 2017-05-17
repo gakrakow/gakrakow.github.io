@@ -25,7 +25,29 @@ color:white;
 background-color:#2a4137;
 }
 
-img.button,img.top-button {
+#generate-list {
+    padding: 2px 5px;
+    margin: 5px;
+    border-radius: 2px;
+    box-shadow: 3px 3px 4px 2px #000000;
+}
+
+button {
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+    font-style: italic;
+    font-weight: bold;
+    position: relative;
+    top: -14px;
+    left: 0;
+    background-color: Transparent;
+    padding: 2px 5px;
+    border-radius: 2px;
+    box-shadow: 3px 3px 4px 2px #000000;
+    box-shadow: 2px 2px 3px 1px #000000;
+}
+
+img.button, img.top-button {
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -59,7 +81,7 @@ section,header {
 
 <section>
 <form action="element_lists.html" method="get" onsubmit="saveValues()">
-  <input type="submit" value="Generate List of Elements">
+    <input id="generate-list" type="image" src="generate-list.png">
     <button type="button" onclick="setDefaults()">Reset to default values</button>
     <button type="button" onclick="displayJustNames()">Display just names</button>
     <button type="button" onclick="displayAllInfo()">Display all information</button>
@@ -109,8 +131,8 @@ section,header {
   <input type="checkbox" name="show_sshabitat" value=true id="show_sshabitat"> Show Georgia short habitat description<br>
   <input type="checkbox" name="show_sql_query" value=true id="show_sql_query"> Show PostgreSQL/PostGIS query<br>
 
-  <input type="submit" value="Generate List of Elements">
- 
+  <input id="generate-list" type="image" src="generate-list.png">
+
   <button type="button" onclick="setDefaults()">Reset to default values</button>
   <button type="button" onclick="displayJustNames()">Display just names</button>
   <button type="button" onclick="displayAllInfo()">Display all information</button>
