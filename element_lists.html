@@ -187,17 +187,17 @@ width: 100%;
 <script>
 
 var filters = {
-"all_statuses": ["With or Without Protection Status", "WHERE es.sname IS NOT NULL"],
-"us": ["With Federal Protection Status", "WHERE es.usesa IS NOT NULL"],
+"all_statuses": ["With or Without Protection Status", "WHERE es.sname <> ''"],
+"us": ["With Federal Protection Status", "WHERE es.usesa <> ''"],
 "ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
 "no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
 "no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
 "swap": ["Tracked, SWAP Species of Greatest Conservation Need (SGCN)", "WHERE es.swap_status IS TRUE"],
-"all_ranks": ["", " AND es.srank IS NOT NULL"],
+"all_ranks": ["", " AND es.srank <> ''"],
 "s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
 "g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
 "shsx": ["Not seen in Georgia for over 20 years (SH & SX) ", " AND es.rnd_srank IN ('SH', 'SX')"],
-"all_groups": ["All Tracked Natural Elements", " AND es.elcode IS NOT NULL"],
+"all_groups": ["All Tracked Natural Elements", " AND es.elcode <> ''"],
 "animal": ["Rare Animals ", " AND SUBSTR(es.elcode, 1, 1) in ('A', 'I')"],
 "plant": ["Rare Plants ", " AND SUBSTR(es.elcode, 1, 1) in ('P', 'N')"],
 "bird": ["Rare Birds ", " AND SUBSTR(es.elcode, 1, 2) = 'AB'"],
