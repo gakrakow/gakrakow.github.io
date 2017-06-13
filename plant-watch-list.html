@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+    <script src="rare_elements.js"></script>
+
+    <script>
+function makeList() {
+    var sqlQuery = "select elcode, sname, scomname, srank, grank, sshabitat, exportdate, distr_conf from es_web where seotrack = 'W' ORDER BY sname";
+    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=' + sqlQuery, function (data) {
+        var wList = '<p id="list-top-info">' + data.rows.length + ' records in list. Exported from Bioitcs Conservation Database ' + data.rows[0].exportdate + '.</p><ul>';
+        data.rows.forEach(function (row) {
+            var ns_explorer_link = '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=' + row.sname.split(' ').join('+') + '" title="NatureServe Explorer Report for element"><img src="natuerserve_explorer_small.png" class="natureserve_explorer"  alt="NatureServe button"></a>';
+            var el_rank = '<span title="Global and state rarity ranks"><b>Rank:</b> ' + row.grank + '/' + row.srank + '</span>';
+            var sshabitat = '<span title="State short habitat description"><b>Habitat:</b> ' + row.sshabitat + '</span>';
+            var distr_conf = '<span title="Distribution confidence in Georgia"><b>In Georgia: </b> ' + row.distr_conf + '</span>';
+            wList += '<li><i><b>' + row.sname + '</b></i>, ' + row.scomname + ', ' + el_rank + ', ' + distr_conf + ', ' + sshabitat + ' ' + ns_explorer_link + '</li>';
+        });
+        wList += '</ul>';
+        //alert(wList);
+        document.getElementById('listArea').innerHTML = wList;
+
+        document.getElementById('download').innerHTML = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=watched-plants' + filenameDate(data.rows[0].exportdate) + "&q=SELECT sname, scomname, srank, grank, sshabitat, distr_conf AS in_georgia, exportdate FROM es_vw es WHERE es.sname IS NOT NULL AND es.elcode IS NOT NULL AND es.srank IS NOT NULL AND es.seotrack = 'W'" + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="download-csv.png" class="download_csv" alt="Download CSV Button"></a>';
+    });
+};
+</script>
+
+<style>
+
+body {
+background-color:#403000;
+color:#6f4e0f;
+font-family:sans-serif;
+}
+
+a {
+text-decoration: none; /* Gets rid of dirty default underline */
+}
+
+img.button, img.top-button {
+padding: 5px;
+margin: 5px;
+border-radius: 10px;
+box-shadow: 3px 3px 4px 2px #000000;
+}
+
+.range_map_button, .species_profile_button, .natureserve_explorer, .button_link {
+position: relative;
+top: 2px;
+border-radius: 2px;
+box-shadow: 1px 1px 1px 1px #000000;
+}
+
+h1 {
+margin-bottom: 0.2em;
+margin-top: 0.2em;
+margin-left: 0.4em;
+}
+
+h3, h2 {
+margin-top: 0;
+margin-bottom: 0;
+padding: 10px;
+color:white;
+background-color:#2a4137;
+}
+
+h4 {
+margin-top: 7px
+}
+
+ul {
+list-style-type: none;
+margin-left: 1em; 
+margin-right: 1em;
+padding-left: 2em;
+text-indent: -3em;
+}
+
+li { 
+padding-left: 1.5em;
+}
+
+header, section, text {
+background-color: #f0f0c3;
+width: 900px;
+margin: auto;
+}
+
+section {
+margin-top: 0;
+padding: 1em 0 0 0;
+}
+
+</style>
+
+<style>
+/* extra styles overriding the defaults above */
+
+#download, h4, #list-top-info {
+    margin-left: 12px;
+}
+
+#logo_area {
+    margin-bottom: -14px;
+}
+
+header, section, text {
+   background-color: white;
+}
+
+body {
+    background-color:#151916;
+}
+
+</style>
+    
+</head>
+
+<body onload="makeList()">
+    <header id="headerArea">
+        <div id='logo_area'>
+            <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
+            <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a><img src="plant-watch-list.png" class="top-button" title="Plant taxa for which we are collecting data but not entering locations in our database."></img>
+        </div>
+        </header>
+    <section>
+        <h2>Plant Watch List</h2>
+        <h4 style="margin-left: 12px;">Plant taxa for which we are collecting data but not entering locations in our datasbase.</h4>
+        <div id="listArea"></div><br/>
+        <div id="download"></div>
+    </section>
+</body>
+</html>
