@@ -62,7 +62,7 @@
     }
 
     #dnr_logo {
-        background-image: url(img/wrd_logo.png);
+        background-image: url(wrd_logo.png);
         border-style: solid;
         border-color: #999;
         border-width: 2px;
@@ -200,8 +200,7 @@
     
     function exportRangeShapefile(query, el_name, area, exportdate) {
         var link_tpl = $('#shp_download_tpl').html();
-        // White space normalize.
-        query = query.str.replace(/\s+/g, ' ').trim();
+        query = query.replace(/\r?\n|\r/g, ' ').replace(/\s{2,}/g,' ');
         var el_id = el_name.replace(/\//g, '-').replace(/ - /g,"-").replace(/ /g,"_").replace(/\./g,"");
         el_id = el_id.replace(/,/g,"").replace(/\(/g,"").replace(/\)/g,"");
         el_id = el_id.toLowerCase();
