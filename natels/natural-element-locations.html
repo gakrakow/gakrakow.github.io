@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta name="generator" content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39">
+    <title>Rare Natural Element Locations by Unit Area</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" type="text/css" href="natels.css">
+</head>
+
+<body>
+
+<header>
+<a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+<a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" alt="Georgia Rare Natural Element Logo"></a>
+<h1>Rare Natural Elements by Location</h1>
+</header>
+
+<section>
+<h2>Element Locations by Clicking on Map Areas</h2>
+<a href="cnty_rare_elements_map.html" title="Georgia county EOs by clicking on map">
+    <img src="img/cnty.png" alt="Georgia county EOs by clicking on map"></a>
+<a href="qq_rare_elements_map.html" title="Georgia Quarter Quad EOs by clicking on map">
+    <img src="img/qq.png" alt="Georgia Quarter Quad EOs by clicking on map"></a>
+<a href="huc10_rare_elements_map.html" title="Georgia HUC10 watershed EOs by clicking on map">
+    <img src="img/huc10.png" alt="Georgia HUC10 watershed EOs by clicking on map"></a>
+<a href="huc8_rare_elements_map.html" title="Georgia HUC8 watershed EOs by clicking on map">
+    <img src="img/huc8.png" alt="Georgia HUC8 watershed EOs by clicking on map"></a>
+<a href="eco3_rare_elements_map.html" title="Georgia Level 3 Ecoregion EOs by clicking on map">
+    <img src="img/eco3.png" alt="Georgia Level 3 Ecoregion EOs by clicking on map"></a>
+<a href="eco4_rare_elements_map.html" title="Georgia Level 4 Ecoregion EOs by clicking on map">
+    <img src="img/eco4.png" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
+<a href="hex24_rare_elements_map.html" title="Georgia 24 km Hexagon EOs by clicking on map">
+    <img src="img/hex24.png" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
+</section>
+
+<section>
+<h2>CSV data tables for viewing rare element locations</h2>
+<p>CSV (comma separated value) files that can be imported into most database, spreadsheet or GIS programs including Excel, Access, ArcGIS, QGIS and many more. The user can then filter and sort the data by many criteria as well as join the data to map layer shapefiles below to do GIS analysis.</p>
+
+<nav id="csv-natels">
+    <ul class="data_link">
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=cnty-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'cnty'&format=CSV"><span class="field-name">Georgia Counties:</span> cnty-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=qq-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'qq'&format=CSV"><span class="field-name">Quarter quads:</span> qq-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc8-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20e'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc8'&format=CSV"><span class="field-name">HUC8 Watersheds:</span> huc8-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc10-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc10'&format=CSV"><span class="field-name">HUC10 Watersheds:</span> huc10-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco3-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco3'&format=CSV"><span class="field-name">Level 3 Ecoregions:</span> eco3-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco4-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco4'&format=CSV"><span class="field-name">Level 4 Ecoregions:</span> eco4-eos.csv</a></li>
+        <li><a href="http://gakrakow.cartodb.com/api/v2/sql?filename=hex24-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'hex24'&format=CSV"><span class="field-name">24 km Hexagon Grid:</span> hex24-eos.csv</a></li>
+    </ul>
+</nav>
+</section>
+
+<section>
+<h2>Shapefiles of map layers used in this data portal</h2>
+<p>ESRI shapefiles of the map layers used in this data portal. These can be joined with CSV files above to do GIS analysis and make maps. 
+<nav id="shapefile-layers">
+    <ul class="data_link">
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=cnty&q=SELECT%20*%20FROM%20cnty&format=SHP"><span class="field-name">Georgia Counties:</span> cnty.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=qq&q=SELECT%20*%20FROM%20qq&format=SHP"><span class="field-name">Quarter quads:</span> qq.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=huc8&q=SELECT%20*%20FROM%20huc8&format=SHP"><span class="field-name">HUC8 Watersheds:</span> huc8.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=huc10&q=SELECT%20*%20FROM%20huc10&format=SHP"><span class="field-name">HUC10 Watersheds:</span> huc10.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=eco3&q=SELECT%20*%20FROM%20eco3&format=SHP"><span class="field-name">Level 3 Ecoregions:</span> eco3.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=eco4&q=SELECT%20*%20FROM%20eco4&format=SHP"><span class="field-name">Level 4 Ecoregions:</span> eco4.shp</a></li>
+        <li><a href=
+            "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP"><span class="field-name">24 km Hexagon Grid:</span> hex24.shp</a></li>
+    </ul>
+</nav>
+</section>
+
+<section>
+<h2>Google Earth files for viewing rare element locations</h2>
+<p>When opened in Google Earth, these KMZ (zipped KML) map layers allow the user to click on locations and get rare natural elements found there. This works best if the Google Earth menu item Tools/Options/General Tab/Display is set to "Show results in external browser".
+
+<nav id="g-earth-locs">
+    <ul class="data_link">
+        <li><a href="kmz/cnty.kmz"><span class="field-name">Georgia Counties:</span> cnty.kmz</a></li>
+        <li><a href="kmz/qq.kmz"><span class="field-name">Quarter quads:</span> qq.kmz</a></li>
+        <li><a href="kmz/huc8.kmz"><span class="field-name">HUC8 Watersheds:</span> huc8.kmz</a></li>
+        <li><a href="kmz/huc10.kmz"><span class="field-name">HUC10 Watersheds:</span> huc10.kmz</a></li>
+        <li><a href="kmz/huc10.kmz"><span class="field-name">Level 3 Ecoregions:</span> eco3.kmz</a></li>
+        <li><a href="kmz/eco4.kmz"><span class="field-name">Level 4 Ecoregions:</span> eco4.kmz</a></li>
+        <li><a href="kmz/hex24.kmz"><span class="field-name">24 km Hexagon Grid:</span> hex24.kmz</a></li>
+    </ul>
+</nav>
+</section>
+
+</body>
+</html>
