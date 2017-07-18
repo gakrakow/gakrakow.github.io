@@ -36,6 +36,14 @@ header, section, text {
     padding: 1em 0 0 0;
     }
 
+#sql_query {
+    padding: 8px
+    }
+
+queryArea {
+    padding: 14px;
+    }
+    
 header {
     background-color: rgba(255,255,255,0.1);
     }
@@ -356,7 +364,7 @@ function loadData(){
         }
         
     if (localStorage.show_sql_query == 'true') {
-        document.getElementById('queryArea').innerHTML = '<h3>PostgreSQL/PostGIS SQL Selection Query</h3><text id="sql_query">' + sqlQuery + '</text>';
+        document.getElementById('queryArea').innerHTML = '<h3>PostgreSQL/PostGIS SQL Selection Query</h3><div  id="sql_query"><text>' + sqlQuery + '</text></div>';
         }
     
     // Get the template for the elements
