@@ -286,6 +286,8 @@ function loadData(){
         putURLParametersIntoLocalStorage();
     } else if (getURLParameter('request_src') == 'clear-all-filters') {
         clearAllFilters();    
+    } else if (getURLParameter('request_src') == 'clear-location-filter') {
+        clearLocationFilter();   
     } else if (getURLParameter('request_src') == 'reset_rank_status') {
         localStorage.rank='all_ranks';
         localStorage.status='all_statuses';
