@@ -327,9 +327,7 @@ function loadData(){
             header_values.clearAllFilters = '<a href="element_lists.html?request_src=clear-all-filters" title="Show all elements, display default values, sort by scientific name and clear any location filters"><img src="img/clear-all-filters.png" class="customize_button" alt="Clear all filters"></a>';
         }
     if (!!localStorage.area_name == true) {
-            header_values.clearLocationFilter = '<a href="element_lists_TESTING.html?request_src=clear-all-filters" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
-        } else {
-            header_values.clearLocationFilter = '<p>No locaton filter</p>'
+            header_values.clearLocationFilter = '<a href="element_lists_TESTING.html?request_src=clear-location-filter" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
         }        
         
     if (localStorage.group == 'community') {header_values.status = '';}
