@@ -76,4 +76,6 @@ function clearAllFilters() {
 function clearLocationFilter() {
     localStorage.area_type = '';
     localStorage.area_name = '';
+    localStorage.rpt_name = '';
+    localStorage.report_type = 'general';
 }
