@@ -52,7 +52,6 @@ function SetElObjFromEsIdParam() {
 };
 
 function setDefaultsInStorage() {
-    localStorage.order_by = 'sname';
     localStorage.group = 'all_groups';
     localStorage.status = 'all_statuses';
     localStorage.rank = 'all_ranks';
@@ -74,8 +73,8 @@ function clearAllFilters() {
 }
 
 function clearLocationFilter() {
+    localStorage.report_type = 'general';
     localStorage.area_type = '';
     localStorage.area_name = '';
     localStorage.rpt_name = '';
-    localStorage.report_type = 'general';
 }
