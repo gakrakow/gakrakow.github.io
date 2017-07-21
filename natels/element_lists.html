@@ -198,7 +198,7 @@ section, header {
     <!--<div id="main_title">Georgia Rare Natural Elements</div>-->
     <h2>{{rank}} {{group}} {{{status}}}</h2>
     <section id="action-area">
-    <a href="customize.html" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="img/customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{clearAllFilters}}}{{{showAllElementGroups}}}{{{showAllRanksStatuses}}}
+    <a href="customize.html" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="img/customize.png" class='customize_button' alt="Customize appearance of list"></a>{{{clearAllFilters}}}{{{clearLocationFilter}}}
     </section>
 </script> <!-- end hdr_tpt (header template) -->
 
@@ -286,6 +286,8 @@ function loadData(){
         putURLParametersIntoLocalStorage();
     } else if (getURLParameter('request_src') == 'clear-all-filters') {
         clearAllFilters();    
+    } else if (getURLParameter('request_src') == 'clear-location-filter') {
+        clearLocationFilter();   
     } else if (getURLParameter('request_src') == 'reset_rank_status') {
         localStorage.rank='all_ranks';
         localStorage.status='all_statuses';
@@ -317,14 +319,16 @@ function loadData(){
     
     if (localStorage.report_type == 'area') {
             header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
-        }    
+        }
     if (localStorage.report_type != 'general' ||
         localStorage.group != 'all_groups' ||
         localStorage.status != 'all_statuses' ||
-        localStorage.rank != 'all_ranks')
-    {
-        header_values.clearAllFilters = '<a href="element_lists.html?request_src=clear-all-filters" title="Show all elements, display default values, sort by scientific name and clear any location filters"><img src="img/clear-all-filters.png" class="customize_button" alt="Clear all filters"></a>';
-    }
+        localStorage.rank != 'all_ranks'){
+            header_values.clearAllFilters = '<a href="element_lists.html?request_src=clear-all-filters" title="Show all elements, display default values, and clear any location filters"><img src="img/clear-all-filters.png" class="customize_button" alt="Clear all filters"></a>';
+        }
+    if (!!localStorage.area_name == true) {
+            header_values.clearLocationFilter = '<a href="element_lists.html?request_src=clear-location-filter" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
+        }        
         
     if (localStorage.group == 'community') {header_values.status = '';}
     var hdr_tpt = document.getElementById('hdr_tpt').innerHTML;
@@ -355,6 +359,7 @@ function loadData(){
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
+    alert(sqlQuery);
 
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
