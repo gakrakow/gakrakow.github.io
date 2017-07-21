@@ -78,3 +78,6 @@ function clearLocationFilter() {
     localStorage.area_name = '';
     localStorage.rpt_name = '';
 }
+function clearNonLocationFilter() {
+    setDefaultsInStorage()
+}
