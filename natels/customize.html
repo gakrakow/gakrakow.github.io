@@ -152,6 +152,7 @@ h4.an_pl_hdr {
 </section>
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script src="rare_elements.js"></script>
 
 <script>
 
@@ -169,22 +170,6 @@ function saveValues() {
     localStorage.show_ns_explorer_link = $('input[name="show_ns_explorer_link"]:checked').val();
     localStorage.show_sshabitat = $('input[name="show_sshabitat"]:checked').val();
     localStorage.show_sql_query = $('input[name="show_sql_query"]:checked').val();
-}
-
-function setDefaultsInStorage() {
-    localStorage.order_by = 'sname';
-    localStorage.group = 'all_groups';
-    localStorage.status = 'all_statuses';
-    localStorage.rank = 'all_ranks';
-    localStorage.show_rank = 'true';
-    localStorage.show_status = 'true';
-    localStorage.show_swap = 'true';
-    localStorage.show_eo_count = 'true';
-    localStorage.show_range_map_link = 'true';
-    localStorage.show_profile_link = 'true';
-    localStorage.show_ns_explorer_link = 'true';
-    localStorage.show_sshabitat = 'true';
-    localStorage.show_sql_query = 'false';
 }
 
 function refreshFromStorage() {
