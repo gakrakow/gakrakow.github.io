@@ -61,6 +61,7 @@ header {
 #group-logo {
     height: 50px;
     margin-left: 4px;
+    border: 8px solid rgba(61, 61, 61, 0.78);
     }
 
 #action-area {
@@ -140,6 +141,30 @@ a:active {
 text-decoration: underline;
 }
 
+/*** BEGIN FILTER WARNING ***/
+#ac-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .6);
+    z-index: 1001;
+}
+#popup {
+    width: 329px;
+    height: 259px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 5px solid #000;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.popup-header {
+    background: brown;
+}
+/*** END FILTER WARNING ***/
+
 @media screen and (max-width:1000px) {
 
 section, header {
@@ -174,7 +199,6 @@ section, header {
 }
 
 </style>
-
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
 <script src="rare_elements.js"></script>    
@@ -265,21 +289,39 @@ function putURLParametersIntoLocalStorage() {
     if (getURLParameter('rank')) {localStorage.rank = getURLParameter('rank');}
 }
 
+
 function loadData(){
+    // This should only show warning if over 1 hour, filters are set and showWarning is true or undefined.
+    var dialogDelaySec = 1800; //Set for 1/2 hour
+    if (localStorage.lastAccessTime < Date.now()/1000 - dialogDelaySec) {
+        //alert('over 5 seconds');
+        if (nonLocationFiltersAreSet() || locationFiltersAreSet()) {
+            //alert('filters set');
+            if (localStorage.showWarning != 'false') {
+                //alert('Show popup');
+                PopUp('show');
+            }
+        } else {
+        document.getElementById('ac-wrapper').style.display = "none";
+        }
+    }
 
     if (getURLParameter('request_src') == 'area_link') {
+        //alert('in getURLParameter.request_src == area_link');
         localStorage.report_type = 'area';
         localStorage.area_type = getURLParameter('area_type');
         localStorage.area_name = getURLParameter('area_name');
         localStorage.rpt_name = getURLParameter('rpt_name');
         // Set local storage to defaults on user's first page visit.
         if (localStorage.order_by == undefined) {
+            //alert('in localStorage.order_by == undefined');
             setDefaultsInStorage();
             }
     } else if (getURLParameter('request_src') == 'customize') {
+         //alert('in getURLParameter.request_src == customize');
         // Coming from filter sort so don't change anything 
     } else if (getURLParameter('request_src') == 'reset_report_type') {
-        localStorage.report_type = 'general';
+       localStorage.report_type = 'general';
         localStorage.area_type = '';
         localStorage.area_name = '';        
     } else if (getURLParameter('request_src') == 'external_link') {
@@ -299,15 +341,16 @@ function loadData(){
         localStorage.report_type = 'general';
         // if coming from a bare URL with no parameters, then clear everything.
         setDefaultsInStorage();
-        localStorage.area_type = ''
+        localStorage.area_type = '';
         localStorage.area_name = '';
     }
 
-    if (localStorage.order_by == undefined) {
+    // Make sure at least default values are in localStorage. May need  to add more localStorage values here if problems arise.
+    if (localStorage.rank == null || localStorage.order_by == null) {
+        // alert('setDefaultsInStorage trigered');
         setDefaultsInStorage();
-        return;
     }
-
+        
     // Create a user friendly filter description for the title of the page
     var header_values = {
         'rank': filters[localStorage.rank][0],
@@ -322,17 +365,20 @@ function loadData(){
     if (localStorage.report_type == 'area') {
             header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
         }
-    if (localStorage.report_type != 'general' ||
-        localStorage.group != 'all_groups' ||
-        localStorage.status != 'all_statuses' ||
-        localStorage.rank != 'all_ranks'){
+    
+    /*
+    // *** Not currently using clear all filters button. ***
+    if (filtersAreSet() && locationFiltersAreSet()){
             header_values.clearAllFilters = '<a href="element_lists.html?request_src=clear-all-filters" title="Show all elements, display default values, and clear any location filters"><img src="img/clear-all-filters.png" class="customize_button" alt="Clear all filters"></a>';
         }
-    if (!!localStorage.area_name == true) {
-        header_values.clearLocationFilter = '<a href="element_lists.html?request_src=clear-location-filter" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
+    */
 
-        //alert(defaultsSetInStorage());
-        //if (defaultsSetInStorage()) {
+    if (locationFiltersAreSet()) {
+        header_values.clearLocationFilter = '<a href="element_lists.html?request_src=clear-location-filter" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
+        }
+
+    if (nonLocationFiltersAreSet()) {
+        //alert('nonLocationFiltersAreSet')
         header_values.clearNonLocationFilter = '<a href="element_lists.html?request_src=clear-non-location-filter" title="Remove all filters except the loction filter"><img src="img/clear-non-location-filter.png" class="customize_button" alt="Clear Nonlocation filter"></a>';
         //}
         }
@@ -351,6 +397,7 @@ function loadData(){
     if (localStorage.area_name) {
         whereClause += " AND eo.rpt_name = '" + localStorage.rpt_name + "' AND map_areas = '"  + localStorage.area_type + "' ";
     }
+    if (localStorage.order_by == undefined) {localStorage.order_by = 'sname';} // Make sure local storage has a value before making query.
     var orderBy = localStorage.order_by;
     if (localStorage.group == 'all_groups') {orderBy = 'es.an_pl, ' + orderBy;}
     if (localStorage.report_type == 'area') {
@@ -366,6 +413,7 @@ function loadData(){
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
+    //alert(sqlQuery);
 
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
@@ -555,6 +603,10 @@ function loadData(){
         document.getElementById('listArea').innerHTML = list_html;
         document.getElementById('row_count').innerHTML = '&nbsp;&nbsp;&nbsp;' + partials.recordCount + ' element records in list';
     }) //getJSON
+    
+    // Store access time in seconds form 1970/01/01
+    localStorage.lastAccessTime = Date.now()/1000;
+
 } //End load data
 
 </script>
@@ -563,6 +615,17 @@ function loadData(){
 <body onload="loadData()">
     <header id="headerArea"></header>
     <section>
+        <div id="ac-wrapper" style='display:none'>
+            <div id="popup">
+                <center>
+                    <h2 class="popup-header">Filters Applied!</h2>
+                    <p>You have filters applied from a previous session. Please be aware of this before you proceed.</p>
+                    <input type="submit" name="submit" value="Continue - Keep filters" onClick="PopUp('keep-filters')" /><br><br>
+                    <input type="submit" name="submit" value="Continue - Clear filters" onClick="PopUp('clear-filters')" /><br><br>
+                    <input type="submit" name="submit" value="Don't show this dialog again." onClick="PopUp('do-not-show')" />
+                </center>
+            </div>
+        </div>
         <div id=row_count></div>
         <div id="listArea"><img id="loading-image" src="img/monarch_butterfly.gif"  alt="Loading..." /> <p id='loading'>Loading records. Please wait . . .</p>  </div>
         <div class="code-box" id="queryArea"></div>

@@ -59,6 +59,7 @@ function setDefaultsInStorage() {
     localStorage.show_status = 'true';
     localStorage.show_swap = 'true';
     localStorage.show_eo_count = 'true';
+    localStorage.show_profile_link = 'true';
     localStorage.show_range_map_link = 'true';
     localStorage.show_ns_explorer_link = 'true';
     localStorage.show_sshabitat = 'true';
@@ -66,8 +67,65 @@ function setDefaultsInStorage() {
     localStorage.defaults_set = 'true';
 };
 
-function defaultsSetInStorage() {
-    alert("in function defaultsSetInStorage");
+function nonLocationFiltersAreSet() {
+    if (localStorage.group != 'all_groups'|| 
+    localStorage.rank != 'all_ranks'|| 
+    localStorage.show_rank != 'true' || 
+    localStorage.status != 'all_statuses' || 
+    localStorage.show_swap != 'true' || 
+    localStorage.show_eo_count != 'true' || 
+    localStorage.show_range_map_link != 'true' || 
+    localStorage.show_ns_explorer_link != 'true' || 
+    localStorage.show_sshabitat != 'true') {
+        //alert('Non location filters are set');
+        return true;
+    }
+}
+
+function locationFiltersAreSet() {
+    if (localStorage.area_name == null || localStorage.area_name == '') {
+        //alert('area name is null');
+        //alert('localStorage.area_name is: ' + localStorage.area_name);
+        return false;
+    } else {
+        //alert('area name is not null');
+        //alert('localStorage.area_name is: ' + localStorage.area_name);
+        return true;
+    }
+}
+
+function showWarningDialog() {
+    //Remove style='display:none' and show dialog box
+    document.getElementById('ac-wrapper').removeAttribute('style');
+}
+
+function hideWarningDialog() {
+    // Set style to display 'none' and hide dialog.
+    document.getElementById('ac-wrapper').style.display = "none";
+}
+
+function PopUp(hideOrshow) {
+    if (hideOrshow == 'show') {
+        //alert('about to show dialog');
+        showWarningDialog();
+        return
+    } else if (hideOrshow == 'keep-filters') {
+        //alert('in keep-filters');
+        localStorage.showWarning = true;
+    } else if (hideOrshow == 'clear-filters') {
+        //alert('in clear-filters');
+        clearLocationFilter();
+        clearNonLocationFilter();
+        localStorage.showWarning = true;
+        // This is the only choice that requires reloading
+        location.reload();
+    } else if (hideOrshow == 'do-not-show') {
+        //alert('in do-not-show');
+        localStorage.showWarning = false;
+    } else {
+        alert('You should not get here!!!');
+    }
+    hideWarningDialog();
 }
 
 /*
