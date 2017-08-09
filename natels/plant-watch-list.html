@@ -2,7 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <script src="rare_elements.js"></script>
 
     <script>
@@ -27,11 +29,24 @@ function makeList() {
 </script>
 
 <style>
+* {
+    font-family: "Montserrat", sans-serif;
+    }
 
-body {
-background-color:#403000;
-color:#6f4e0f;
-font-family:sans-serif;
+body  {
+    background: url(img/cyp.jpeg) no-repeat fixed top left;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    
+header, section, text {
+    width: 900px;
+    margin: auto;
+    background-color: rgba(255,255,255,0.9);
+    margin-top: 0;
+    }
+
+section {
 }
 
 a {
@@ -39,16 +54,22 @@ text-decoration: none; /* Gets rid of dirty default underline */
 }
 
 img.button, img.top-button {
-padding: 5px;
-margin: 5px;
-border-radius: 10px;
-box-shadow: 3px 3px 4px 2px #000000;
+    padding: 3px;
+    margin: 3px;
+    height: 85px;
+    width: 250px;
 }
 
-.range_map_button, .species_profile_button, .natureserve_explorer, .button_link {
+#watch_list_link {
+    height: 76px;
+    width: 120px;
+    margin: 4px;
+    border: 5px solid rgba(254, 254, 254, 0.95);
+    }
+
+.natureserve_explorer, .button_link {
 position: relative;
 top: 2px;
-border-radius: 2px;
 box-shadow: 1px 1px 1px 1px #000000;
 }
 
@@ -83,14 +104,12 @@ padding-left: 1.5em;
 }
 
 header, section, text {
-background-color: #f0f0c3;
 width: 900px;
 margin: auto;
 }
 
 section {
 margin-top: 0;
-padding: 1em 0 0 0;
 }
 
 </style>
@@ -106,13 +125,52 @@ padding: 1em 0 0 0;
     margin-bottom: -14px;
 }
 
-header, section, text {
-   background-color: white;
+section {
+    margin-top: 15px;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0);
 }
 
 body {
-    background-color:#151916;
+    background: url(img/cyp.jpeg) no-repeat fixed top left;
 }
+
+@media screen and (max-width:1000px) {
+
+section, header {
+    width: 97%;
+    margin-left: 0;    
+    }
+    
+#action-area {
+    width: 100%;
+    }
+
+body {
+    padding: 0 0 0 10px;
+    }
+
+header {
+    padding-top: 0;
+    }
+    
+}
+
+@media screen and (max-width:700px) {
+
+section, header {
+    width: 97%;
+    margin-left: 0;    
+    }
+
+#group-logo {
+    max-width: 96%;
+    height: auto;
+}
+
+
 
 </style>
     
@@ -121,8 +179,9 @@ body {
 <body onload="makeList()">
     <header id="headerArea">
         <div id='logo_area'>
-            <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
-            <a href="index.html"><img id="portal-logo" class="top-button" src="img/georgia rare natural elements data portal.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a><img src="img/plant-watch-list.png" class="top-button" title="Plant taxa for which we are collecting data but not entering locations in our database."></img>
+            <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+            <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" alt="Georgia Rare Natural Element Logo"></a>
+            <a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>
         </div>
         </header>
     <section>

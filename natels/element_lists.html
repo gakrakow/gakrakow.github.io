@@ -96,6 +96,13 @@ h3, h2 {
     box-shadow: 1px 1px 1px 1px #000000;
     }
 
+#watch_list_link {
+    height: 60px;
+    width: 94px;
+    margin-left: 6px;
+    border: 3px solid rgba(63, 72, 62, 0.71);
+    }
+    
 #bottom_buttons, #exported_on {
     margin-left: 10px; 
     }
@@ -153,7 +160,7 @@ text-decoration: underline;
 }
 #popup {
     width: 329px;
-    height: 259px;
+    height: 375px;
     background: rgba(255, 255, 255, 0.8);
     border: 5px solid #000;
     margin: auto;
@@ -162,6 +169,11 @@ text-decoration: underline;
 
 .popup-header {
     background: brown;
+}
+
+#popup p {
+    font-size: 11pt;
+    padding: 0 5pt;
 }
 /*** END FILTER WARNING ***/
 
@@ -216,9 +228,9 @@ section, header {
 
 <script id="hdr_tpt" type="text/template">
      <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
-     <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a><img id="group-logo" src="img/{{el_group}}.gif" class="top-button" title="{{group}}"></img>
+     <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a><img id="group-logo" src="img/{{el_group}}.gif" class="top-button" title="{{group}}"></img>{{{optionalButton}}}
     
-    {{{area_name}}}
+    {{{area_name}}}{{{optional-button}}}
     <!--<div id="main_title">Georgia Rare Natural Elements</div>-->
     <h2>{{rank}} {{group}} {{{status}}}</h2>
     <section id="action-area">
@@ -293,6 +305,7 @@ function putURLParametersIntoLocalStorage() {
 function loadData(){
     // This should only show warning if over 1 hour, filters are set and showWarning is true or undefined.
     var dialogDelaySec = 1800; //Set for 1/2 hour
+    //var dialogDelaySec = 5; //Set for 5 seconds for testing.
     if (localStorage.lastAccessTime < Date.now()/1000 - dialogDelaySec) {
         //alert('over 5 seconds');
         if (nonLocationFiltersAreSet() || locationFiltersAreSet()) {
@@ -345,6 +358,7 @@ function loadData(){
         localStorage.area_name = '';
     }
 
+    
     // Make sure at least default values are in localStorage. May need  to add more localStorage values here if problems arise.
     if (localStorage.rank == null || localStorage.order_by == null) {
         // alert('setDefaultsInStorage trigered');
@@ -364,7 +378,7 @@ function loadData(){
     
     if (localStorage.report_type == 'area') {
             header_values.area_name = '<h1>' + localStorage.area_name + ' ' + areas[localStorage.area_type] + '</h1>';
-        }
+    }
     
     /*
     // *** Not currently using clear all filters button. ***
@@ -375,17 +389,21 @@ function loadData(){
 
     if (locationFiltersAreSet()) {
         header_values.clearLocationFilter = '<a href="element_lists.html?request_src=clear-location-filter" title="Remove the loction filter"><img src="img/clear-location-filter.png" class="customize_button" alt="Clear location filter"></a>';
-        }
+    }
 
     if (nonLocationFiltersAreSet()) {
-        //alert('nonLocationFiltersAreSet')
         header_values.clearNonLocationFilter = '<a href="element_lists.html?request_src=clear-non-location-filter" title="Remove all filters except the loction filter"><img src="img/clear-non-location-filter.png" class="customize_button" alt="Clear Nonlocation filter"></a>';
-        //}
-        }
-        
+    }
+    
+    // Add the watched list button if on plants page.
+    if (localStorage.group == 'plant') {
+        header_values.optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>';
+    }
+      
     if (localStorage.group == 'community') {header_values.status = '';}
     var hdr_tpt = document.getElementById('hdr_tpt').innerHTML;
     var header_html = Mustache.render(hdr_tpt, header_values);
+
     document.getElementById('headerArea').innerHTML = header_html;
 
     // Create the SQL script for selecting and sorting records
@@ -621,7 +639,8 @@ function loadData(){
                     <h2 class="popup-header">Filters Applied!</h2>
                     <p>You have filters applied from a previous session. Please be aware of this before you proceed.</p>
                     <input type="submit" name="submit" value="Continue - Keep filters" onClick="PopUp('keep-filters')" /><br><br>
-                    <input type="submit" name="submit" value="Continue - Clear filters" onClick="PopUp('clear-filters')" /><br><br>
+                    <input type="submit" name="submit" value="Continue - Clear filters" onClick="PopUp('clear-filters')" />
+                    <p>If you understand that this web page remembers setting from previous sessions, and you do not wish to be reminded upon future visits to this page, please press the "Don't show this dialog again" button below.</p>
                     <input type="submit" name="submit" value="Don't show this dialog again." onClick="PopUp('do-not-show')" />
                 </center>
             </div>
