@@ -304,8 +304,8 @@ function putURLParametersIntoLocalStorage() {
 
 function loadData(){
     // This should only show warning if over 1 hour, filters are set and showWarning is true or undefined.
-    var dialogDelaySec = 1800; //Set for 1/2 hour
-    //var dialogDelaySec = 5; //Set for 5 seconds for testing.
+    //var dialogDelaySec = 1800; //Set for 1/2 hour
+    var dialogDelaySec = 5; //Set for 5 seconds for testing.
     if (localStorage.lastAccessTime < Date.now()/1000 - dialogDelaySec) {
         //alert('over 5 seconds');
         if (nonLocationFiltersAreSet() || locationFiltersAreSet()) {

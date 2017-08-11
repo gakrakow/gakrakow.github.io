@@ -6,6 +6,32 @@
   </head>
 
 <style>
+#new-portal-window{
+    background: url(natels/img/cyp.jpeg);
+    padding:5px;
+    margin: 20px;
+    border: 14px solid gray;
+}
+
+#enter-text {
+    font-weight: bold;
+    text-align:center;
+    font-size: 24px;
+    background-color: rgba(66,66,66,66);;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+#current-portal-logo {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    width: 70%;
+    padding: 30px;
+}
 
 p.draft {
 outline-color:red;
@@ -13,6 +39,7 @@ outline-style:solid;
 padding:5px;
 margin: 20px;
 background-color:pink;
+font-size: 28px;
 }
 
 body {
@@ -100,7 +127,15 @@ section,header {
 
 <body>
 <header>
+<div id="new-portal-window">
+    <p><a id="enter-text" href="natels/home.html">Click here to enter the latest version of the data portal:</a></p>
+    <a href="natels/home.html"><img id="current-portal-logo" src="natels/img/georgia-rare-natural-elements-logo-medium.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
+</div>
+
 <div id='logo_area'>
+    <hr style=" border-width: 4px;">
+    <p style="font-size: 115%; font-weight: bold; border: 7px solid darkred; padding: 4px;">The old version of the data portal is shown below. It could be removed or replaced at any time!!!<br></p>
+    <hr style=" border-width: 4px;">
     <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
     <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" alt="Georgia Rare Natural Element Logo"></a>
 </div>
@@ -131,9 +166,6 @@ function resetLocalStorage() {
     localStorage.show_sql_query = 'false';
 }
 </script>
-
-<p class="draft"><b>Please note this is a draft page!</b> Links on this page and lists generated from these links may have bugs and are subject to change at any time. If you receive a blank page or null values try refreshing the page. If you encounter problems while navigating links from this page please press the following reset button. <br><button onclick="clearLocalStorage()">Reset all settings</button>. To report bugs, or otherwise comment on this data portal please contact <a href="http://www.natureserve.org/profile/942">Greg Krakow</a>. <br>This page was last updated May 17, 2017. <b>(<a href="natels/home.html">Draft2</a> available from June 13, 2017)</b></p>
-
 
 <hr>
 <h2 id="rare-natural-elements" class="lists_header">General Information about Rare Natural Elements</h2>
