@@ -127,6 +127,10 @@ section,header {
 
 <body>
 <header>
+<div>
+<a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
+    <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" alt="Georgia Rare Natural Element Logo"></a>
+</div>
 <div id="new-portal-window">
     <p><a id="enter-text" href="natels/home.html">Click here to enter the latest version of the data portal:</a></p>
     <a href="natels/home.html"><img id="current-portal-logo" src="natels/img/georgia-rare-natural-elements-logo-medium.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
@@ -134,141 +138,10 @@ section,header {
 
 <div id='logo_area'>
     <hr style=" border-width: 4px;">
-    <p style="font-size: 115%; font-weight: bold; border: 7px solid darkred; padding: 4px;">The old version of the data portal is shown below. It could be removed or replaced at any time!!!<br></p>
+    <p style="font-size: 115%; font-weight: bold; border: 7px solid darkred; padding: 4px;">The old version of the data portal can be reached <a href="home.html">here</a>. It could be removed or replaced at any time!!!<br></p>
     <hr style=" border-width: 4px;">
-    <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
-    <a href="index.html"><img id="portal-logo" class="top-button" src="georgia rare natural elements data portal.png" alt="Georgia Rare Natural Element Logo"></a>
+    
 </div>
 </header>
-<section>
-<h1>Georgia Rare Natural Elements Data Portal</h1>
-
-<p>Rare natural elements are plant and animal populations, natural plant communities, bird nesting colonies, caves and other elements in nature that are important for biodiversity conservation.</p>
-
-<p>This page contains links to lists with <a href="#rare-natural-elements">General Information About Rare Natural Elements</a> as well as <a href="#rare-element-locations">Locations of Rare Natural Elements</a>.</p>
-
-<div id="about-this-data"><a href="about-this-data.html"><img src="what-is-rare-natural-element-data.png"></img></a></div>
-
-<script>
-function resetLocalStorage() {
-    localStorage.clear();
-    localStorage.order_by = 'sname';
-    localStorage.group = 'all_groups';
-    localStorage.status = 'all_statuses';
-    localStorage.rank = 'all_ranks';
-    localStorage.show_rank = 'true';
-    localStorage.show_status = 'true';
-    localStorage.show_swap = 'true';
-    localStorage.show_eo_count = 'true';
-    localStorage.show_range_map_link = 'true';
-    localStorage.show_ns_explorer_link = 'true';
-    localStorage.show_sshabitat = 'true';
-    localStorage.show_sql_query = 'false';
-}
-</script>
-
-<hr>
-<h2 id="rare-natural-elements" class="lists_header">General Information about Rare Natural Elements</h2>
-
-<h3 id="element-lists-by-taxonomic-group">Element Lists by Taxonomic Group</h3>
-
-<p>
-<a href="element_lists.html?request_src=external_link&amp;group=all_groups"><img src="img/all-element-groups.png"  class="tax_grp_btn" alt="All Element Groups" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=animal"><img src="img/animals.png" class="tax_grp_btn" alt="Animals" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=plant"><img src="img/plants.png" class="tax_grp_btn" alt="Plants" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=bird"><img src="img/birds.png" class="tax_grp_btn" alt="Birds" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=fish"><img src="img/fishes.png" class="tax_grp_btn" alt="Fishes" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=mammal"><img src="img/mammals.png" class="tax_grp_btn" alt="Mammals" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=bat"><img src="img/bats.png" class="tax_grp_btn" alt="Bats" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=mollusk"><img src="img/mollusks.png" class="tax_grp_btn" alt="Mollusks" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=aquatic"><img src="img/fishes-mollusks-crayfishes.png" class="tax_grp_btn" alt="Fishes, Mollusks and Crayfishes" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=rep-amp"><img src="img/reptiles-amphibians.png" class="tax_grp_btn" alt="Reptiles and Amphibians" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=arthropod"><img src="img/insects-arthropods.png" class="tax_grp_btn" alt="Insects and other Arthropods" title=""></a>
-<a href="element_lists.html?request_src=external_link&amp;group=community"><img src="img/natural-plant-communities.png" class="tax_grp_btn" alt="Natural Plant Communities" title=""></a>
-<a href="watched-plants.html"><img src="img/watched-plants.png" class="tax_grp_btn" alt="Watched Plants" title=""></a>
-</p>
-
-<h3>Element Lists by Status Group</h3>
-<ul>
-<li><a href="element_lists.html?request_src=external_link&status=all_statuses" target="_blank">All tracked elements with or without protection</a></li>
-<li><a href="element_lists.html?request_src=external_link&status=swap" target="_blank">SWAP High Priority Species</a></li>
-<li><a href="element_lists.html?request_src=external_link&status=us" target="_blank">Federally Protected Species</a></li>
-<li><a href="element_lists.html?request_src=external_link&status=ga" target="_blank">State Protected Species</a></li>
-<li><a href="element_lists.html?request_src=external_link&status=no-ga-status" target="_blank">No Georgia Protection Status</a></li>
-<li><a href="element_lists.html?request_src=external_link&status=no-us-status" target="_blank">No Federal Protection Status</a></li>
-</ul>
-
-<h3>Element Lists by Rarity Rank Group</h3>
-<ul>
-<li><a href="element_lists.html?request_src=external_link&rank=all_ranks" target="_blank">All rare tracked elements with any rank</a></li>
-<li><a href="element_lists.html?request_src=external_link&rank=s1s2" target="_blank">Georgia's rarest elements, ranked S1 & S2</a></li>
-<li><a href="element_lists.html?request_src=external_link&rank=g1g2" target="_blank">Globally rarest elements, ranked G1, G2, T1 & T2</a></li>
-<li><a href="element_lists.html?request_src=external_link&rank=shsx" target="_blank">Not seen in Georgia in over 20 years, ranked SH & SX</a></li>
-</ul>
-
-<hr>
-<h2 id="rare-element-locations" class="lists_header">Locations of Rare Natural Elements</h2>
-
-<h3>Element Locations by Clicking on Map Areas</h3>
-<a href="cnty_rare_elements_map.html" class="map_click_eos" title="Georgia county EOs by clicking on map">
-    <img src="cnty.png" class="map_click_eos_button" alt="Georgia county EOs by clicking on map"></a>
-<a href="qq_rare_elements_map.html" class="map_click_eos" title="Georgia Quarter Quad EOs by clicking on map">
-    <img src="qq.png" class="map_click_eos_button" alt="Georgia Quarter Quad EOs by clicking on map"></a>
-<a href="huc10_rare_elements_map.html" class="map_click_eos" title="Georgia HUC10 watershed EOs by clicking on map">
-    <img src="huc10.png" class="map_click_eos_button" alt="Georgia HUC10 watershed EOs by clicking on map"></a>
-<a href="huc8_rare_elements_map.html" class="map_click_eos" title="Georgia HUC8 watershed EOs by clicking on map">
-    <img src="huc8.png" class="map_click_eos_button" alt="Georgia HUC8 watershed EOs by clicking on map"></a>
-<a href="eco3_rare_elements_map.html" class="map_click_eos" title="Georgia Level 3 Ecoregion EOs by clicking on map">
-    <img src="eco3.png" class="map_click_eos_button" alt="Georgia Level 3 Ecoregion EOs by clicking on map"></a>
-<a href="eco4_rare_elements_map.html" class="map_click_eos" title="Georgia Level 4 Ecoregion EOs by clicking on map">
-    <img src="eco4.png" class="map_click_eos_button" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
-<a href="hex24_rare_elements_map.html" class="map_click_eos" title="Georgia 24 km Hexagon EOs by clicking on map">
-    <img src="hex24.png" class="map_click_eos_button" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
-
-<h3>CSV data tables for viewing rare element locations</h3>
-<p>CSV (comma separated value) files that can be imported into most database, spreadsheet or GIS programs including Excel, Access, ArcGIS, QGIS and many more. The user can then filter and sort the data by many criteria as well as join the data to map layer shapefiles below to do GIS analysis.</p>
-
-<ul class="data_link">
-<li>Georgia Counties: <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=cnty-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'cnty'&format=CSV">cnty-eos.csv</a></li>
-<li>Quarter quads:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=qq-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'qq'&format=CSV">qq-eos.csv</a></li>
-<li>HUC8 Watersheds:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc8-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20e'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc8'&format=CSV">huc8-eos.csv</a></li>
-<li>HUC10 Watersheds:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc10-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'huc10'&format=CSV">huc10-eos.csv</a></li>
-<li>Level 3 Ecoregions:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco3-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco3'&format=CSV">eco3-eos.csv</a></li>
-<li>Level 4 Ecoregions:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco4-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'eco4'&format=CSV">eco4-eos.csv</a></li>
-<li>24 km Hexagon Grid:  <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=hex24-eos&q=SELECT%20eo.area_name%20,eo.area_code%20,es.es_id%20,es.elcode%20,es.an_pl%20,es.sname%20,es.scomname%20,es.srank%20,es.rnd_srank%20,es.grank%20,es.rnd_grank%20,es.sprot%20,es.usesa%20,CASE%20WHEN%20es.swap_status%20%3D%20'TRUE'%20THEN%20'yes'%20ELSE%20'no'%20END%20AS%20swap_status%20,es.eo_count%20,es.sshabitat%20,es.exportdate%20FROM%20eo_web%20eo%20LEFT%20JOIN%20es_vw%20es%20ON%20es.sname%20%3D%20eo.sname%20WHERE%20map_areas%20%3D%20'hex24'&format=CSV">hex24-eos.csv</a></li>
-</ul>
-
-<h3>Shapefiles of map layers used in this data portal</h3>
-<p>ESRI shapefiles of the map layers used in this data portal. These can be joined with CSV files above to do GIS analysis and make maps. 
-<ul class="data_link">
-<li>Georgia Counties: <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=cnty&q=SELECT%20*%20FROM%20cnty&format=SHP"> cnty.shp</a></li>
-<li>Quarter quads:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=qq&q=SELECT%20*%20FROM%20qq&format=SHP">qq.shp</a></li>
-<li>HUC8 Watersheds:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc8&q=SELECT%20*%20FROM%20huc8&format=SHP">huc8.shp</a></li>
-<li>HUC10 Watersheds:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=huc10&q=SELECT%20*%20FROM%20huc10&format=SHP">huc10.shp</a></li>
-<li>Level 3 Ecoregions:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco3&q=SELECT%20*%20FROM%20eco3&format=SHP">eco3.shp</a></li>
-<li>Level 4 Ecoregions:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=eco4&q=SELECT%20*%20FROM%20eco4&format=SHP">eco4.shp</a></li>
-<li>24 km Hexagon Grid:  <a href=
-    "http://gakrakow.cartodb.com/api/v2/sql?filename=hex24&q=SELECT%20*%20FROM%20hex24&format=SHP">hex24.shp</a></li>
-</ul>
-
-<h3>Google Earth files for viewing rare element locations</h3>
-<p>When opened in Google Earth, these KMZ (zipped KML) map layers allow the user to click on locations and get rare natural elements found there. This works best if the Google Earth menu item Tools/Options/General Tab/Display is set to "Show results in external browser".
-<ul class="data_link">
-<li>Georgia Counties: <a href="kmz/cnty.kmz"> cnty.kmz</a></li>
-<li>Quarter quads: <a href="kmz/qq.kmz">qq.kmz</a></li>
-<li>HUC8 Watersheds: <a href="kmz/huc8.kmz">huc8.kmz</a></li>
-<li>HUC10 Watersheds: <a href="kmz/huc10.kmz">huc10.kmz</a></li>
-<li>Level 3 Ecoregions: <a href="kmz/huc10.kmz">eco3.kmz</a></li>
-<li>Level 4 Ecoregions: <a href="kmz/eco4.kmz">eco4.kmz</a></li>
-<li>24 km Hexagon Grid: <a href="kmz/hex24.kmz">hex24.kmz</a></li>
-</ul>
-
-</section>
   </body>
 </html>
