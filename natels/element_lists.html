@@ -358,7 +358,6 @@ function loadData(){
         localStorage.area_name = '';
     }
 
-    
     // Make sure at least default values are in localStorage. May need  to add more localStorage values here if problems arise.
     if (localStorage.rank == null || localStorage.order_by == null) {
         // alert('setDefaultsInStorage trigered');
@@ -433,6 +432,9 @@ function loadData(){
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
     //alert(sqlQuery);
 
+
+
+    
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
         sqlQuery4Export = sqlQuery4ExportComname + whereClause + ' ORDER BY ' + orderBy;
@@ -502,7 +504,8 @@ function loadData(){
             }
             
             partials.downloadLink = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=' + filename +  '&q=' + sqlQuery4Export + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="img/download-csv.png" class="download_csv" alt="Download CSV Button"></a>'
-        }
+
+            }
         var recs = [];
         var an_pl = ''
         var last_an_pl = '';

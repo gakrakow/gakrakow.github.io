@@ -34,9 +34,47 @@
     <img src="img/hex24.png" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
 </section>
 
+  <section>
+    <h2>Zipped ESRI shapefiles for viewing rare element locations</h2>
+    <p>These zipped shapefiles can be imported into most GIS programs including ArcGIS, ArcPro, QGIS and many more. The files contain many duplicate area polygons, one for each rare natural element located within a given area. In a GIS program, the user can select one or more polygons and derive a list of elements within those areas. The data can then be copied to other databases or spreadsheets to be further processed and analyzed. The shapefiles tend to be rather large so they may run slow in your GIS program. The approximate file size is given for each.</p>
+
+    <nav id="csv-natels">
+    <ul class="data_link">
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=cnty-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20cnty%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;cnty&#39;&amp;format=SHP">
+        <span class="field-name">Georgia Counties (1.6 MB):</span> cnty-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=qq-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20qq%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;qq&#39;&amp;format=SHP">
+        <span class="field-name">Quarter quads (1.6 MB):</span> qq-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc8-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20huc8%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;huc8&#39;&amp;format=SHP">
+        <span class="field-name">HUC8 Watersheds (22 MB):</span> huc8-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=huc10-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20huc10%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;huc10&#39;&amp;format=SHP">
+        <span class="field-name">HUC10 Watersheds (3.4 MB):</span> huc10-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco3-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20eco3%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;eco3&#39;&amp;format=SHP">
+        <span class="field-name">Level 3 Ecoregions (90 MB):</span> eco3-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=eco4-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20eco4%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;eco4&#39;&amp;format=SHP">
+        <span class="field-name">Level 4 Ecoregions (31 MB):</span> eco4-eos.zip</a>
+      </li>
+      <li>
+        <a href="http://gakrakow.cartodb.com/api/v2/sql?filename=hex24-eos&amp;q=SELECT%20DISTINCT%20eo.area_name%20,eo.area_code%20,eo.es_id%20,eo.elcode%20,eo.an_pl%20,eo.el_group%20,eo.sname%20,eo.gname%20,eo.scomname%20,eo.exportdate%20,eo.sprot%20,eo.usesa%20,eo.srank%20,es.rnd_srank%20,eo.grank%20,es.rnd_grank%20,CASE%20WHEN%20es.swapstatus%20%3D%20&#39;TRUE&#39;%20THEN%20&#39;yes&#39;%20ELSE%20&#39;no&#39;%20END%20AS%20swapstatus%20,eo.sshabitat%20,a.the_geom%20FROM%20eo_web%20eo%20LEFT%20JOIN%20hex24%20a%20ON%20a.area_code%20%3D%20eo.area_code%20LEFT%20JOIN%20es_web%20es%20ON%20eo.elcode%20%3D%20es.elcode%20WHERE%20eo.map_areas%20%3D%20&#39;hex24&#39;&amp;format=SHP">
+        <span class="field-name">24 km Hexagon Grid (1 MB):</span> hex24-eos.zip</a>
+      </li>
+    </ul>
+    </nav>
+    </section>
+
 <section>
-<h2>CSV data tables for viewing rare element locations</h2>
-<p>CSV (comma separated value) files that can be imported into most database, spreadsheet or GIS programs including Excel, Access, ArcGIS, QGIS and many more. The user can then filter and sort the data by many criteria as well as join the data to map layer shapefiles below to do GIS analysis.</p>
+<h2>CSV (generic spreadsheet/database) data tables for viewing rare element locations</h2>
+<p>These CSV (comma separated value) files of rare element locations can be imported into most database, spreadsheet or GIS programs including Excel, Access, ArcGIS, QGIS,  Open Office Calc and many more. The user can then filter and sort the data by many criteria as well as join the data to map layer shapefiles below to do GIS analysis.</p>
 
 <nav id="csv-natels">
     <ul class="data_link">
@@ -52,8 +90,8 @@
 </section>
 
 <section>
-<h2>Shapefiles of map layers used in this data portal</h2>
-<p>ESRI shapefiles of the map layers used in this data portal. These can be joined with CSV files above to do GIS analysis and make maps. 
+<h2>Zipped ESRI shapefiles of the map layers used in this data portal</h2>
+<p>These zipped ESRI shapefiles can be joined with CSV element location files above to do GIS analysis and make maps. 
 <nav id="shapefile-layers">
     <ul class="data_link">
         <li><a href=
