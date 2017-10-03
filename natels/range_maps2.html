@@ -69,11 +69,12 @@
         border-radius: 10px;
         outline-width: 2px;
         position: absolute;
-        width: 115px;
+        width: 85px;
         height: 30px;
         left: 10px;
         bottom: 38px;
-        padding: 10px 20px;
+        margin-bottom: 5px;
+        padding: 10px 38px;
         box-shadow: 0 0 10px #999;
     }
 
@@ -105,6 +106,10 @@
 
       #layer_selector li.selected {
         background-color: #EEE;
+      }
+      
+      #shp-download-link {
+      font-size: 150%;
       }
 
 @media screen and (max-width: 600px), (max-height: 475px) {
@@ -170,7 +175,7 @@
     </script>
     
     <script id="shp_download_tpl" type='text/template'>
-            <a href="http://gakrakow.cartodb.com/api/v2/sql?filename={{el_id}}_{{area}}_range{{datestamp}}&q={{query}}&format=SHP">Download shapefile of range</a>
+            <a id="shp-download-link" href="http://gakrakow.cartodb.com/api/v2/sql?filename={{el_id}}_{{area}}_range{{datestamp}}&q={{query}}&format=SHP">Download shapefile of range</a>
     </script>
    
   </head>
