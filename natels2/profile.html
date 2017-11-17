@@ -60,26 +60,21 @@ var fusion_table = getURLParameter('fus_tab_id');
 		extras: "description",
         tagmode: "any",
         format: "json"
-    })
-    .done(function( data ) {
+    }, Primary)
+	
+	function Primary(data) {
+	  if (data.items != 0){
       $.each( data.items, function( i, item ) {
-	    
-        var link = item.media.m
-		var desc_pos = $(item.description).text().lastIndexOf(":");
-		var desc = $(item.description).text().slice(desc_pos + 1);
-		var flick_link = item.link
-        link = link.replace('_m', '_z');
-        $( "<img>" ).attr( "src", link).appendTo( "#primary-image" );
-		//$('img').wrap("<a href='https://www.flickr.com/photos/georgiaamphibians/'> </a>");
-		$('img').wrap("<a href=" + flick_link +"> </a>");
-		// https://api.flickr.com/services/feeds/photos_public.gne?format=json
-		$("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");
-        if ( i === 0 ) {
-          return false;
-        }
-
-      });
-    });
+	  var link = item.media.m
+	  link = link.replace('_m', '_z');
+	  $( "<img>" ).attr( "src", link).appendTo( "#primary-image" );
+	}); //end of each
+    }//end of if
+	else {
+	var errorHTML = '<img src=img/noimage.png></img>';
+	$(errorHTML).appendTo("#primary-image");
+	}
+	};
 })();
 		var query = "SELECT * FROM " + 
 		fusion_table + ' WHERE ES_ID =' + current_es_id;
@@ -152,20 +147,17 @@ $.getJSON(url, function(data) {
         format: "json", 
     })	
     .done(function( data ) {
-		
       $.each( data.items, function( i, item ) {
 	    var desc_pos = $(item.description).text().lastIndexOf(":");
 		var desc = $(item.description).text().slice(desc_pos + 1);
         var link = item.media.m;
+		var flick_link = item.link
         link = link.replace('_m', '_z');
         $( "<img>" ).attr( "src", link).appendTo( "#supplemental-images" );
 		$('img').wrap("<a href=" + flick_link +"> </a>");
-		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");
-      });
-    });
-
-		
-		
+		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
+      });	  
+    });		
 		}
 })();
 
