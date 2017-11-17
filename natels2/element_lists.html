@@ -286,7 +286,7 @@ var groups = {
 // store the sname, scomname and exportdate into local storage.
 function reply_click(es_id) {
     // get the element subnational id
-    var el_sql = "SELECT es_id, sname ,scomname ,exportdate ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
+    var el_sql = "SELECT es_id, sname ,scomname ,exportdate , fus_tab_id ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
     $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
         var el_obj = element_object.rows[0];
         // put all of the element field values as JSON string object into the localStorage
@@ -424,7 +424,7 @@ function loadData(){
         sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
-        var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
+        var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, fus_tab_id, swap_status FROM es_vw es ";
         var sqlQuery4Export = "SELECT el_group, sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         var sqlQuery4ExportComname = "SELECT el_group, scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 'TRUE' THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         }
@@ -457,7 +457,7 @@ function loadData(){
         eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>',
         with_range_map: ' <a href="range_maps2.html?es_id={{es_id}}&area_type={{area_type}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="img/range_map3.png" class="range_map_button" alt="range map button"> </a> ',
         no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span> ',
-        species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
+        species_profile: ' <a href="profile.html?es_id={{es_id}}&fus_tab_id={{fus_tab_id}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
         ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="img/natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ' 
         }
@@ -559,7 +559,9 @@ function loadData(){
 
              // Set up species profile
              if (localStorage.show_profile_link === 'true') {
+				
                 if (rec.profile_url != null) {
+				//if(rec.fus_tab_id != null) {
                     rec.species_profile = Mustache.render(partials.species_profile, rec);
                 } else {
                     rec.species_profile = '<span title="GA-DNR natural element profile report"> <b>Profile:</b> None</span>';
