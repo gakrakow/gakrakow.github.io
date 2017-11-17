@@ -65,10 +65,13 @@ var fusion_table = getURLParameter('fus_tab_id');
       $.each( data.items, function( i, item ) {
 	    
         var link = item.media.m
-		var desc = $(item.description).text().slice(50);
+		var desc_pos = $(item.description).text().lastIndexOf(":");
+		var desc = $(item.description).text().slice(desc_pos + 1);
+		var flick_link = item.link
         link = link.replace('_m', '_z');
         $( "<img>" ).attr( "src", link).appendTo( "#primary-image" );
-		$('img').wrap("<a href='https://www.flickr.com/photos/georgiaamphibians/'> </a>");
+		//$('img').wrap("<a href='https://www.flickr.com/photos/georgiaamphibians/'> </a>");
+		$('img').wrap("<a href=" + flick_link +"> </a>");
 		// https://api.flickr.com/services/feeds/photos_public.gne?format=json
 		$("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");
         if ( i === 0 ) {
@@ -143,7 +146,7 @@ $.getJSON(url, function(data) {
     var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 	for (x = 2; x < 9; x++) {
     $.getJSON( flickerAPI, {
-		user_id: "georgiafishes", // change to flickr id to scan only that page
+		user_id: "141637440@N07", // change to flickr id to scan only that page
         tags: "ga_es_id_" + current_es_id + "_" + x,
         tagmode: "any",
         format: "json", 
@@ -151,11 +154,12 @@ $.getJSON(url, function(data) {
     .done(function( data ) {
 		
       $.each( data.items, function( i, item ) {
-	    var desc = $(item.description).text().slice(50);
+	    var desc_pos = $(item.description).text().lastIndexOf(":");
+		var desc = $(item.description).text().slice(desc_pos + 1);
         var link = item.media.m;
         link = link.replace('_m', '_z');
         $( "<img>" ).attr( "src", link).appendTo( "#supplemental-images" );
-		$('img').wrap("<a href='https://www.flickr.com/photos/georgiaamphibians/' </a>");
+		$('img').wrap("<a href=" + flick_link +"> </a>");
 		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");
       });
     });
