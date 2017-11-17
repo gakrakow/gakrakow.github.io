@@ -16,7 +16,7 @@ margin-top: 10px;
 }
 
 body  {
-background-color: #4c2811;
+background: url(img/cyp.jpeg) no-repeat fixed top left;
 margin-left: auto;
 margin-right: auto;
 padding: 10px;
@@ -89,15 +89,13 @@ var fusion_table = getURLParameter('fus_tab_id');
 		
 // Send the JSONP request using jQuery
         $.ajax({ url: url.join(''), dataType: 'jsonp', success: function (data) {
-			
+		
 			var columns = data['columns'];
             var rows = data['rows'];
 			var i = 0;
 			for (var c = 3; c < columns.length; c++) {
-				
 				row_value = mmd(rows[0][c]);
-				column_value = columns[c];
-				
+				column_value = columns[c];	
 				if (column_value == 'References'){
 				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
 				html += '<p><b>References</b></br>' + reference + '</p>';
@@ -106,9 +104,10 @@ var fusion_table = getURLParameter('fus_tab_id');
 				else{
 				html += '<p><b>' + column_value + '</b></br>' + row_value + '</p>';	
 				i++;
-				
 				}
 				}
+			
+			
 			document.getElementById('fusion-data').innerHTML = html;
 		}
 		});
