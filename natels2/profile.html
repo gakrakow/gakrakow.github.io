@@ -86,13 +86,14 @@ var fusion_table = getURLParameter('fus_tab_id');
         url.push('&key=AIzaSyCHzvDOeABC3-ZYDMnERKvv05qB4GpYceI');
         url.push('&callback=?');
 		var html =  '';
-		
 // Send the JSONP request using jQuery
         $.ajax({ url: url.join(''), dataType: 'jsonp', success: function (data) {
 		
 			var columns = data['columns'];
             var rows = data['rows'];
 			var i = 0;
+			if(rows != null)
+			{
 			for (var c = 3; c < columns.length; c++) {
 				row_value = mmd(rows[0][c]);
 				column_value = columns[c];	
@@ -106,9 +107,15 @@ var fusion_table = getURLParameter('fus_tab_id');
 				i++;
 				}
 				}
+				document.getElementById('fusion-data').innerHTML = html;
+			}
 			
+			else
+			{
+			var errorHTML = '<img src=img/incompleteprofile.png></img>';
+			$(errorHTML).appendTo("#fusion-data");
+			}
 			
-			document.getElementById('fusion-data').innerHTML = html;
 		}
 		});
 
