@@ -65,9 +65,14 @@ var fusion_table = getURLParameter('fus_tab_id');
 	function Primary(data) {
 	  if (data.items != 0){
       $.each( data.items, function( i, item ) {
+	  var desc_pos = $(item.description).text().lastIndexOf(":");
+	  var desc = $(item.description).text().slice(desc_pos + 1);
+	  var flick_link = item.link
 	  var link = item.media.m
 	  link = link.replace('_m', '_z');
 	  $( "<img>" ).attr( "src", link).appendTo( "#primary-image" );
+	  $('img').wrap("<a href=" + flick_link +"> </a>");
+	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");	
 	}); //end of each
     }//end of if
 	else {
@@ -142,7 +147,35 @@ $.getJSON(url, function(data) {
     document.getElementById('carto-data').innerHTML = html;
 });
 
-(function (){
+(function() {
+    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+	for (x = 2; x < 9; x++){ 
+    $.getJSON( flickerAPI, {
+        tags: "ga_es_id_" + current_es_id + "_" + x,
+		user_id: "georgiafishes",
+		extras: "description",
+        tagmode: "any",
+        format: "json"
+    }, Primary)
+	
+	function Primary(data) {
+	  if (data.items != 0){
+      $.each( data.items, function( i, item ) {
+	  var desc_pos = $(item.description).text().lastIndexOf(":");
+	  var desc = $(item.description).text().slice(desc_pos + 1);
+	  var link = item.media.m
+	  var flick_link = item.link
+	  link = link.replace('_m', '_z');
+	  $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
+	  $('img').wrap("<a href=" + flick_link +"> </a>");
+	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
+	}); //end of each
+    };//end of if
+	
+	}; // end of function
+	}; // end of for loop
+})();
+/*(function (){
 
     var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 	for (x = 2; x < 9; x++) {
@@ -165,7 +198,7 @@ $.getJSON(url, function(data) {
       });	  
     });		
 		}
-})();
+})();*/
 
 // function obtained at https://github.com/p01/mmd.js
 function mmd(s)
