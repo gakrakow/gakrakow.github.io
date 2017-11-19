@@ -1,10 +1,17 @@
 <html>
   <head>
-    <title>Amphibians of Georgia</title>
+    <title>Species of Georgia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 
     <style>
+* {
+font-family: "Montserrat", sans-serif;
+}
+#wrd-logo, #portal-logo {
+height: 65px;
+width: 200px;
+}	
 
 .latin {
 font: italic bold 30px serif;
@@ -22,7 +29,7 @@ margin-right: auto;
 padding: 10px;
 }
 
-header, section, text {
+section, text {
 width: 900px;
 margin: auto;
 background-color: rgba(255,255,255,0.85);
@@ -30,9 +37,20 @@ margin-top: 0;
 padding: 1em;
 }
 
+#headerArea{
+width: 900px;
+margin: auto;
+margin-top: 0;
+padding: .25em;
+}
+
     </style>
   </head>
   <body>
+  <header id="headerArea">
+  <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
+  <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
+  </header>
   <section>
     <div id="primary-image"></div>
     <div id="carto-data"></div>
@@ -52,8 +70,8 @@ var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 
 // Put primary image at top of page
-(function() {
-    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+
+var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
     $.getJSON( flickerAPI, {
         tags: "ga_es_id_" + current_es_id + "_1",
 		user_id: "georgiafishes",
@@ -70,8 +88,8 @@ var fusion_table = getURLParameter('fus_tab_id');
 	  var flick_link = item.link
 	  var link = item.media.m
 	  link = link.replace('_m', '_z');
-	  $( "<img>" ).attr( "src", link).appendTo( "#primary-image" );
-	  $('img').wrap("<a href=" + flick_link +"> </a>");
+	  $( '<img>' ).attr( 'src', link).appendTo( "#primary-image" );
+	  $('img:first').wrap("<a href=" + flick_link +"> </a>");
 	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");	
 	}); //end of each
     }//end of if
@@ -80,7 +98,7 @@ var fusion_table = getURLParameter('fus_tab_id');
 	$(errorHTML).appendTo("#primary-image");
 	}
 	};
-})();
+// end of flickr
 		var query = "SELECT * FROM " + 
 		fusion_table + ' WHERE ES_ID =' + current_es_id;
         var encodedQuery = encodeURIComponent(query);
@@ -96,7 +114,7 @@ var fusion_table = getURLParameter('fus_tab_id');
 		
 			var columns = data['columns'];
             var rows = data['rows'];
-			var i = 0;
+			
 			if(rows != null)
 			{
 			for (var c = 3; c < columns.length; c++) {
@@ -104,23 +122,19 @@ var fusion_table = getURLParameter('fus_tab_id');
 				column_value = columns[c];	
 				if (column_value == 'References'){
 				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
-				html += '<p><b>References</b></br>' + reference + '</p>';
-				i++;
+				html += '<p><b>References</b></br>' + reference + '</p>';				
 				}
 				else{
-				html += '<p><b>' + column_value + '</b></br>' + row_value + '</p>';	
-				i++;
+				html += '<p><b>' + column_value + '</b></br>' + row_value + '</p>';					
 				}
 				}
 				document.getElementById('fusion-data').innerHTML = html;
-			}
-			
+			}			
 			else
 			{
 			var errorHTML = '<img src=img/incompleteprofile.png></img>';
 			$(errorHTML).appendTo("#fusion-data");
 			}
-			
 		}
 		});
 
@@ -147,34 +161,30 @@ $.getJSON(url, function(data) {
     document.getElementById('carto-data').innerHTML = html;
 });
 
-(function() {
-    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-	for (x = 2; x < 9; x++){ 
+
+	for (x = 2; x < 10; x++){ 
     $.getJSON( flickerAPI, {
         tags: "ga_es_id_" + current_es_id + "_" + x,
 		user_id: "georgiafishes",
 		extras: "description",
         tagmode: "any",
         format: "json"
-    }, Primary)
+    }, Supplemental)
 	
-	function Primary(data) {
-	  if (data.items != 0){
+	function Supplemental(data) {
+	  //if (data.items != 0){	
       $.each( data.items, function( i, item ) {
 	  var desc_pos = $(item.description).text().lastIndexOf(":");
 	  var desc = $(item.description).text().slice(desc_pos + 1);
 	  var link = item.media.m
-	  var flick_link = item.link
 	  link = link.replace('_m', '_z');
 	  $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
-	  $('img').wrap("<a href=" + flick_link +"> </a>");
-	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
+	  $("<figcaption>" + desc  + "</figcaption><br/>").appendTo("#supplemental-images");
 	}); //end of each
-    };//end of if
-	
+    //};//end of if
 	}; // end of function
-	}; // end of for loop
-})();
+	}; // end of for loop 
+
 /*(function (){
 
     var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -196,7 +206,7 @@ $.getJSON(url, function(data) {
 		$('img').wrap("<a href=" + flick_link +"> </a>");
 		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
       });	  
-    });		
+    });
 		}
 })();*/
 
