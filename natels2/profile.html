@@ -24,6 +24,7 @@ margin-top: 10px;
 
 body  {
 background: url(img/cyp.jpeg) no-repeat fixed top left;
+background-size: 100% 100%;
 margin-left: auto;
 margin-right: auto;
 padding: 10px;
@@ -44,9 +45,11 @@ margin-top: 0;
 padding: .25em;
 }
 
+
     </style>
   </head>
   <body>
+
   <header id="headerArea">
   <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
   <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
@@ -59,7 +62,7 @@ padding: .25em;
   </section>
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
-
+<script src=mmd.min.js></script>
 <script>
 
 function getURLParameter(name) {
@@ -89,7 +92,7 @@ var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncal
 	  var link = item.media.m
 	  link = link.replace('_m', '_z');
 	  $( '<img>' ).attr( 'src', link).appendTo( "#primary-image" );
-	  $('img:first').wrap("<a href=" + flick_link +"> </a>");
+	  $('img').wrap("<a href=" + flick_link +"> </a>");
 	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");	
 	}); //end of each
     }//end of if
@@ -209,38 +212,6 @@ $.getJSON(url, function(data) {
     });
 		}
 })();*/
-
-// function obtained at https://github.com/p01/mmd.js
-function mmd(s)
-{
-var h='';
-function E(s)
-{
-return new Option(s).innerHTML
-}
-function I(s)
-{
-return E(s)
-.replace(/!\[([^\]]*)]\(([^(]+)\)/g,'<img alt="$1"src="$2">')
-.replace(/\[([^\]]+)]\(([^(]+)\)/g,'$1'.link('$2'))
-.replace(/`([^`]+)`/g,'<code>$1</code>')
-.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
-.replace(/\*([^*]+)\*/g,'<em>$1</em>')
-}
-s.replace(/^\s+|\r|\s+$/g,'')
-.replace(/\t/g,'    ').split(/\n\n+/).forEach
-(function(b,f,R)
-{
-R={
-'*':[/\n\* /,'<ul><li>','</li></ul>']
-,1  :[/\n[1-9]\d*\.? /,'<ol><li>','</li></ol>']
-,' ':[/\n    /,'<pre><code>','</pre></code>','\n']
-,'>':[/\n> /,'<blockquote>','</blockquote>','\n']}
-[f=b[0]];h+=R?R[1]+('\n'+b).split(R[0]).slice(1).map(R[3]?E:I).join(R[3]||'</li>\n<li>')+R[2]
-:f=='#'?'<h'+(f=b.indexOf(' '))+'>'+I(b.slice(f+1))+'</h'+f+'>'
-:f=='<'?b:'<p>'+I(b)+'</p>'
-});return h
-};
 		
  </script>
  
