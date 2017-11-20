@@ -42,7 +42,27 @@ padding: 1em;
 width: 900px;
 margin: auto;
 margin-top: 0;
-padding: .25em;
+padding: .10em;
+}
+
+#group-logo {
+height: 50px;
+margin-left: 4px;
+border: 8px solid rgba(61, 61, 61, 0.78);
+}
+
+#watch_list_link {
+height: 60px;
+width: 94px;
+margin-left: 6px;
+border: 3px solid rgba(63, 72, 62, 0.71);
+}
+#primary-image, #supplemental-images {
+    display: table;
+	width: 1px;
+}
+figcaption  {
+    display: table-row;
 }
 
 
@@ -72,6 +92,13 @@ function getURLParameter(name) {
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 
+var localGroup = localStorage.getItem('group')
+$( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#headerArea" );
+if (localGroup == 'plant') {
+var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
+$(optionalButton).appendTo("#headerArea"); 
+}
+
 // Put primary image at top of page
 
 var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -91,9 +118,10 @@ var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncal
 	  var flick_link = item.link
 	  var link = item.media.m
 	  link = link.replace('_m', '_z');
-	  $( '<img>' ).attr( 'src', link).appendTo( "#primary-image" );
-	  $('img').wrap("<a href=" + flick_link +"> </a>");
-	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");	
+	  $( '<img id="flick1">' ).attr( 'src', link).appendTo( "#primary-image" );
+	  $("#flick1").wrap("<a href=" + flick_link +"> </a>");
+	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");
+	 
 	}); //end of each
     }//end of if
 	else {
@@ -173,7 +201,7 @@ $.getJSON(url, function(data) {
         tagmode: "any",
         format: "json"
     }, Supplemental)
-	
+	}; // end of for loop 
 	function Supplemental(data) {
 	  //if (data.items != 0){	
       $.each( data.items, function( i, item ) {
@@ -186,7 +214,7 @@ $.getJSON(url, function(data) {
 	}); //end of each
     //};//end of if
 	}; // end of function
-	}; // end of for loop 
+
 
 /*(function (){
 
