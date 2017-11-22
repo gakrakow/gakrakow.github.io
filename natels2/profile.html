@@ -121,7 +121,7 @@ var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncal
 	  $( '<img id="flick1">' ).attr( 'src', link).appendTo( "#primary-image" );
 	  $("#flick1").wrap("<a href=" + flick_link +"> </a>");
 	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");
-	 
+	  if ( i == 3 ) return false;
 	}); //end of each
     }//end of if
 	else {
@@ -194,7 +194,7 @@ $.getJSON(url, function(data) {
 
 
 	for (x = 2; x < 10; x++){ 
-    $.getJSON( flickerAPI, {
+   $.getJSON( flickerAPI, {
         tags: "ga_es_id_" + current_es_id + "_" + x,
 		user_id: "georgiafishes",
 		extras: "description",
@@ -208,13 +208,15 @@ $.getJSON(url, function(data) {
 	  var desc_pos = $(item.description).text().lastIndexOf(":");
 	  var desc = $(item.description).text().slice(desc_pos + 1);
 	  var link = item.media.m
+	  var flick_link = item.link
 	  link = link.replace('_m', '_z');
-	  $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
+	  var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
+	  $(img).wrap("<a href=" + flick_link +"> </a>");
 	  $("<figcaption>" + desc  + "</figcaption><br/>").appendTo("#supplemental-images");
+	  if ( i == 3 ) return false;
 	}); //end of each
-    //};//end of if
-	}; // end of function
-
+    //}//end of if / done
+	}; // end of function	
 
 /*(function (){
 
