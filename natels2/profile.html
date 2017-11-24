@@ -57,12 +57,15 @@ width: 94px;
 margin-left: 6px;
 border: 3px solid rgba(63, 72, 62, 0.71);
 }
-#primary-image, #supplemental-images {
-    display: table;
-	width: 1px;
+figure {
+  display: table;
+  margin: 0px;
 }
-figcaption  {
-    display: table-row;
+
+figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  padding: 0em 0em 1.25em 0em;
 }
 
 
@@ -89,6 +92,7 @@ function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
     }
 
+	
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 
@@ -118,9 +122,8 @@ var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncal
 	  var flick_link = item.link
 	  var link = item.media.m
 	  link = link.replace('_m', '_z');
-	  $( '<img id="flick1">' ).attr( 'src', link).appendTo( "#primary-image" );
-	  $("#flick1").wrap("<a href=" + flick_link +"> </a>");
-	  $("<figcaption>" + desc  + "</figcaption>").appendTo("#primary-image");
+	  var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
+	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
 	  if ( i == 3 ) return false;
 	}); //end of each
     }//end of if
@@ -211,8 +214,7 @@ $.getJSON(url, function(data) {
 	  var flick_link = item.link
 	  link = link.replace('_m', '_z');
 	  var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
-	  $(img).wrap("<a href=" + flick_link +"> </a>");
-	  $("<figcaption>" + desc  + "</figcaption><br/>").appendTo("#supplemental-images");
+	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
 	  if ( i == 3 ) return false;
 	}); //end of each
     //}//end of if / done
@@ -241,8 +243,7 @@ $.getJSON(url, function(data) {
       });	  
     });
 		}
-})();*/
-		
+})();*/	
  </script>
  
 </body>
