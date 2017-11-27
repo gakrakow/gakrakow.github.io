@@ -1,0 +1,250 @@
+<html>
+  <head>
+    <title>Species of Georgia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+    <style>
+* {
+font-family: "Montserrat", sans-serif;
+}
+#wrd-logo, #portal-logo {
+height: 65px;
+width: 200px;
+}	
+
+.latin {
+font: italic bold 30px serif;
+}
+
+#sname {
+font: normal normal 27px serif;
+margin-top: 10px;
+}
+
+body  {
+background: url(img/cyp.jpeg) no-repeat fixed top left;
+background-size: 100% 100%;
+margin-left: auto;
+margin-right: auto;
+padding: 10px;
+}
+
+section, text {
+width: 900px;
+margin: auto;
+background-color: rgba(255,255,255,0.85);
+margin-top: 0;
+padding: 1em;
+}
+
+#headerArea{
+width: 900px;
+margin: auto;
+margin-top: 0;
+padding: .10em;
+}
+
+#group-logo {
+height: 50px;
+margin-left: 4px;
+border: 8px solid rgba(61, 61, 61, 0.78);
+}
+
+#watch_list_link {
+height: 60px;
+width: 94px;
+margin-left: 6px;
+border: 3px solid rgba(63, 72, 62, 0.71);
+}
+figure {
+  display: table;
+  margin: 0px;
+}
+
+figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  padding: 0em 0em 1.25em 0em;
+}
+
+
+    </style>
+  </head>
+  <body>
+
+  <header id="headerArea">
+  <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
+  <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
+  </header>
+  <section>
+    <div id="primary-image"></div>
+    <div id="carto-data"></div>
+    <div id="fusion-data"></div>
+    <div id="supplemental-images"></div>
+  </section>
+
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script src=mmd.min.js></script>
+<script>
+
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
+    }
+
+	
+var current_es_id = getURLParameter('es_id');
+var fusion_table = getURLParameter('fus_tab_id');
+
+var localGroup = localStorage.getItem('group')
+$( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#headerArea" );
+if (localGroup == 'plant') {
+var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
+$(optionalButton).appendTo("#headerArea"); 
+}
+
+// Put primary image at top of page
+
+var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+    $.getJSON( flickerAPI, {
+        tags: "ga_es_id_" + current_es_id + "_1",
+		user_id: "georgiafishes",
+		extras: "description",
+        tagmode: "any",
+        format: "json"
+    }, Primary)
+	
+	function Primary(data) {
+	  if (data.items != 0){
+      $.each( data.items, function( i, item ) {
+	  var desc_pos = $(item.description).text().lastIndexOf(":");
+	  var desc = $(item.description).text().slice(desc_pos + 1);
+	  var flick_link = item.link
+	  var link = item.media.m
+	  link = link.replace('_m', '_z');
+	  var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
+	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
+	  if ( i == 3 ) return false;
+	}); //end of each
+    }//end of if
+	else {
+	var errorHTML = '<img src=img/noimage.png></img>';
+	$(errorHTML).appendTo("#primary-image");
+	}
+	};
+// end of flickr
+		var query = "SELECT * FROM " + 
+		fusion_table + ' WHERE ES_ID =' + current_es_id;
+        var encodedQuery = encodeURIComponent(query);
+		
+        // Construct the URL
+        var url = ['https://www.googleapis.com/fusiontables/v2/query'];
+        url.push('?sql=' + encodedQuery);
+        url.push('&key=AIzaSyCHzvDOeABC3-ZYDMnERKvv05qB4GpYceI');
+        url.push('&callback=?');
+		var html =  '';
+// Send the JSONP request using jQuery
+        $.ajax({ url: url.join(''), dataType: 'jsonp', success: function (data) {
+		
+			var columns = data['columns'];
+            var rows = data['rows'];
+			
+			if(rows != null)
+			{
+			for (var c = 3; c < columns.length; c++) {
+				row_value = mmd(rows[0][c]);
+				column_value = columns[c];	
+				if (column_value == 'References'){
+				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
+				html += '<p><b>References</b></br>' + reference + '</p>';				
+				}
+				else{
+				html += '<p><b>' + column_value + '</b></br>' + row_value + '</p>';					
+				}
+				}
+				document.getElementById('fusion-data').innerHTML = html;
+			}			
+			else
+			{
+			var errorHTML = '<img src=img/incompleteprofile.png></img>';
+			$(errorHTML).appendTo("#fusion-data");
+			}
+		}
+		});
+
+// Place Carto data in page.
+var sql = "SELECT es_id, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank FROM es_web_all WHERE es_id = " + current_es_id;
+var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
+$.getJSON(url, function(data) {
+    var rec = data.rows[0];
+    //alert(JSON.stringify(rec));
+    var html = ''
+    html += '<div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
+    html += '<p><b>Common Name: </b>' + rec.scomname + '</p>';
+    html += '<p><b>Federal Protection: </b>' + rec.usesa + '</p>';
+    html += '<p><b>State Protection: </b>' + rec.sprot + '</p>';
+    html += '<p><b>Global Rank: </b>' + rec.grank + '</p>';
+    html += '<p><b>State Rank: </b>' + rec.srank + '</p>';
+    var swap;
+    if (rec.swapstatus == 1) {
+        swap = 'Yes';
+    } else {
+        swap = 'No';
+    }
+    html += '<p><b>SWAP Status: </b>' + swap + '</p>';
+    document.getElementById('carto-data').innerHTML = html;
+});
+
+
+	for (x = 2; x < 10; x++){ 
+   $.getJSON( flickerAPI, {
+        tags: "ga_es_id_" + current_es_id + "_" + x,
+		user_id: "georgiafishes",
+		extras: "description",
+        tagmode: "any",
+        format: "json"
+    }, Supplemental)
+	}; // end of for loop 
+	function Supplemental(data) {
+	  //if (data.items != 0){	
+      $.each( data.items, function( i, item ) {
+	  var desc_pos = $(item.description).text().lastIndexOf(":");
+	  var desc = $(item.description).text().slice(desc_pos + 1);
+	  var link = item.media.m
+	  var flick_link = item.link
+	  link = link.replace('_m', '_z');
+	  var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
+	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
+	  if ( i == 3 ) return false;
+	}); //end of each
+    //}//end of if / done
+	}; // end of function	
+
+/*(function (){
+
+    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+	for (x = 2; x < 9; x++) {
+    $.getJSON( flickerAPI, {
+		user_id: "141637440@N07", // change to flickr id to scan only that page
+        tags: "ga_es_id_" + current_es_id + "_" + x,
+        tagmode: "any",
+        format: "json", 
+    })	
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+	    var desc_pos = $(item.description).text().lastIndexOf(":");
+		var desc = $(item.description).text().slice(desc_pos + 1);
+        var link = item.media.m;
+		var flick_link = item.link
+        link = link.replace('_m', '_z');
+        $( "<img>" ).attr( "src", link).appendTo( "#supplemental-images" );
+		$('img').wrap("<a href=" + flick_link +"> </a>");
+		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
+      });	  
+    });
+		}
+})();*/	
+ </script>
+ 
+</body>
+</html>
