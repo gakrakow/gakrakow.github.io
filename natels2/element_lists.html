@@ -364,6 +364,7 @@ function loadData(){
     }
         
     // Create a user friendly filter description for the title of the page
+	if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
     var header_values = {
         'rank': filters[localStorage.rank][0],
         'group': filters[localStorage.group][0],
