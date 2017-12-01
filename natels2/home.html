@@ -129,7 +129,16 @@ color:black;
 </div>
 
 </section>
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script>
 
+
+var searchQuery = "SELECT es_id, sname ,scomname FROM es_web";
+$.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ searchQuery, function(data) {
+	var rec = data.rows[0];
+	alert(JSON.stringify(data));
+})
+</script>
 </body>
 
 </body>
