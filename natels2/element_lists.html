@@ -430,10 +430,6 @@ function loadData(){
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
-    //alert(sqlQuery);
-
-
-
     
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
@@ -448,7 +444,6 @@ function loadData(){
     
     // Get the template for the elements
     var el_tpt = document.getElementById('el_tpt').innerHTML;
-    
     // Create the Mustache partial templates
     var partials = {
         el_rank: ', <span title="Global and state rarity ranks"><b>Rank:</b> {{grank}}/{{srank}}</span>',
@@ -457,7 +452,7 @@ function loadData(){
         eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>',
         with_range_map: ' <a href="range_maps2.html?es_id={{es_id}}&area_type={{area_type}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="img/range_map3.png" class="range_map_button" alt="range map button"> </a> ',
         no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span> ',
-        species_profile: ' <a href="profile.html?es_id={{es_id}}&fus_tab_id={{fus_tab_id}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>',
+        species_profile: ' <a href="profile.html?es_id={{es_id}}&fus_tab_id={{fus_tab_id}}&group={{group}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
         ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="img/natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ' 
         }
@@ -511,6 +506,7 @@ function loadData(){
         var last_an_pl = '';
         for (row in data.rows) {
             var rec = data.rows[row];
+			rec['group']=localStorage.group
             
             // Add area_type from localStorage.area_type to rec
             if (!localStorage.area_type) {
@@ -620,13 +616,15 @@ function loadData(){
              }
 
            // add record to records
+		   
            recs.push(rec);
+		   
         }
         var list_html = Mustache.render(el_tpt, recs, partials);
         document.getElementById('listArea').innerHTML = list_html;
         document.getElementById('row_count').innerHTML = '&nbsp;&nbsp;&nbsp;' + partials.recordCount + ' element records in list';
     }) //getJSON
-    
+ 
     // Store access time in seconds form 1970/01/01
     localStorage.lastAccessTime = Date.now()/1000;
 

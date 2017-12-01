@@ -95,8 +95,7 @@ function getURLParameter(name) {
 	
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
-
-var localGroup = localStorage.getItem('group')
+var localGroup = getURLParameter('group')
 $( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#headerArea" );
 if (localGroup == 'plant') {
 var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
@@ -219,31 +218,6 @@ $.getJSON(url, function(data) {
 	}); //end of each
     //}//end of if / done
 	}; // end of function	
-
-/*(function (){
-
-    var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-	for (x = 2; x < 9; x++) {
-    $.getJSON( flickerAPI, {
-		user_id: "141637440@N07", // change to flickr id to scan only that page
-        tags: "ga_es_id_" + current_es_id + "_" + x,
-        tagmode: "any",
-        format: "json", 
-    })	
-    .done(function( data ) {
-      $.each( data.items, function( i, item ) {
-	    var desc_pos = $(item.description).text().lastIndexOf(":");
-		var desc = $(item.description).text().slice(desc_pos + 1);
-        var link = item.media.m;
-		var flick_link = item.link
-        link = link.replace('_m', '_z');
-        $( "<img>" ).attr( "src", link).appendTo( "#supplemental-images" );
-		$('img').wrap("<a href=" + flick_link +"> </a>");
-		$("<figcaption>" + desc  + "</figcaption>").appendTo("#supplemental-images");	
-      });	  
-    });
-		}
-})();*/	
  </script>
  
 </body>
