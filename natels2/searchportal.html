@@ -48,24 +48,26 @@ color: #000000;
 <script>
 $(document).ready(function(){
  $.ajaxSetup({ cache: false });
+ var dataRow;
  $('#search').keyup(function(){
   $('#result').html('');
   $('#state').val('');
   var searchField = $('#search').val();
   var expression = new RegExp(searchField, "i");
-  $.getJSON("http://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id,sname,scomname,fus_tab_id FROM es_vw WHERE seotrack ='Y'", function(data) {
-  var dataRow = data.rows;
-   $.each(dataRow, function(key, value){
+  var url = "http://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id,sname,scomname,fus_tab_id FROM es_vw WHERE seotrack ='Y'";
+  $.getJSON('cartodb-query.json', function(data) {
+  dataRow = data.rows; 
+  $.each(dataRow, function(key, value){
     if (value.sname.search(expression) != -1 || value.scomname.search(expression) != -1)
     {
-     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" + '  <span class="text-muted">('+value.scomname+')</span></li>');
+     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" + '<span class="text-muted">('+value.scomname+')</span></li>');
     }
    });   
   });
+  //alert(dataRow);
  });
- 
  $('#result').on('click', 'li', function() {
-  var click_text = $(this).text().split('|');
+  var click_text = $(this).text().split('(');
   $('#search').val($.trim(click_text[0]));
   $("#result").html('');
  });
