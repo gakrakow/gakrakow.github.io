@@ -48,28 +48,28 @@ color: #000000;
 <script>
 $(document).ready(function(){
  $.ajaxSetup({ cache: false });
- var dataRow;
  $('#search').keyup(function(){
   $('#result').html('');
   $('#state').val('');
   var searchField = $('#search').val();
   var expression = new RegExp(searchField, "i");
   var url = "http://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id,sname,scomname,fus_tab_id FROM es_vw WHERE seotrack ='Y'";
-  $.getJSON('cartodb-query.json', function(data) {
-  dataRow = data.rows; 
+  
+  $.getJSON(url, function(data) {
+  var dataRow = data.rows; 
+  $('#result').empty(); // this fixes the results repeating bug
   $.each(dataRow, function(key, value){
-    if (value.sname.search(expression) != -1 || value.scomname.search(expression) != -1)
-    {
-     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" + '<span class="text-muted">('+value.scomname+')</span></li>');
+    if (value.sname.search(expression) != -1 || value.scomname.search(expression) != -1){
+     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" + '<span class="text-muted">('+value.scomname+')</span><span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +'</span></li>');
+	 $('#result').on('click', 'li', function() {
+	 var getInfo = $(this).text().split('|');
+	 var es_id =($.trim(getInfo[0].slice(-5)));
+	 var fusiontable =($.trim(getInfo[1]));
+	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
+	 });
     }
-   });   
-  });
-  //alert(dataRow);
- });
- $('#result').on('click', 'li', function() {
-  var click_text = $(this).text().split('(');
-  $('#search').val($.trim(click_text[0]));
-  $("#result").html('');
+   }); 
+});   
  });
 });
 </script>
