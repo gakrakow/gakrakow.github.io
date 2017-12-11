@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
  <head>
+ <meta charset="UTF-8">
   <title>Rare Elements Search</title>
   <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -8,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="natels.css">
   <style>
   #result {
-   position: absolute;
+   
    width: 100%;
    max-width:870px;
    cursor: pointer;
@@ -23,6 +24,11 @@
 ul li{
 color: #000000;
 }
+.container {
+width:100%;
+}
+
+
   </style>
  </head>
  <body>
@@ -33,7 +39,7 @@ color: #000000;
  </header>
  <section>
   <br /><br />
-  <div class="container" style="width:900px;"> 
+  <div class="container"> 
    <br /><br />
    <div align="center">
     <input type="text" name="search" id="search" placeholder="Search Rare Elements" class="form-control" />
@@ -60,7 +66,7 @@ $(document).ready(function(){
   $('#result').empty(); // this fixes the results repeating bug
   $.each(dataRow, function(key, value){
     if (value.sname.search(expression) != -1 || value.scomname.search(expression) != -1){
-     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" + '<span class="text-muted">('+value.scomname+')</span><span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +'</span></li>');
+     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" +  '<span class="text-muted"> ('+value.scomname+')</span><span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +'</span></li>');
 	 $('#result').on('click', 'li', function() {
 	 var getInfo = $(this).text().split('|');
 	 var es_id =($.trim(getInfo[0].slice(-5)));
@@ -68,6 +74,15 @@ $(document).ready(function(){
 	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
 	 });
     }
+	$('#result').mouseleave(function(){
+		$('#result').hide();
+	 });
+	$('#search').mouseenter(function(){
+		$('#result').show();	
+	});
+	$('#search').keypress(function(){
+		$('#result').show();
+	});
    }); 
 });   
  });
