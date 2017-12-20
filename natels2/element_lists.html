@@ -239,68 +239,6 @@ section, header {
 </script> <!-- end hdr_tpt (header template) -->
 
 <script>
-
-var filters = {
-"all_statuses": ["With or Without Protection Status", "WHERE es.sname <> ''"],
-"us": ["With Federal Protection Status", "WHERE es.usesa <> ''"],
-"ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
-"no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
-"no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
-"swap": ["Tracked, SWAP Species of Greatest Conservation Need (SGCN)", "WHERE es.swap_status IS 1"],
-"all_ranks": ["", " AND es.srank <> ''"],
-"s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
-"g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
-"shsx": ["Not seen in Georgia for over 20 years (SH & SX) ", " AND es.rnd_srank IN ('SH', 'SX')"],
-"all_groups": ["All Tracked Natural Elements", " AND es.elcode <> ''"],
-"animal": ["Rare Animals ", " AND SUBSTR(es.elcode, 1, 1) in ('A', 'I')"],
-"plant": ["Rare Plants ", " AND SUBSTR(es.elcode, 1, 1) in ('P', 'N')"],
-"bird": ["Rare Birds ", " AND SUBSTR(es.elcode, 1, 2) = 'AB'"],
-"fish": ["Rare Fishes ", " AND SUBSTR(es.elcode, 1, 2) = 'AF'"],
-"mammal": ["Rare Mammals ", " AND SUBSTR(es.elcode, 1, 2) = 'AM'"],
-"bat": ["Rare Bats ", " AND substr(es.elcode,1,5) in ('AMACC', 'AMACD')"],
-"mollusk": ["Rare Mollusks ", " AND SUBSTR(es.elcode, 1, 2) = 'IM'"],
-"aquatic": ["Fishes, Mollusks and Crayfishes ", " AND (SUBSTR(es.elcode, 1, 2) in ('AF', 'IM') OR es.sgenus IN ('Cambarus', 'Distocambarus', 'Fallicambarus', 'Faxonella', 'Orconectes', 'Procambarus'))"],
-"rep-amp": ["Rare Reptiles and Amphibians ", " AND SUBSTR(es.elcode, 1, 2) in ('AR', 'AA')"],
-"arthropod": ["Rare Arthropods ", " AND SUBSTR(es.elcode, 1, 2) in ('IL', 'IC', 'II')"],
-"community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
-}
-
-var areas = {
-'cnty': 'County',
-'qq': 'Quarter Quad',
-'huc8': 'HUC8 Watershed',
-'huc10': 'HUC10 Watershed',
-'eco3': 'Level 3 Ecoregion',
-'eco4': 'Level 4 Ecoregion',
-'hex24': '24 km Hexagon'
-}
-
-var groups = {
-'Animal': 'ANIMALS',
-'Plant': 'PLANTS',
-'Community': 'NATURAL COMMUNITIES',
-'Other': "OTHER NATURAL ELEMENTS"
-}
-
-// store the sname, scomname and exportdate into local storage.
-function reply_click(es_id) {
-    // get the element subnational id
-    var el_sql = "SELECT es_id, sname ,scomname ,exportdate , fus_tab_id ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
-    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
-        var el_obj = element_object.rows[0];
-        // put all of the element field values as JSON string object into the localStorage
-        localStorage.el_obj = JSON.stringify(el_obj);
-    })
-}
- 
-function putURLParametersIntoLocalStorage() {
-    //setDefaultsInStorage(); //*** May have to use this *** Check out the logic.
-    if (getURLParameter('status')) {localStorage.status = getURLParameter('status');}
-    if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
-    if (getURLParameter('rank')) {localStorage.rank = getURLParameter('rank');}
-}
-
-
 function loadData(){
     // This should only show warning if over 1 hour, filters are set and showWarning is true or undefined.
     var dialogDelaySec = 1800; //Set for 1/2 hour
