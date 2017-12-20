@@ -67,6 +67,9 @@ figcaption {
   caption-side: bottom;
   padding: 0em 0em 1.25em 0em;
 }
+#loaded{
+display:none;
+}
 @media screen and (max-width:1000px) {
 
 section, #headerArea {
@@ -100,12 +103,14 @@ figure img {
     </style>
   </head>
   <body>
-
   <header id="headerArea">
   <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
   <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
   </header>
-  <section>
+  <section id = "preload">
+  <div id="listArea"><img id="loading-image" src="img/monarch_butterfly.gif"  alt="Loading..." /> <p id='loading'>Loading records. Please wait . . .</p>  </div>
+  </section>
+  <section id= "loaded">
     <div id="primary-image"></div>
     <div id="carto-data"></div>
     <div id="fusion-data"></div>
@@ -115,12 +120,16 @@ figure img {
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
 <script src=mmd.min.js></script>
 <script>
-
+$("#loaded").hide();	
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
     }
 
-	
+$(window).load(function() {
+	$('#preload').hide();
+	$("#loaded").show();
+	 
+  });	
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 var localGroup = getURLParameter('group')
@@ -244,7 +253,8 @@ $.getJSON(url, function(data) {
 	  if ( i == 3 ) return false;
 	}); //end of each
     //}//end of if / done
-	}; // end of function	
+	}; // end of function
+
  </script>
  
 </body>
