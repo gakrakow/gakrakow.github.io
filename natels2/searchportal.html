@@ -61,8 +61,8 @@ $(document).ready(function(){
   var searchField = $('#search').val();
   var expression = new RegExp(searchField, "i");
   var url = "http://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id,sname,scomname,fus_tab_id FROM es_vw WHERE seotrack ='Y'";
-  if(e.which == 13){ // only searches when enter is pressed *lowers amount of api calls but removes live search*
-  $.getJSON(url, function(data) {
+  //if(e.which == 13){ // only searches when enter is pressed *lowers amount of api calls but removes live search*
+  $.getJSON('esvw.json', function(data) {
   var dataRow = data.rows; 
   $('#result').empty(); // this fixes the results repeating bug
   $.each(dataRow, function(key, value){
@@ -86,7 +86,7 @@ $(document).ready(function(){
 	});
    }); 
 }); 
-}; // end of if statement
+//}; // end of if statement
  });
 });
 </script>
