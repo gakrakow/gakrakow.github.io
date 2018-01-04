@@ -1,92 +1,86 @@
 <!DOCTYPE html>
 <html>
- <head>
- <meta charset="UTF-8">
+<head>
+<meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rare Elements Search</title>
-  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+  <script src="esvw.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="natels.css">
-  <style>
-  #result {
-   
-   width: 100%;
-   max-width:870px;
-   cursor: pointer;
-   overflow-y: auto;
-   max-height: 400px;
-   box-sizing: border-box;
-   z-index: 1001;
-  }
-  .link-class:hover{
-   background-color:#f1f1f1;
-  }
-ul li{
-color: #000000;
+<style>
+#myUL {
+	width: 100%;
+	max-width:900px;
+	cursor: pointer;
+	overflow-y: auto;
+	max-height: 400px;
+	box-sizing: border-box;
+	z-index: 1001;
 }
-.container {
-width:100%;
-}
+.link-class:hover{
+	background-color:#f1f1f1;
+  }
 
-
-  </style>
- </head>
- <body>
- <header>
+</style>
+</head>
+<body>
+<header>
  <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" alt="Wildlife Resources Logo"></a>
 <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" alt="Georgia Rare Natural Element Logo"></a></div>
 <h1>Search for Rare Elements</h1> 
  </header>
- <section>
-  <br /><br />
-  <div class="container"> 
-   <br /><br />
-   <div align="center">
-    <input type="text" name="search" id="search" placeholder="Search Rare Elements" class="form-control" />
-   </div>
-   <ul class="list-group" id="result"></ul>
-   <br />
-  </div>
-  </section>
- </body>
-</html>
+<section>
+
+</br>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search Rare Elements" title="Press Enter" class="form-control">
+<ul id="myUL"> 
+</ul>
+
+</section>
 
 <script>
-$(document).ready(function(){
- $.ajaxSetup({ cache: false });
- $('#search').keyup(function(e){
-  $('#result').html('');
-  $('#state').val('');
-  var searchField = $('#search').val();
-  var expression = new RegExp(searchField, "i");
-  var url = "http://gakrakow.cartodb.com/api/v2/sql?q=SELECT es_id,sname,scomname,fus_tab_id FROM es_vw WHERE seotrack ='Y'";
-  //if(e.which == 13){ // only searches when enter is pressed *lowers amount of api calls but removes live search*
-  $.getJSON('esvw.json', function(data) {
-  var dataRow = data.rows; 
-  $('#result').empty(); // this fixes the results repeating bug
-  $.each(dataRow, function(key, value){
-    if (value.sname.search(expression) != -1 || value.scomname.search(expression) != -1){
-     $('#result').append('<li class="list-group-item link-class"> '+ "<em>" + value.sname+ "</em>" +  '<span class="text-muted"> ('+value.scomname+')</span><span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +'</span></li>');
-	 $('#result').on('click', 'li', function() {
+var searchData = liveSearch.rows;
+$('#myUL').hide();
+(function(){
+	$.each(searchData, function(key, value){
+    $('#myUL').append('<li class="list-group-item link-class"> '+ "<a href='#'>" + "<em>" + value.sname + "</em>" + "<span class='text-muted'> (" + value.scomname + ")" + '<span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +  "</a></li>");
+	$('#myUL').on('click', 'li', function() {
 	 var getInfo = $(this).text().split('|');
 	 var es_id =($.trim(getInfo[0].slice(-5)));
 	 var fusiontable =($.trim(getInfo[1]));
 	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
+	})
+	$('#myUL').mouseleave(function(){
+		$('#myUL').hide();
 	 });
-    }
-	$('#result').mouseleave(function(){
-		$('#result').hide();
-	 });
-	$('#search').mouseenter(function(){
-		$('#result').show();	
+	$('#myInput').mouseenter(function(){
+		$('#myUL').show();	
 	});
-	$('#search').keypress(function(){
-		$('#result').show();
+	$('#myInput').keypress(function(){
+		$('#myUL').show();
 	});
-   }); 
-}); 
-//}; // end of if statement
- });
-});
+	})
+	})();
 </script>
+<script>
+function myFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+
+        }
+    }
+}
+</script>
+</body>
+</html>
