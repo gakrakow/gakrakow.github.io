@@ -52,17 +52,18 @@ $('#myUL').hide();
 	 var fusiontable =($.trim(getInfo[1]));
 	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
 	})
+	$("#myInput").click(function(){
+		$('#myUL').show();
+		});
+		
 	$('#myUL').mouseleave(function(){
 		$('#myUL').hide();
 	 });
-	$('#myInput').mouseenter(function(){
-		$('#myUL').show();	
-	});
-	$('#myInput').keypress(function(){
+	 $('#myInput').keypress(function(){
 		$('#myUL').show();
 	});
-	})
-	})();
+			});
+})();
 </script>
 <script>
 function myFunction() {
