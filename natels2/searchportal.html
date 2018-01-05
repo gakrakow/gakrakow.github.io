@@ -41,6 +41,17 @@
 </section>
 
 <script>
+
+window.onload = function()
+{
+var searchInput = document.getElementById("myInput").value;
+console.log(searchInput);
+if(searchInput.length > 0){
+$('#myInput').focus();
+myFunction();
+}
+}
+
 var searchData = liveSearch.rows;
 $('#myUL').hide();
 (function(){
@@ -52,10 +63,15 @@ $('#myUL').hide();
 	 var fusiontable =($.trim(getInfo[1]));
 	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
 	})
-	$("#myInput").click(function(){
+	$("#myInput").hover(function(){
 		$('#myUL').show();
 		});
-		
+	/*$("#myInput").click(function(){
+		$('#myInput').trigger({
+			type: 'keypress',
+			which: 35,
+			});
+		});*/
 	$('#myUL').mouseleave(function(){
 		$('#myUL').hide();
 	 });
