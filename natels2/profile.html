@@ -127,8 +127,7 @@ function getURLParameter(name) {
 
 $(window).load(function() {
 	$('#preload').hide();
-	$("#loaded").show();
-	 
+	$("#loaded").show();	 
   });	
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
@@ -138,36 +137,35 @@ if (localGroup == 'plant') {
 var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
 $(optionalButton).appendTo("#headerArea"); 
 }
+var tags = "&tags=GA_ES_ID_" + current_es_id + "_1,GA_ES_ID_" + current_es_id + "_2,GA_ES_ID_" + current_es_id + "_3,GA_ES_ID_" + current_es_id + "_4,GA_ES_ID_" + current_es_id + "_5,GA_ES_ID_" + current_es_id + "_6,GA_ES_ID_" + current_es_id + "_7,GA_ES_ID_" + current_es_id + "_8,GA_ES_ID_" + current_es_id + "_9,GA_ES_ID_" + current_es_id + "_10&extras=description,tags&format=json&jsoncallback=?"
 
-// Put primary image at top of page
+var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=283f57a676868bb1f7ceab8ab46d91b5" + tags;
 
-var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-    $.getJSON( flickerAPI, {
-        tags: "ga_es_id_" + current_es_id + "_1",
-		user_id: "georgiafishes",
-		extras: "description",
-        tagmode: "any",
-        format: "json"
-    }, Primary)
-	
-	function Primary(data) {
-	  if (data.items != 0){
-      $.each( data.items, function( i, item ) {
-	  var desc_pos = $(item.description).text().lastIndexOf(":");
-	  var desc = $(item.description).text().slice(desc_pos + 1);
-	  var flick_link = item.link
-	  var link = item.media.m
-	  link = link.replace('_m', '_z');
-	  var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
-	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
-	  if ( i == 3 ) return false;
-	}); //end of each
-    }//end of if
-	else {
-	var errorHTML = '<img src=img/noimage.png></img>';
-	$(errorHTML).appendTo("#primary-image");
+
+$.getJSON(url, function(data){
+	var image = data.photos.photo
+	if(image != 0){
+		for(i = 0; i < image.length; i++){
+		var desc_pos = image[i].description._content;
+		var flick_link = "https://www.flickr.com/photos/" + data.photos.photo[i].owner + "/" + data.photos.photo[i].id + "/in/dateposted-public/"
+		var link = "http://farm" + data.photos.photo[i].farm + ".static.flickr.com/" + data.photos.photo[i].server + "/"+data.photos.photo[i].id + "_"+data.photos.photo[i].secret + ".jpg";
+		var tagOrder = image[i].tags.slice(-1);
+			if(tagOrder == 1){
+			var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
+			$(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc_pos + "</figcaption></figure>");
+			}
+			else{
+			var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
+			$(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc_pos + "</figcaption></figure>");
+			}
+										}
+	}// check if flickr returns anything
+	else
+	{
+		var errorHTML = '<img src=img/noimage.png></img>';
+		$(errorHTML).appendTo("#primary-image");
 	}
-	};
+});
 // end of flickr
 		var query = "SELECT * FROM " + 
 		fusion_table + ' WHERE ES_ID =' + current_es_id;
@@ -230,32 +228,6 @@ $.getJSON(url, function(data) {
     html += '<p><b>SWAP Status: </b>' + swap + '</p>';
     document.getElementById('carto-data').innerHTML = html;
 });
-
-	for (x = 2; x < 10; x++){ 
-   $.getJSON( flickerAPI, {
-        tags: "ga_es_id_" + current_es_id + "_" + x,
-		user_id: "georgiafishes",
-		extras: "description",
-        tagmode: "any",
-        format: "json"
-    }, Supplemental)
-	}; // end of for loop 
-	function Supplemental(data) {
-	  //if (data.items != 0){	
-      $.each( data.items, function( i, item ) {
-	  var desc_pos = $(item.description).text().lastIndexOf(":");
-	  var desc = $(item.description).text().slice(desc_pos + 1);
-	  var link = item.media.m
-	  var flick_link = item.link
-	  link = link.replace('_m', '_z');
-	  var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
-	  $(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc + "</figcaption></figure>");
-	  if ( i == 3 ) return false;
-	}); //end of each
-    //}//end of if / done
-	}; // end of function
-
- </script>
- 
+ </script> 
 </body>
 </html>
