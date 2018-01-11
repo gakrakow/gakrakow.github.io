@@ -45,7 +45,6 @@
 window.onload = function()
 {
 var searchInput = document.getElementById("myInput").value;
-console.log(searchInput);
 if(searchInput.length > 0){
 $('#myInput').focus();
 myFunction();
@@ -56,22 +55,10 @@ var searchData = liveSearch.rows;
 $('#myUL').hide();
 (function(){
 	$.each(searchData, function(key, value){
-    $('#myUL').append('<li class="list-group-item link-class"> '+ "<a href='#'>" + "<em>" + value.sname + "</em>" + "<span class='text-muted'> (" + value.scomname + ")" + '<span class="hidden">'+ value.es_id + "|" + value.fus_tab_id +  "</a></li>");
-	$('#myUL').on('click', 'li', function() {
-	 var getInfo = $(this).text().split('|');
-	 var es_id =($.trim(getInfo[0].slice(-5)));
-	 var fusiontable =($.trim(getInfo[1]));
-	 window.location.href = 'profile.html?es_id=' + es_id + '&fus_tab_id=' + fusiontable;
-	})
+	$('#myUL').append('<li class="list-group-item link-class"> '+ "<a href=profile.html?es_id=" + value.es_id + '&fus_tab_id='+ value.fus_tab_id + ">" + "<em>" + value.sname + "</em>" + "<span class='text-muted'> (" + value.scomname + ")" + "</a></li>");
 	$("#myInput").hover(function(){
 		$('#myUL').show();
 		});
-	/*$("#myInput").click(function(){
-		$('#myInput').trigger({
-			type: 'keypress',
-			which: 35,
-			});
-		});*/
 	$('#myUL').mouseleave(function(){
 		$('#myUL').hide();
 	 });
