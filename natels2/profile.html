@@ -31,11 +31,11 @@ padding: 10px;
 }
 
 section, text {
-width: 900px;
+width: 800px;
 margin: auto;
 background-color: rgba(255,255,255,0.85);
 margin-top: 0;
-padding: 1em;
+padding: 3em;
 }
 
 #headerArea{
@@ -148,7 +148,7 @@ $.getJSON(url, function(data){
 		for(i = 0; i < image.length; i++){
 		var desc_pos = image[i].description._content;
 		var flick_link = "https://www.flickr.com/photos/" + data.photos.photo[i].owner + "/" + data.photos.photo[i].id + "/in/dateposted-public/"
-		var link = "http://farm" + data.photos.photo[i].farm + ".static.flickr.com/" + data.photos.photo[i].server + "/"+data.photos.photo[i].id + "_"+data.photos.photo[i].secret + ".jpg";
+		var link = "http://farm" + data.photos.photo[i].farm + ".static.flickr.com/" + data.photos.photo[i].server + "/"+data.photos.photo[i].id + "_"+data.photos.photo[i].secret + "_z.jpg";
 		var tagOrder = image[i].tags.slice(-1);
 			if(tagOrder == 1){
 			var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
@@ -213,7 +213,7 @@ $.getJSON(url, function(data) {
     var rec = data.rows[0];
     //alert(JSON.stringify(rec));
     var html = ''
-    html += '<div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
+    html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
     html += '<p><b>Common Name: </b>' + rec.scomname + '</p>';
     html += '<p><b>Federal Protection: </b>' + rec.usesa + '</p>';
     html += '<p><b>State Protection: </b>' + rec.sprot + '</p>';
@@ -225,7 +225,7 @@ $.getJSON(url, function(data) {
     } else {
         swap = 'No';
     }
-    html += '<p><b>SWAP Status: </b>' + swap + '</p>';
+    html += '<p><b>SWAP Status: </b>' + swap + '</p><hr>';
     document.getElementById('carto-data').innerHTML = html;
 });
  </script> 
