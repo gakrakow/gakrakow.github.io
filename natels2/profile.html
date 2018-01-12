@@ -65,10 +65,23 @@ figure {
 figcaption {
   display: table-caption;
   caption-side: bottom;
-  padding: 0.3em 0em 1.25em 0em;
+  padding: 0.3em 0em 0.5em 0em;
 }
 #loaded{
 display:none;
+}
+.range_map_button, .natureserve_explorer {
+    position: relative;
+	margin: 3px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px #000000;
+    }
+
+@media print {
+
+.range_map_button, .natureserve_explorer {
+display: none;
+}
 }
 @media screen and (max-width:1000px) {
 
@@ -84,8 +97,7 @@ body {
 header {
     padding-top: 0;
     }
-
-
+}
 @media screen and (max-width:700px) {
 
 section, #headerArea  {
@@ -101,6 +113,7 @@ figure img {
 #group-logo {
     max-width: 93%;
     height: auto;
+	}
 }
 
     </style>
@@ -215,7 +228,12 @@ var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
     //alert(JSON.stringify(rec));
+	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
+	var sname_formatted = rec.sname.split(' ').join('+');
+	html += '<a href="range_maps2.html?es_id=' + current_es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank">' + '<img src="img/range_map3.png" class="range_map_button" alt="range map button">' + '</a>';
+	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
+	//upper two fields are used to create range map and explorer 
     html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
     html += '<p><b>Common Name: </b>' + rec.scomname + '</p>';
     html += '<p><b>Federal Protection: </b>' + rec.usesa + '</p>';

@@ -17,6 +17,7 @@
 
 <!-- FOR SCREEN -->
 <style>
+
 * {
     font-family: "Montserrat", sans-serif;
     }
@@ -89,12 +90,13 @@ h3, h2 {
     top: 2px;
     border-radius: 2px;
     box-shadow: 1px 1px 1px 1px #000000;
-    }
+	}
 
 .customize_button {
     margin: 10px 0px 0px 10px;
     box-shadow: 1px 1px 1px 1px #000000;
     }
+
 
 #watch_list_link {
     height: 60px;
@@ -357,7 +359,7 @@ function loadData(){
     if (localStorage.group == 'all_groups') {orderBy = 'es.an_pl, ' + orderBy;}
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
-        var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.el_group, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
+        var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.el_group, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.fus_tab_id, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
         var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.sname ,es.scomname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
         var sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {

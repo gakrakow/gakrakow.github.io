@@ -111,7 +111,7 @@ function PopUp(hideOrshow) {
         return
     } else if (hideOrshow == 'keep-filters') {
         //alert('in keep-filters');
-        localStorage.showWarning = true;
+       localStorage.showWarning = true;
     } else if (hideOrshow == 'clear-filters') {
         //alert('in clear-filters');
         clearLocationFilter();
