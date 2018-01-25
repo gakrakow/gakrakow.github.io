@@ -57,7 +57,7 @@ $('#myUL').hide();
 $('#myInput').focus();
 (function(){
 	$.each(searchData, function(key, value){
-	$('#myUL').append('<li class="list-group-item link-class"> '+ "<a href=profile.html?es_id=" + value.es_id + '&fus_tab_id='+ value.fus_tab_id + ">" + "<em>" + value.sname + "</em>" + "<span class='text-muted'> (" + value.scomname + ")" + "</a></li>");
+	$('#myUL').append('<li class="list-group-item link-class"> '+ "<a href=profile.html?es_id=" + value.es_id + '&fus_tab_id='+ value.fus_tab_id + '&group='+ value.header_group + ">" + "<em>" + value.sname + "</em>" + "<span class='text-muted'> (" + value.scomname + ")" + "</a></li>");
 	$("#myInput").hover(function(){
 		$('#myUL').show();
 		});
@@ -84,7 +84,7 @@ function hasOneDayPassed(){
 function runOncePerDay(){
   if( !hasOneDayPassed() ) return false;
 console.log('updating search definitions');
-$.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=SELECT%20es_id,%20sname,%20scomname,%20fus_tab_id%20FROM%20es_vw%20es', function(data){
+$.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27)', function(data){
 var local = data;
 localStorage.setItem("Searchdata",JSON.stringify(local));
 location.reload();//makes browser reload so that livesearch updates since data is stored locally
