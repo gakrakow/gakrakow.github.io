@@ -13,15 +13,22 @@ height: 65px;
 width: 200px;
 }	
 
-.latin {
+.scientific_name {
 font: italic bold 30px serif;
 }
-
+#carto-data > p {
+margin: .5em 0em .3em;
+}
+#fusion-data > p {
+margin: 5px 0px 15px 0px;
+}
+h3 {
+margin: 0em;
+}
 #sname {
 font: normal normal 27px serif;
 margin-top: 10px;
 }
-
 body  {
 background: url(img/cyp.jpeg) no-repeat fixed top;
 
@@ -94,7 +101,7 @@ body {
     padding: 0;
     }
 
-header {
+header{
     padding-top: 0;
     }
 }
@@ -149,6 +156,10 @@ var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 var localGroup = getURLParameter('group')
 $( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#headerArea" );
+$("#group-logo").wrap("<a href=element_lists.html?request_src=external_link&group=" + localGroup + " target=_blank" + "> </a>");
+
+
+
 if (localGroup == 'plant') {
 var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
 $(optionalButton).appendTo("#headerArea"); 
@@ -201,15 +212,15 @@ $.getJSON(url, function(data){
 			
 			if(rows != null)
 			{
-			for (var c = 3; c < columns.length; c++) {
+			for (var c = 4; c < columns.length; c++) {
 				row_value = mmd(rows[0][c]);
 				column_value = columns[c];	
 				if (column_value == 'References'){
 				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
-				html += '<p><b>References</b></br>' + reference + '</p>';				
+				html += '<h3>References</h3>' + reference;				
 				}
 				else{
-				html += '<p><b>' + column_value + '</b></br>' + row_value + '</p>';					
+				html += '<h3>' + column_value + '</h3>' + row_value;					
 				}
 				}
 				document.getElementById('fusion-data').innerHTML = html;
@@ -223,7 +234,7 @@ $.getJSON(url, function(data){
 		});
 
 // Place Carto data in page.
-var sql = "SELECT es_id, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank FROM es_web_all WHERE es_id = " + current_es_id;
+var sql = "SELECT es_id,fsname, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
 var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
@@ -234,8 +245,8 @@ $.getJSON(url, function(data) {
 	html += '<a href="range_maps2.html?es_id=' + current_es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank">' + '<img src="img/range_map3.png" class="range_map_button" alt="range map button">' + '</a>';
 	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
 	//upper two fields are used to create range map and explorer 
-    html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
-    html += '<p><b>Common Name: </b>' + rec.scomname + '</p>';
+    // old line html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
+	html += '<hr><div id="sname">' + rec.fsname + '</div>' + '<p style="font-size:20px; margin: 0em 0em .5em;">' + rec.scomname + '</p>';
     html += '<p><b>Federal Protection: </b>' + rec.usesa + '</p>';
     html += '<p><b>State Protection: </b>' + rec.sprot + '</p>';
     html += '<p><b>Global Rank: </b>' + rec.grank + '</p>';
@@ -246,7 +257,8 @@ $.getJSON(url, function(data) {
     } else {
         swap = 'No';
     }
-    html += '<p><b>SWAP Status: </b>' + swap + '</p><hr>';
+    html += '<p><b>SWAP Status: </b>' + swap + '</p>';
+	html += '<p><b>Habitat Summary for Georgia: </b>'+ rec.sshabitat + '</p><hr>';
     document.getElementById('carto-data').innerHTML = html;
 });
  </script> 
