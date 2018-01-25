@@ -177,6 +177,7 @@ text-decoration: underline;
     font-size: 11pt;
     padding: 0 5pt;
 }
+
 /*** END FILTER WARNING ***/
 
 @media screen and (max-width:1000px) {
@@ -364,7 +365,7 @@ function loadData(){
         var sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
-        var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, fus_tab_id, swap_status FROM es_vw es ";
+        var sqlQuery = "SELECT elcode, an_pl, es_id, fsname,sname,gname,scomname,exportdate,sprot,usesa,srank,grank,sgenus,header_group,eo_count,sshabitat,fus_tab_id,swapstatus FROM es_web_all es ";
         var sqlQuery4Export = "SELECT el_group, sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         var sqlQuery4ExportComname = "SELECT el_group, scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         }
