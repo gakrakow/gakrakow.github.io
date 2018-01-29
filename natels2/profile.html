@@ -83,6 +83,9 @@ display:none;
     border-radius: 2px;
     box-shadow: 1px 1px 1px 1px #000000;
     }
+#profile_status > p{
+margin: 0em ;
+}
 
 @media print {
 
@@ -134,6 +137,7 @@ figure img {
   <div id="listArea"><img id="loading-image" src="img/monarch_butterfly.gif"  alt="Loading..." /> <p id='loading'>Loading records. Please wait . . .</p>  </div>
   </section>
   <section id= "loaded">
+	<div id="profile_status"></div>
     <div id="primary-image"></div>
     <div id="carto-data"></div>
     <div id="fusion-data"></div>
@@ -212,9 +216,13 @@ $.getJSON(url, function(data){
 			
 			if(rows != null)
 			{
+			if(rows[0][3] == "Draft" || rows[0][3] == "" ){
+				$('<p style="color:green">*Draft: Profile is not complete</p>').appendTo("#profile_status");
+				}
 			for (var c = 4; c < columns.length; c++) {
 				row_value = mmd(rows[0][c]);
 				column_value = columns[c];	
+				
 				if (column_value == 'References'){
 				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
 				html += '<h3>References</h3>' + reference;				
@@ -225,8 +233,9 @@ $.getJSON(url, function(data){
 				}
 				document.getElementById('fusion-data').innerHTML = html;
 			}			
-			else
+			else if (rows == null)
 			{
+			$('<p style="color:green">*Draft: Profile is not complete</p>').appendTo("#profile_status");
 			var errorHTML = '<img src=img/incompleteprofile.png></img>';
 			$(errorHTML).appendTo("#fusion-data");
 			}

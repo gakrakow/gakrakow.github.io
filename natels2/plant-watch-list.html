@@ -9,15 +9,16 @@
 
     <script>
 function makeList() {
-    var sqlQuery = "select elcode, sname, scomname, srank, grank, sshabitat, exportdate, distr_conf from es_web where seotrack = 'W' ORDER BY sname";
+    var sqlQuery = "select es_id, fus_tab_id, header_group, elcode, sname, scomname, srank, grank, sshabitat, exportdate, distr_conf from es_web_all where seotrack = 'W' ORDER BY sname";
     $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=' + sqlQuery, function (data) {
         var wList = '<p id="list-top-info">' + data.rows.length + ' records in list. Exported from Bioitcs Conservation Database ' + data.rows[0].exportdate + '.</p><ul>';
         data.rows.forEach(function (row) {
+            var profile_link =  "<a href=profile.html?es_id=" + row.es_id + "&fus_tab_id="+ row.fus_tab_id + "&group=" + row.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>' 
             var ns_explorer_link = '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=' + row.sname.split(' ').join('+') + '" title="NatureServe Explorer Report for element"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer"  alt="NatureServe button"></a>';
             var el_rank = '<span title="Global and state rarity ranks"><b>Rank:</b> ' + row.grank + '/' + row.srank + '</span>';
             var sshabitat = '<span title="State short habitat description"><b>Habitat:</b> ' + row.sshabitat + '</span>';
             var distr_conf = '<span title="Distribution confidence in Georgia"><b>In Georgia: </b> ' + row.distr_conf + '</span>';
-            wList += '<li><i><b>' + row.sname + '</b></i>, ' + row.scomname + ', ' + el_rank + ', ' + distr_conf + ', ' + sshabitat + ' ' + ns_explorer_link + '</li>';
+            wList += '<li><i><b>' + row.sname + '</b></i>, ' + row.scomname + ', ' + el_rank + ', ' + distr_conf + ', ' + sshabitat + ' ' +profile_link + ns_explorer_link + '</li>';
         });
         wList += '</ul>';
         //alert(wList);
@@ -46,8 +47,6 @@ header, section, text {
     margin-top: 0;
     }
 
-section {
-}
 
 a {
 text-decoration: none; /* Gets rid of dirty default underline */
@@ -67,9 +66,10 @@ img.button, img.top-button {
     border: 5px solid rgba(1, 29, 11, 0.78);
 }
 
-.natureserve_explorer, .button_link {
+.natureserve_explorer, .button_link, .species_profile_button {
 position: relative;
 top: 2px;
+margin: 3px;
 box-shadow: 1px 1px 1px 1px #000000;
 }
 
