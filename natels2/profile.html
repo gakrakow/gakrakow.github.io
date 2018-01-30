@@ -216,8 +216,11 @@ $.getJSON(url, function(data){
 			
 			if(rows != null)
 			{
-			if(rows[0][3] == "Draft" || rows[0][3] == "" ){
-				$('<p style="color:green">*Draft: Profile is not complete</p>').appendTo("#profile_status");
+			if(rows[0][3] == "Draft" ){
+				$('<p style="color:green">*Draft: Profile is under revision</p>').appendTo("#profile_status");
+				}
+			if(rows[0][3] == "Partial"){
+			$('<p style="color:green">*Only a partial profile is available for this element</p>').appendTo("#profile_status");
 				}
 			for (var c = 4; c < columns.length; c++) {
 				row_value = mmd(rows[0][c]);
