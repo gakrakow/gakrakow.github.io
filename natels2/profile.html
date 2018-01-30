@@ -243,7 +243,7 @@ $.getJSON(url, function(data){
 		});
 
 // Place Carto data in page.
-var sql = "SELECT es_id,fsname, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
+var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
 var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
@@ -251,7 +251,13 @@ $.getJSON(url, function(data) {
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
 	var sname_formatted = rec.sname.split(' ').join('+');
+	if (rec.eo_count != 0){
+	//show range button
 	html += '<a href="range_maps2.html?es_id=' + current_es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank">' + '<img src="img/range_map3.png" class="range_map_button" alt="range map button">' + '</a>';
+	}
+	else{
+	html += '<p><b>Range Map: </b>None</p>'
+	}
 	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
 	//upper two fields are used to create range map and explorer 
     // old line html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
@@ -267,7 +273,13 @@ $.getJSON(url, function(data) {
         swap = 'No';
     }
     html += '<p><b>SWAP Status: </b>' + swap + '</p>';
+	html += '<p><b>Eos: </b>' + rec.eo_count + '</p>';
+	if(localGroup != "community"){
 	html += '<p><b>Habitat Summary for Georgia: </b>'+ rec.sshabitat + '</p><hr>';
+	}
+	else{
+	html += '<hr>';
+	}
     document.getElementById('carto-data').innerHTML = html;
 });
  </script> 
