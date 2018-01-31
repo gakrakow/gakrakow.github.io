@@ -170,7 +170,7 @@
             ,area.the_geom_webmercator
             ,area.the_geom
         FROM {{area}} area
-        RIGHT JOIN eo_web eo ON area.rpt_name = eo.rpt_name
+        LEFT JOIN eo_web eo ON area.rpt_name = eo.rpt_name
         WHERE eo.es_id = '{{es_id}}'
     </script>
     

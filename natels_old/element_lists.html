@@ -17,7 +17,6 @@
 
 <!-- FOR SCREEN -->
 <style>
-
 * {
     font-family: "Montserrat", sans-serif;
     }
@@ -90,13 +89,12 @@ h3, h2 {
     top: 2px;
     border-radius: 2px;
     box-shadow: 1px 1px 1px 1px #000000;
-	}
+    }
 
 .customize_button {
     margin: 10px 0px 0px 10px;
     box-shadow: 1px 1px 1px 1px #000000;
     }
-
 
 #watch_list_link {
     height: 60px;
@@ -177,7 +175,6 @@ text-decoration: underline;
     font-size: 11pt;
     padding: 0 5pt;
 }
-
 /*** END FILTER WARNING ***/
 
 @media screen and (max-width:1000px) {
@@ -242,6 +239,69 @@ section, header {
 </script> <!-- end hdr_tpt (header template) -->
 
 <script>
+
+var filters = {
+"all_statuses": ["With or Without Protection Status", "WHERE es.sname <> ''"],
+"us": ["With Federal Protection Status", "WHERE es.usesa <> ''"],
+"ga": ["With Georgia Protection Status", "WHERE es.sprot != ''"],
+"no-ga-status": ["Without Georgia Protection Status", "WHERE (es.sprot = '') "],
+"no-us-status": ["Without Federal Protection Status", "WHERE (es.usesa = '') "],
+"swap": ["Tracked, SWAP Species of Greatest Conservation Need (SGCN)", "WHERE es.swap_status = 1"],
+"all_ranks": ["", " AND es.srank <> ''"],
+"s1s2": ["Georgia Rarest (S1 & S2) ", " AND es.rnd_srank IN ('S1', 'S2')"],
+"g1g2": ["Globally Rarest (G1 & G2) ", " AND es.rnd_grank IN ('G1', 'G2', 'T1', 'T2')"],
+"shsx": ["Not seen in Georgia for over 20 years (SH & SX) ", " AND es.rnd_srank IN ('SH', 'SX')"],
+"all_groups": ["All Tracked Natural Elements", " AND es.elcode <> ''"],
+"animal": ["Rare Animals ", " AND SUBSTR(es.elcode, 1, 1) in ('A', 'I')"],
+"plant": ["Rare Plants ", " AND SUBSTR(es.elcode, 1, 1) in ('P', 'N')"],
+"bird": ["Rare Birds ", " AND SUBSTR(es.elcode, 1, 2) = 'AB'"],
+"fish": ["Rare Fishes ", " AND SUBSTR(es.elcode, 1, 2) = 'AF'"],
+"mammal": ["Rare Mammals ", " AND SUBSTR(es.elcode, 1, 2) = 'AM'"],
+"bat": ["Rare Bats ", " AND substr(es.elcode,1,5) in ('AMACC', 'AMACD')"],
+"mollusk": ["Rare Mollusks ", " AND SUBSTR(es.elcode, 1, 2) = 'IM'"],
+"aquatic": ["Fishes, Mollusks and Crayfishes ", " AND (SUBSTR(es.elcode, 1, 2) in ('AF', 'IM') OR es.sgenus IN ('Cambarus', 'Distocambarus', 'Fallicambarus', 'Faxonella', 'Orconectes', 'Procambarus'))"],
+"rep-amp": ["Rare Reptiles and Amphibians ", " AND SUBSTR(es.elcode, 1, 2) in ('AR', 'AA')"],
+"arthropod": ["Rare Arthropods ", " AND SUBSTR(es.elcode, 1, 2) in ('IL', 'IC', 'II')"],
+"community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
+"community": ["Tracked Natural Plant Communities ", " AND SUBSTR(es.elcode, 1, 1) = 'C'"],
+}
+
+var areas = {
+'cnty': 'County',
+'qq': 'Quarter Quad',
+'huc8': 'HUC8 Watershed',
+'huc10': 'HUC10 Watershed',
+'eco3': 'Level 3 Ecoregion',
+'eco4': 'Level 4 Ecoregion',
+'hex24': '24 km Hexagon'
+}
+
+var groups = {
+'Animal': 'ANIMALS',
+'Plant': 'PLANTS',
+'Community': 'NATURAL COMMUNITIES',
+'Other': "OTHER NATURAL ELEMENTS"
+}
+
+// store the sname, scomname and exportdate into local storage.
+function reply_click(es_id) {
+    // get the element subnational id
+    var el_sql = "SELECT es_id, sname ,scomname ,exportdate ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
+    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
+        var el_obj = element_object.rows[0];
+        // put all of the element field values as JSON string object into the localStorage
+        localStorage.el_obj = JSON.stringify(el_obj);
+    })
+}
+ 
+function putURLParametersIntoLocalStorage() {
+    //setDefaultsInStorage(); //*** May have to use this *** Check out the logic.
+    if (getURLParameter('status')) {localStorage.status = getURLParameter('status');}
+    if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
+    if (getURLParameter('rank')) {localStorage.rank = getURLParameter('rank');}
+}
+
+
 function loadData(){
     // This should only show warning if over 1 hour, filters are set and showWarning is true or undefined.
     var dialogDelaySec = 1800; //Set for 1/2 hour
@@ -305,7 +365,6 @@ function loadData(){
     }
         
     // Create a user friendly filter description for the title of the page
-	if (getURLParameter('group')) {localStorage.group = getURLParameter('group');}
     var header_values = {
         'rank': filters[localStorage.rank][0],
         'group': filters[localStorage.group][0],
@@ -360,17 +419,21 @@ function loadData(){
     if (localStorage.group == 'all_groups') {orderBy = 'es.an_pl, ' + orderBy;}
     if (localStorage.report_type == 'area') {
         // Base query for when needing to generate an area report
-        var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.el_group, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.fus_tab_id, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
+        var sqlQuery = "SELECT eo.area_name, eo.rpt_name, es.elcode, es.an_pl, es.el_group, es.es_id, es.com_id, es.com_match, es.com_type, es.sname, es.gname, es.scomname, es.exportdate, es.sprot, es.usesa, es.srank, es.grank, es.sgenus, es.eo_count, es.sshabitat, es.profile_url, es.swap_status FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ";
         var sqlQuery4Export = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.sname ,es.scomname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
-        var sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
+        sqlQuery4ExportComname = Mustache.render("SELECT eo.area_name AS {{area}} ,es.an_pl ,es.el_group ,es.scomname ,es.sname ,es.sprot ,es.usesa ,es.srank ,es.grank ,CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status ,es.eo_count ,es.sshabitat ,es.exportdate FROM eo_web eo LEFT JOIN es_vw es ON es.sname = eo.sname ", {area: localStorage.area_type});
     } else {
         // Base query for when NOT needing to generate an area report
-        var sqlQuery = "SELECT elcode, an_pl, es_id, fsname,sname,gname,scomname,exportdate,sprot,usesa,srank,grank,sgenus,header_group,eo_count,sshabitat,fus_tab_id,swapstatus FROM es_web_all es ";
+        var sqlQuery = "SELECT elcode, an_pl, es_id, com_id, com_match, com_type, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, eo_count, sshabitat, profile_url, swap_status FROM es_vw es ";
         var sqlQuery4Export = "SELECT el_group, sname, scomname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         var sqlQuery4ExportComname = "SELECT el_group, scomname, sname, sprot, usesa, srank, grank, CASE WHEN es.swap_status = 1 THEN 'yes' ELSE 'no' END AS swap_status, eo_count, sshabitat, exportdate FROM es_vw es ";
         }
         
     sqlQuery +=  whereClause + ' ORDER BY ' + orderBy;
+    //alert(sqlQuery);
+
+
+
     
     //Set up export query for either scomname and sname sorted elements.
     if (orderBy.indexOf('sname') == -1) {
@@ -385,6 +448,7 @@ function loadData(){
     
     // Get the template for the elements
     var el_tpt = document.getElementById('el_tpt').innerHTML;
+    
     // Create the Mustache partial templates
     var partials = {
         el_rank: ', <span title="Global and state rarity ranks"><b>Rank:</b> {{grank}}/{{srank}}</span>',
@@ -393,7 +457,7 @@ function loadData(){
         eo_amount: ', <span title="Number of Element Occurrences (EOs) in Georgia"><b>EOs:</b> {{eo_count}}</span>',
         with_range_map: ' <a href="range_maps2.html?es_id={{es_id}}&area_type={{area_type}}" title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank" onClick="reply_click({{es_id}})"> <img src="img/range_map3.png" class="range_map_button" alt="range map button"> </a> ',
         no_range_map: ' <span title="Range map in Georgia using GA-DNR, Biotics element occurence data"><b> Range Map:</b> None</span> ',
-        species_profile: ' <a href="profile.html?es_id={{es_id}}&fus_tab_id={{fus_tab_id}}&group={{group}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>',
+        species_profile: ' <a href="{{profile_url}}" title="GA-DNR natural element profile report"><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a> ',
         ns_explorer: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="NatureServe Explorer Report for element"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a> ',
         ns_explorer_approx: ' <a href="http://explorer.natureserve.org/servlet/NatureServe?{{ns_explorer_search_name}}" title="Approximate match to NatureServe Explorer report for element"><img src="img/natuerserve_explorer_small_approx.png" class="natureserve_explorer" alt="NatureServe approximate match button"></a> ' 
         }
@@ -447,7 +511,6 @@ function loadData(){
         var last_an_pl = '';
         for (row in data.rows) {
             var rec = data.rows[row];
-			rec['group']=localStorage.group
             
             // Add area_type from localStorage.area_type to rec
             if (!localStorage.area_type) {
@@ -496,9 +559,7 @@ function loadData(){
 
              // Set up species profile
              if (localStorage.show_profile_link === 'true') {
-				
-                //if(rec.profile_url != null) {
-				if(rec.fus_tab_id != null) {
+                if (rec.profile_url != null) {
                     rec.species_profile = Mustache.render(partials.species_profile, rec);
                 } else {
                     rec.species_profile = '<span title="GA-DNR natural element profile report"> <b>Profile:</b> None</span>';
@@ -557,15 +618,13 @@ function loadData(){
              }
 
            // add record to records
-		   
            recs.push(rec);
-		   
         }
         var list_html = Mustache.render(el_tpt, recs, partials);
         document.getElementById('listArea').innerHTML = list_html;
         document.getElementById('row_count').innerHTML = '&nbsp;&nbsp;&nbsp;' + partials.recordCount + ' element records in list';
     }) //getJSON
- 
+    
     // Store access time in seconds form 1970/01/01
     localStorage.lastAccessTime = Date.now()/1000;
 
