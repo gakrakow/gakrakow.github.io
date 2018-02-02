@@ -134,7 +134,7 @@ figure img {
   <a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
   </header>
   <section id = "preload">
-  <div id="listArea"><img id="loading-image" src="img/monarch_butterfly.gif"  alt="Loading..." /> <p id='loading'>Loading records. Please wait . . .</p>  </div>
+  <div id="listArea"><img id="loading-image" src="img/monarch_butterfly.gif"  alt="Loading profile..." /> <p id='loading'>Loading profile. Please wait . . .</p>  </div>
   </section>
   <section id= "loaded">
 	<div id="profile_status"></div>
@@ -142,6 +142,7 @@ figure img {
     <div id="carto-data"></div>
     <div id="fusion-data"></div>
     <div id="supplemental-images"></div>
+	<div id="footer"></div>
   </section>
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
@@ -238,7 +239,7 @@ $.getJSON(url, function(data){
 			}			
 			else if (rows == null)
 			{
-			$('<p style="color:green">*Profile Information Currently Unavailable</p>').appendTo("#profile_status");
+			$('<p style="color:green">*Complete profile information is currently unavailable</p>').appendTo("#profile_status");
 			var errorHTML = '<img src=img/incompleteprofile.png></img>';
 			$(errorHTML).appendTo("#fusion-data");
 			}
@@ -248,7 +249,9 @@ $.getJSON(url, function(data){
 // Place Carto data in page.
 var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
 var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
+
 $.getJSON(url, function(data) {
+//$("<footer>Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were updated from the Georgia instance of the Biotics conservation database on " + exportdate + "</footer>").appendTo("#footer");
     var rec = data.rows[0];
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
@@ -275,8 +278,8 @@ $.getJSON(url, function(data) {
     } else {
         swap = 'No';
     }
-    html += '<p><b>SWAP Status: </b>' + swap + '</p>';
-	html += '<p><b>Eos: </b>' + rec.eo_count + '</p>';
+    html += '<p><b>SWAP Species of Greatest Conservation Need (SGCN): </b>' + swap + '</p>';
+	html += '<p><b>Element Occurrences (EOs) in Georgia: </b>' + rec.eo_count + '</p>';
 	if(localGroup != "community"){
 	html += '<p><b>Habitat Summary for Georgia: </b>'+ rec.sshabitat + '</p><hr>';
 	}
