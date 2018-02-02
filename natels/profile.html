@@ -230,13 +230,13 @@ $.getJSON(url, function(data){
 				row_value = mmd(rows[0][c]);
 				column_value = columns[c];	
 				
-				if (column_value == 'References'){
+				/*if (column_value == 'References'){
 				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
 				html += '<h3>References</h3>' + reference;				
 				}
-				else{
+				else{*/
 				html += '<h3>' + column_value + '</h3>' + row_value;					
-				}
+				//}
 				}
 				document.getElementById('fusion-data').innerHTML = html;
 			}			
@@ -255,7 +255,7 @@ var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
-	$("<footer>*Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were updated from the Georgia instance of the Biotics conservation database on " + rec.exportdate + "</footer>").appendTo("#footer");
+	$('<footer><hr>Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were exported from the Georgia instance of the NatureServe Biotics conservation database on ' + rec.exportdate + '. Other fields in this profile were updated as indicated in the "Date Compiled or Updated" field.</footer>').appendTo("#footer");
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
@@ -281,7 +281,7 @@ $.getJSON(url, function(data) {
     } else {
         swap = 'No';
     }
-    html += '<p><b>SWAP Species of Greatest Conservation Need (SGCN): </b>' + swap + '</p>';
+    html += '<p><b>SWAP High Priority Species (SGCN): </b>' + swap + '</p>';
 	html += '<p><b>Element Occurrences (EOs) in Georgia: </b>' + rec.eo_count + '</p>';
 	if(localGroup != "community"){
 	html += '<p><b>Habitat Summary for Georgia: </b>'+ rec.sshabitat + '</p><hr>';
