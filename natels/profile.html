@@ -86,6 +86,9 @@ display:none;
 #profile_status > p{
 margin: 0em ;
 }
+footer{
+font-size:small;
+}
 
 @media print {
 
@@ -251,8 +254,8 @@ var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,sw
 var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 
 $.getJSON(url, function(data) {
-//$("<footer>Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were updated from the Georgia instance of the Biotics conservation database on " + exportdate + "</footer>").appendTo("#footer");
     var rec = data.rows[0];
+	$("<footer>*Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were updated from the Georgia instance of the Biotics conservation database on " + rec.exportdate + "</footer>").appendTo("#footer");
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
