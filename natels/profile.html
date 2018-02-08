@@ -1,5 +1,6 @@
 <html>
   <head>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Species of Georgia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
@@ -57,7 +58,6 @@ height: 50px;
 margin-left: 4px;
 border: 8px solid rgba(61, 61, 61, 0.78);
 }
-
 #watch_list_link {
 height: 60px;
 width: 94px;
@@ -77,7 +77,7 @@ figcaption {
 #loaded{
 display:none;
 }
-.range_map_button, .natureserve_explorer {
+.range_map_button, .natureserve_explorer, .about-button {
     position: relative;
 	margin: 3px;
     border-radius: 2px;
@@ -226,7 +226,7 @@ $.getJSON(url, function(data){
 			if(rows[0][3] == "Partial"){
 			$('<p style="color:green">*Only a partial profile is available for this element</p>').appendTo("#profile_status");
 				}
-			for (var c = 4; c < columns.length; c++) {
+			for (var c = 12; c < columns.length; c++) {
 				row_value = mmd(rows[0][c]);
 				column_value = columns[c];	
 				
@@ -268,6 +268,8 @@ $.getJSON(url, function(data) {
 	html += '<p><b>Range Map: </b>None</p>'
 	}
 	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
+	
+	html += '<a href="about-this-data.html"title="About This Data" target="_blank">' + '<img src="img/about_button_small.png" class="about-button" alt="About button"></a>';
 	//upper two fields are used to create range map and explorer 
     // old line html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
 	html += '<hr><div id="sname">' + rec.fsname + '</div>' + '<p style="font-size:20px; margin: 0em 0em .5em;">' + rec.scomname + '</p>';
