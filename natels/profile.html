@@ -1,7 +1,7 @@
 <html>
   <head>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <title>Species of Georgia</title>
+    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 
@@ -167,11 +167,6 @@ $( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#
 $("#group-logo").wrap("<a href=element_lists.html?request_src=external_link&group=" + localGroup + " target=_blank" + "> </a>");
 
 
-
-if (localGroup == 'plant') {
-var optionalButton = '<a href="plant-watch-list.html"><img id="watch_list_link" class="group" src="img/plant-watch-list.png" alt="Plant Watch List" title="Plant Watch List"></a>'
-$(optionalButton).appendTo("#headerArea"); 
-}
 var tags = "&tags=GA_ES_ID_" + current_es_id + "_1,GA_ES_ID_" + current_es_id + "_2,GA_ES_ID_" + current_es_id + "_3,GA_ES_ID_" + current_es_id + "_4,GA_ES_ID_" + current_es_id + "_5,GA_ES_ID_" + current_es_id + "_6,GA_ES_ID_" + current_es_id + "_7,GA_ES_ID_" + current_es_id + "_8,GA_ES_ID_" + current_es_id + "_9,GA_ES_ID_" + current_es_id + "_10&extras=description,tags&format=json&jsoncallback=?"
 
 var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=283f57a676868bb1f7ceab8ab46d91b5" + tags;
@@ -249,11 +244,12 @@ $.getJSON(url, function(data){
 		});
 
 // Place Carto data in page.
-var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
+var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,el_group,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
 var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
+	document.title = "Georgia Rare " + rec.el_group;
 	$('<footer><hr>Federal and State protection status, State and Global Rank, SWAP status, EO count and habitat summary were exported from the Georgia instance of the NatureServe Biotics conservation database on ' + rec.exportdate + '. Other fields in this profile were updated as indicated in the "Date Compiled or Updated" field.</footer>').appendTo("#footer");
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
@@ -290,6 +286,7 @@ $.getJSON(url, function(data) {
 	else{
 	html += '<hr>';
 	}
+
     document.getElementById('carto-data').innerHTML = html;
 });
  </script> 
