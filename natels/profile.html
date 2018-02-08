@@ -92,7 +92,7 @@ font-size:small;
 
 @media print {
 
-.range_map_button, .natureserve_explorer {
+.range_map_button, .natureserve_explorer, .about-button {
 display: none;
 }
 }
@@ -217,13 +217,12 @@ $.getJSON(url, function(data){
 		
 			var columns = data['columns'];
             var rows = data['rows'];
-			
 			if(rows != null)
 			{
-			if(rows[0][3] == "Draft" ){
+			if(rows[0][5] == "Update" ){
 				$('<p style="color:green">*Draft: Profile is under revision</p>').appendTo("#profile_status");
 				}
-			if(rows[0][3] == "Partial"){
+			if(rows[0][5] == "Create"){
 			$('<p style="color:green">*Only a partial profile is available for this element</p>').appendTo("#profile_status");
 				}
 			for (var c = 12; c < columns.length; c++) {
