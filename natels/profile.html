@@ -260,7 +260,7 @@ $.getJSON(url, function(data) {
 	html += '<a href="range_maps2.html?es_id=' + current_es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank">' + '<img src="img/range_map3.png" class="range_map_button" alt="range map button">' + '</a>';
 	}
 	else{
-	html += '<p><b>Range Map: </b>None</p>'
+	html += '<img src="img/no-range-map.png" class="range_map_button" alt="range map button">'//'<p><b>Range Map: </b>None</p>'
 	}
 	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
 	
@@ -281,7 +281,7 @@ $.getJSON(url, function(data) {
     html += '<p><b>SWAP High Priority Species (SGCN): </b>' + swap + '</p>';
 	html += '<p><b>Element Occurrences (EOs) in Georgia: </b>' + rec.eo_count + '</p>';
 	if(localGroup != "community"){
-	html += '<p><b>Habitat Summary for Georgia: </b>'+ rec.sshabitat + '</p><hr>';
+	html += '<p><b>Habitat Summary for Element in Georgia: </b>'+ rec.sshabitat + '</p><hr>';
 	}
 	else{
 	html += '<hr>';

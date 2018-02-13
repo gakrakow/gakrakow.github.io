@@ -122,6 +122,12 @@ li a:hover:not(.active) {
     margin: auto;
     width: 60%;
 }
+#about {
+    border-radius: 0;
+    padding: 8px;
+    background-color: #ccc;
+    color: black;
+    }
 
 @media only screen and (max-width: 950px) {
     #logos {
