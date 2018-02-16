@@ -508,7 +508,8 @@ function loadData(){
              if (localStorage.show_profile_link === 'true') {
 				
                 //if(rec.profile_url != null) {
-				if(rec.fus_tab_id != "no fusion table") {
+                    // change to (no fusion table) when working correctly - uses the web_all table 
+				if(rec.fus_tab_id != null) {
                     rec.species_profile = Mustache.render(partials.species_profile, rec);
                 } else {
                     rec.species_profile = Mustache.render(partials.no_species_profile, rec);
