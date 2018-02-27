@@ -223,3 +223,25 @@ var groups = {
 'Community': 'NATURAL COMMUNITIES',
 'Other': "OTHER NATURAL ELEMENTS"
 }
+
+// checks if one day has passed. return "true" is so
+function hasOneDayPassed(){
+    var date = new Date().toLocaleDateString();
+
+    if( localStorage.yourapp_date == date ) 
+    return false;
+
+    localStorage.yourapp_date = date;
+    return true;
+    }
+
+    // Update search data once a day
+    function runOncePerDay(){
+    if( !hasOneDayPassed() ) return false;
+    console.log('updating search definitions');
+    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27)', function(data){
+    var local = data;
+    localStorage.setItem("Searchdata",JSON.stringify(local));
+    location.reload();//makes browser reload so that livesearch updates since data is stored locally
+    })
+    }//end dayfunctions

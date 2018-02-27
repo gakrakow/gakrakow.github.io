@@ -44,7 +44,7 @@ ul{
     list-style-type: none;
     overflow: hidden;
     overflow-y: scroll;
-    height: 300px;
+    height: 200px;
     margin: 0;
 }
 li{
@@ -53,6 +53,9 @@ li{
 }
 #dnr_logo {
         background-image: url(img/georgia-rare-natural-elements-half-size.png);
+        background-repeat: no-repeat;
+        background-size:contain;
+        background-color: white;
         border-style: solid;
         border-color: #999;
         border-width: 2px;
@@ -70,14 +73,17 @@ li{
     }
     #wrd_logo {
         background-image: url(img/wrd_logo.png);
+        background-repeat: no-repeat;
+        background-size:contain;
+        background-color: white;
         border-style: solid;
         border-color: #999;
         border-width: 2px;
         border-radius: 10px;
         outline-width: 2px;
         position: absolute;
-        width: 130px;
-        height: 60px;
+        width: 80px;
+        height: 40px;
         left: 10px;
         bottom: 100px;
         margin-bottom: 5px;
@@ -92,25 +98,11 @@ li{
 #controls {
     width: 200px;
 }
-
-#dnr_logo{
-    width: 75px;
-}
-#wrd_logo{
-    width: 120px;
-}
-}
-
-@media screen and (max-width:700px) {
-#wrd_logo{
-    width: 120px;
-    height: 30px;
-}
-
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://js.arcgis.com/3.23/"></script>
+<script src="rare_elements.js"></script>    
 <script>
 require([
     "dojo/parser", "esri/graphic",
@@ -136,7 +128,10 @@ require([
 			radiusValue = value;
 			}
     }, "programmatic").startup();
-
+runOncePerDay(); // run the code
+runOncePerDay(); // does not run the code
+var liveSearch = JSON.parse(localStorage.getItem("Searchdata"));
+var searchData = liveSearch.rows;
  var menu = new Menu({ style: "display: none;"});
     var menuItem1 = new MenuItem({
         label: "miles",
@@ -195,21 +190,31 @@ require([
             map.graphics.clear();
             // add the results to the map
             var comName = [];
-		    var sName = [];
+            var sName = [];
+            var elNumber = [];
             arrayUtils.forEach(results.features, function (feat) {
-                feat.setSymbol(new SimpleFillSymbol());
-                map.graphics.add(feat);
+                //feat.setSymbol(new SimpleFillSymbol());
+                //map.graphics.add(feat);
             comName.push(feat.attributes["scomname"]);
-			sName.push(feat.attributes["sname"]);
+            sName.push(feat.attributes["sname"]);
+            elNumber.push(feat.attributes["es_id"]);
             });
             var comName = comName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-		    var sName = sName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-            var comList = "";
+            var sName = sName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+            var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+            
+            
+            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ')', function(data){
             var sList = "";
-            for(i=0; i<comName.length; i++){comList += "<li>"+comName[i]+"</li>";}
-            for(i=0; i<sName.length; i++){sList += "<li>"+sName[i]+"</li>";}
-            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within this range.</b></br>" + '<button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>';
-          
+            var comList = "";
+            $.each(data.rows, function(key, value)
+            {
+            sList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
+            comList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+            })
+
+            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within this range.</b></br>" + '<button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>';  
+           
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
             commonLink.addEventListener('click', commonFunction);
@@ -219,7 +224,6 @@ require([
                                   new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
                                   new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])));
             map.graphics.add(circleGra);
-        }
 
             function commonFunction() {
 			var x = document.getElementById("commonName");
@@ -236,9 +240,9 @@ require([
 			} else {
 			x.style.display = "none";
 				   }
-							 }
-
-
+                            }
+            });          
+        }
     });
 
 </script>
