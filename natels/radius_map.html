@@ -51,7 +51,7 @@ ul{
     list-style-type: none;
     overflow: hidden;
     overflow-y: scroll;
-    height: 200px;
+    height: 150px;
     margin: 0;
 }
 li{
@@ -101,23 +101,41 @@ li{
 .dijitNumberTextBox {
     width: 30px;
 }
+#button{
+    display: block; 
+    margin: 0 auto;
+}
 @media screen and (max-width:1000px) {
 #controls {
     width: 200px;
+    right: 0px;
 }
 #dnr_logo{
     width: 40px;
     height: 20px;
     margin-bottom: 12px;
     bottom: 0px;
+    left: 0px;
 }
 #wrd_logo{
     width: 40px;
     height: 20px;
     margin-bottom: 0px;
     bottom: 58px;
+    left: 0px;
 }
 }
+@media screen and (max-width:700px) {
+#controls{
+    right:0px;
+    top:0px;
+}
+ul{
+    height: 100px;
+}
+
+}
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://js.arcgis.com/3.23/"></script>
@@ -126,14 +144,14 @@ li{
 require([
     "dojo/parser", "esri/graphic",
     "esri/Color", "dojo/_base/array", "dojo/dom",
-    "esri/config", "esri/map", "esri/geometry/Circle",
+    "esri/config", "esri/map","esri/geometry/webMercatorUtils", "esri/geometry/Circle",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberTextBox", "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton", 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
     "dojo/domReady!"], function (
         parser, Graphic,
         Color, arrayUtils, dom,
-        esriConfig, Map, Circle,
+        esriConfig, Map,webMercatorUtils, Circle,
         SimpleFillSymbol, SimpleLineSymbol,
         Query, QueryTask, NumberTextBox, Menu, MenuItem, ComboButton) {
         // create layout dijits
@@ -182,17 +200,20 @@ var searchData = liveSearch.rows;
         // query task and query for parcels
         var qtParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/quarterquad/FeatureServer/0");
         var qParcels = new Query();
-        
+        //var ctParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/County/FeatureServer/0");
+       // var cParcels = new Query();
         qParcels.returnGeometry = true;
         qParcels.outFields = ["*"];
-        var qGeom;
+        //cParcels.returnGeometry = true;
+        //cParcels.outFields = ["*"];
         
+        var qGeom;
+        var coords;
 
         map.on("click", executeQueries);
-        
+
         function executeQueries(e) {
             var parcels, point;
-            
             // this is used to return features within 100 meters of the click point
             point = e.mapPoint;
             qGeom = new Circle(point, {
@@ -200,27 +221,39 @@ var searchData = liveSearch.rows;
                 "spatialReference": point.spatialReference,
                 radiusUnit: distSelect
             });
+
+            //the map is in web mercator but display coordinates in geographic (lat, long)
+          var mp = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
+          //display mouse coordinates
+          coords = mp.x.toFixed(3) + ", " + mp.y.toFixed(3);
             
             // use the circle for the query geometry
             qParcels.geometry = qGeom;
             qtParcels.execute(qParcels, handleQueryResults);
+            //ctParcels.execute(qParcels, county);
         }
         
+        //function county(results){
+
+
+       // }
         function handleQueryResults(results) {
             map.graphics.clear();
+            
             // add the results to the map
             var comName = [];
-            var sName = [];
+            //var sName = [];
             var elNumber = [];
             arrayUtils.forEach(results.features, function (feat) {
+                //console.log(feat);
                 //feat.setSymbol(new SimpleFillSymbol());
                 //map.graphics.add(feat);
             comName.push(feat.attributes["scomname"]);
-            sName.push(feat.attributes["sname"]);
+            //sName.push(feat.attributes["sname"]);
             elNumber.push(feat.attributes["es_id"]);
             });
             var comName = comName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-            var sName = sName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+            //var sName = sName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             
             
@@ -233,7 +266,7 @@ var searchData = liveSearch.rows;
             comList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
             })
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within this range.</b></br>" + '<button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>';  
+            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates. " + coords + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>';  
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
@@ -265,6 +298,7 @@ var searchData = liveSearch.rows;
         }
         $( "#button" ).click(function() {
   $( "#results" ).slideToggle( "slow" );
+  $( "p" ).slideToggle( "slow" );
 });
     });
 
