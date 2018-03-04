@@ -171,7 +171,6 @@ var tags = "&tags=GA_ES_ID_" + current_es_id + "_1,GA_ES_ID_" + current_es_id + 
 
 var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=283f57a676868bb1f7ceab8ab46d91b5" + tags;
 
-
 $.getJSON(url, function(data){
 	var image = data.photos.photo
 	if(image != 0){
@@ -254,6 +253,12 @@ $.getJSON(url, function(data) {
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
+	var sname = rec.sname;
+	var cname = rec.scomname;
+	// wait for page load to insert sname into a figcaption
+	$(window).on('load', function() {
+	$("figcaption").prepend("<i>" + sname + "</i> " + "(" + cname + ") ");
+	});
 	var sname_formatted = rec.sname.split(' ').join('+');
 	if (rec.eo_count != 0){
 	//show range button
@@ -286,7 +291,6 @@ $.getJSON(url, function(data) {
 	else{
 	html += '<hr>';
 	}
-
     document.getElementById('carto-data').innerHTML = html;
 });
  </script> 
