@@ -575,6 +575,8 @@ function loadData(){
         var list_html = Mustache.render(el_tpt, recs, partials);
         document.getElementById('listArea').innerHTML = list_html;
         document.getElementById('row_count').innerHTML = '&nbsp;&nbsp;&nbsp;' + partials.recordCount + ' element records in list';
+		
+		
     }) //getJSON
  
     // Store access time in seconds form 1970/01/01

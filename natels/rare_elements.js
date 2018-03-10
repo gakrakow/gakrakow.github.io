@@ -228,10 +228,10 @@ var groups = {
 function hasOneDayPassed(){
     var date = new Date().toLocaleDateString();
 
-    if( localStorage.yourapp_date == date ) 
+    if( localStorage.lastcheckdate == date ) 
     return false;
 
-    localStorage.yourapp_date = date;
+    localStorage.lastcheckdate = date;
     return true;
     }
 

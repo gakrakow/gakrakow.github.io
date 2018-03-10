@@ -190,9 +190,9 @@ var searchData = liveSearch.rows;
     button.placeAt(distance);
     button.startup();
 
-
+		// other map suggestions - osm
         map = new Map("map", {
-            basemap: "osm",
+            basemap: "streets",
             center: [-83.441162, 33.247875],
             zoom: 7
         });
@@ -200,16 +200,16 @@ var searchData = liveSearch.rows;
         // query task and query for parcels
         var qtParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/quarterquad/FeatureServer/0");
         var qParcels = new Query();
-        //var ctParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/County/FeatureServer/0");
-       // var cParcels = new Query();
+        var ctParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/County/FeatureServer/0");
+        var cParcels = new Query();
         qParcels.returnGeometry = true;
         qParcels.outFields = ["*"];
-        //cParcels.returnGeometry = true;
-        //cParcels.outFields = ["*"];
+        cParcels.returnGeometry = true;
+        cParcels.outFields = ["*"];
         
         var qGeom;
         var coords;
-
+		var onClickCounty;
         map.on("click", executeQueries);
 
         function executeQueries(e) {
@@ -230,13 +230,14 @@ var searchData = liveSearch.rows;
             // use the circle for the query geometry
             qParcels.geometry = qGeom;
             qtParcels.execute(qParcels, handleQueryResults);
-            //ctParcels.execute(qParcels, county);
+            ctParcels.execute(qParcels, county);
         }
         
-        //function county(results){
-
-
-       // }
+        function county(results){
+		onClickCounty = results.features[0].attributes.area_name;
+		
+		console.log(onClickCounty);
+        }
         function handleQueryResults(results) {
             map.graphics.clear();
             
@@ -266,7 +267,9 @@ var searchData = liveSearch.rows;
             comList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
             })
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates. " + coords + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>';  
+            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>';
+			
+			//+ '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>' - add when working
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
@@ -278,6 +281,8 @@ var searchData = liveSearch.rows;
                                   new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])));
             map.graphics.add(circleGra);
 
+			//sessionStorage.setItem("radiusmap", JSON.stringify(data));
+			
             function commonFunction(value) {
 			var x = document.getElementById("commonName");
 			if (x.style.display === "none") {
