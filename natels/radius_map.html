@@ -236,7 +236,6 @@ var searchData = liveSearch.rows;
         function county(results){
 		onClickCounty = results.features[0].attributes.area_name;
 		
-		console.log(onClickCounty);
         }
         function handleQueryResults(results) {
             map.graphics.clear();
@@ -258,7 +257,8 @@ var searchData = liveSearch.rows;
             var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             
             
-            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ')', function(data){
+            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ')', function(data){
+			sessionStorage.setItem("radiusmap", JSON.stringify(data));
             var sList = "";
             var comList = "";
             $.each(data.rows, function(key, value)
@@ -267,9 +267,7 @@ var searchData = liveSearch.rows;
             comList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
             })
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>';
-			
-			//+ '<p><font size="4">For more detailed information ' + '<a href = "#" >click here</a></font></p>' - add when working
+            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p><font size="4">For more detailed information ' + '<a href = "radius_list.html" >click here</a></font></p>';
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
@@ -280,8 +278,6 @@ var searchData = liveSearch.rows;
                                   new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
                                   new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])));
             map.graphics.add(circleGra);
-
-			//sessionStorage.setItem("radiusmap", JSON.stringify(data));
 			
             function commonFunction(value) {
 			var x = document.getElementById("commonName");

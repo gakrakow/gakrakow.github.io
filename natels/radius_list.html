@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="element_lists.css">
+</head>
+
+<body>
+    <header id="headerArea"></header>
+	<h2>Radius Map</h2>
+    <section>
+    <div id="listArea">
+	<ul>
+	</ul>
+	</div>
+    </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+		
+		//sessionStorage.setItem("radiusmap", JSON.stringify(testVar));
+		if (sessionStorage.getItem("radiusmap") === null) {
+			console.log("test");
+			}
+			else{
+			var recs = JSON.parse(sessionStorage.getItem("radiusmap"));
+			var testData = "";
+			
+			$.each(recs.rows, function(key, value){
+				testData += "<li>" + "<b>" + value.sname + " </b>(" + value.scomname + ") " + "<b> Rank:</b> " + value.grank + "/" + value.srank +" <b>Ga:</b> " + value.usesa + " <b>US:</b> " + value.sprot + " <b>SWAP:</b> " + value.swapstatus + " <b>EOs:</b> " + value.eo_count + " <b>Habitat: </b>" + value.sshabitat + "</li>";
+			});
+			
+			document.getElementById('listArea').innerHTML = testData;
+			}
+</script>
+</body>
+</html>
