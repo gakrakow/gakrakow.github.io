@@ -1,0 +1,202 @@
+
+* {
+    font-family: "Montserrat", sans-serif;
+    }
+
+body  {
+    background: url(img/cyp.jpeg) no-repeat fixed top left;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    }
+    
+header, section, text {
+    width: 900px;
+    margin: auto;
+    background-color: rgba(255,255,255,0.9);
+    margin-top: 0;
+    padding: 1em 0 0 0;
+    }
+
+#sql_query {
+    padding: 8px
+    }
+
+queryArea {
+    padding: 14px;
+    }
+    
+header {
+    background-color: rgba(255,255,255,0.1);
+    }
+       
+#top-button {
+    height: 96%;
+    width: 96%;
+    }
+    
+#wrd-logo, #portal-logo {
+    height: 65px;
+    width: 200px;
+    }
+    
+#group-logo {
+    height: 50px;
+    margin-left: 4px;
+    border: 8px solid rgba(61, 61, 61, 0.78);
+    }
+
+#action-area {
+    padding: 0;
+}
+    
+h1 {
+    background-color: #e3e3c7;
+    padding: 3px;
+    margin: 0;
+    border: 1px solid saddlebrown;
+    color: #6f5822;
+}
+
+h3, h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 10px;
+    color:white;
+    background-color:#2a4137;
+    }
+.incomplete_profile_button{
+    position: relative;
+    top: 2px;
+    left: 3px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px #000000;
+}
+ .range_map_button, .species_profile_button, .natureserve_explorer, .button_link {
+    position: relative;
+    top: 2px;
+    left: 4px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px #000000;
+	}
+
+.customize_button {
+    margin: 10px 0px 0px 10px;
+    box-shadow: 1px 1px 1px 1px #000000;
+    }
+
+
+#watch_list_link {
+    height: 60px;
+    width: 94px;
+    margin-left: 6px;
+    border: 3px solid rgba(63, 72, 62, 0.71);
+    }
+    
+#bottom_buttons, #exported_on {
+    margin-left: 10px; 
+    }
+    
+ul {
+    list-style-type: none;
+    margin-left: 1em; 
+    margin-right: 1em;
+    padding-left: 2em;
+    text-indent: -3em;
+    }
+
+li { 
+    padding-left: 1.5em;
+    }
+
+input {
+    margin-left: 1em;
+    }
+
+h4.an_pl_hdr {
+    margin: 0 0 0.4em 1em;
+    }
+
+.an_pl_hr {
+    border-width: 3px;
+    margin: 1em 0 0 -2em;
+    }
+
+a:link {
+text-decoration: none;
+}
+
+a:visited {
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+a:active {
+text-decoration: underline;
+}
+
+/*** BEGIN FILTER WARNING ***/
+#ac-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .6);
+    z-index: 1001;
+}
+#popup {
+    width: 329px;
+    height: 375px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 5px solid #000;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.popup-header {
+    background: brown;
+}
+
+#popup p {
+    font-size: 11pt;
+    padding: 0 5pt;
+}
+
+/*** END FILTER WARNING ***/
+
+@media screen and (max-width:1000px) {
+
+section, header {
+    width: 97%;
+    margin-left: 0;    
+    }
+    
+#action-area {
+    width: 100%;
+    }
+
+body {
+    padding: 0 0 0 10px;
+    }
+
+header {
+    padding-top: 0;
+    }
+    
+}
+
+@media screen and (max-width:700px) {
+
+section, header {
+    width: 97%;
+    margin-left: 0;    
+    }
+
+#group-logo {
+    max-width: 96%;
+    height: auto;
+}
