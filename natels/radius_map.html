@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://js.arcgis.com/3.23/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
 <head>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 html, body {
@@ -137,7 +138,7 @@ ul{
 }
 @media screen and (max-height:400px) {
 ul{
-    height:30px;
+    height:70px;
 }
 .tundra .dijitButtonText{
     padding: 0;
@@ -145,6 +146,10 @@ ul{
 #controls{
   font-size: 80%;  
 }
+.dijitNumberTextBox {
+    width: 25px;
+}
+
 }
 
 </style>
@@ -255,30 +260,49 @@ var searchData = liveSearch.rows;
             map.graphics.clear();
             
             // add the results to the map
-            var comName = [];
             var elNumber = [];
             arrayUtils.forEach(results.features, function (feat) {
                 //console.log(feat);
                 //feat.setSymbol(new SimpleFillSymbol());
                 //map.graphics.add(feat);
-            comName.push(feat.attributes["scomname"]);
+            
             elNumber.push(feat.attributes["es_id"]);
             });
-            var comName = comName.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             
             
             $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ')', function(data){
-			localStorage.setItem("radiusmap", JSON.stringify(data));
-            var sList = "";
-            var comList = "";
+            localStorage.setItem("radiusmap", JSON.stringify(data));
+            var speciespList = "";
+            var speciesaList = "";
+            var speciescList = "";
+            var speciesoList = "";
+            var commonpList = "";
+            var commonaList = "";
+            var commoncList = "";
+            var commonoList = "";
             $.each(data.rows, function(key, value)
             {
-            sList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
-            comList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+            if(value.an_pl == "Plant")
+            {
+                commonpList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+                speciespList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>"; 
+            }
+            else if (value.an_pl == "Animal"){
+                commonaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+                speciesaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
+            }
+            else if (value.an_pl == "Community"){
+                commoncList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+                speciescList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
+            }
+            else{
+                commonoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
+                speciesoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";   
+            }
             })
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + comName.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul>'+ comList  +'</ul></div><div id="scientificName" style="display: none;"><ul>'+ sList +'</ul></div>' + '<p>For more detailed information ' + '<a href = "radius_list.html" >click here</a></p>';
+            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p>For more detailed information ' + '<a href = "radius_list.html" target="_blank" >click here</a></p>';
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
@@ -295,8 +319,11 @@ var searchData = liveSearch.rows;
 			if (x.style.display === "none") {
 			x.style.display = "block";
 			} else {
-			x.style.display = "none";
-				   }
+            x.style.display = "none";
+                   }
+            if (document.getElementById("scientificName").style.display = "block"){
+                document.getElementById("scientificName").style.display = "none"
+            }
 							 }
 			function scientificFunction() {
 			var x = document.getElementById("scientificName");
@@ -304,7 +331,10 @@ var searchData = liveSearch.rows;
 			x.style.display = "block";
 			} else {
 			x.style.display = "none";
-				   }
+                   }
+            if (document.getElementById("commonName").style.display = "block"){
+                document.getElementById("commonName").style.display = "none"
+            }
                             }
             });          
         }
