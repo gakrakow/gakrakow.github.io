@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<title>Radius Map</title>
+<title>Distance Map</title>
 <link rel="stylesheet" href="https://js.arcgis.com/3.23/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
 <head>
@@ -27,7 +27,7 @@ a:visited {
 #controls {
     position: absolute;
     font-family: arial;
-    right: 20px;
+    right: 10px;
     top: 10px;
     margin: 5px;
     padding: 5px;
@@ -38,6 +38,7 @@ a:visited {
     -moz-box-shadow: 0 0 5px #888;
     -webkit-box-shadow: 0 0 5px #888;
     box-shadow: 0 0 5px #888;
+    border-radius: 10px;
 }
 h3 {
     margin: 0 0 5px 0;
@@ -73,7 +74,7 @@ li{
         width: 80px;
         height: 30px;
         left: 10px;
-        bottom: 38px;
+        bottom: 3px;
         margin-bottom: 5px;
         padding: 10px 38px;
         box-shadow: 0 0 10px #999;
@@ -93,7 +94,7 @@ li{
         width: 80px;
         height: 40px;
         left: 10px;
-        bottom: 100px;
+        bottom: 65px;
         margin-bottom: 5px;
         padding: 10px 38px;
         box-shadow: 0 0 10px #999;
@@ -106,15 +107,20 @@ li{
     display: block; 
     margin: 0 auto;
 }
+#export_date{
+    font-size: 12px;
+}
+
 @media screen and (max-width:1000px) {
 #controls {
     width: 200px;
     right: 0px;
+    top: 0px;
 }
 #dnr_logo{
     width: 40px;
     height: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 2px;
     bottom: 0px;
     left: 0px;
 }
@@ -122,7 +128,7 @@ li{
     width: 40px;
     height: 20px;
     margin-bottom: 0px;
-    bottom: 58px;
+    bottom: 48px;
     left: 0px;
 }
 }
@@ -136,9 +142,9 @@ ul{
 }
 
 }
-@media screen and (max-height:450px) {
+@media screen and (max-height:500px) {
 ul{
-    height:70px;
+    height:50px;
 }
 .tundra .dijitButtonText{
     padding: 0;
@@ -148,6 +154,9 @@ ul{
 }
 .dijitNumberTextBox {
     width: 25px;
+}
+#export_date{
+    font-size: 9px;
 }
 
 }
@@ -228,7 +237,8 @@ var searchData = liveSearch.rows;
         
         var qGeom;
         var coords;
-		var onClickCounty;
+        var onClickCounty;
+      
         map.on("click", executeQueries);
 
         function executeQueries(e) {
@@ -257,14 +267,15 @@ var searchData = liveSearch.rows;
         }
         
         function county(results){
-		onClickCounty = results.features[0].attributes.area_name;
+        onClickCounty = results.features[0].attributes.area_name;
+
 		
         }
         function handleQueryResults(results) {
             map.graphics.clear();
-            
             // add the results to the map
             var elNumber = [];
+            var exportdate;
             arrayUtils.forEach(results.features, function (feat) {
                 //console.log(feat);
                 //feat.setSymbol(new SimpleFillSymbol());
@@ -275,8 +286,9 @@ var searchData = liveSearch.rows;
             var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             
             
-            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ')', function(data){
+            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ') ORDER BY sname', function(data){
             localStorage.setItem("radiusmap", JSON.stringify(data));
+
             //filtered speciesnames
             var speciespList = "";
             var speciesaList = "";
@@ -287,30 +299,53 @@ var searchData = liveSearch.rows;
             var commonaList = "";
             var commoncList = "";
             var commonoList = "";
+ 
             $.each(data.rows, function(key, value)
-            {
+            {    
+            exportdate = value.exportdate  
             if(value.an_pl == "Plant")
-            {
-                commonpList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
-                speciespList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>"; 
+            {           
+                speciespList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.sname+"</a></li>"; 
             }
             else if (value.an_pl == "Animal"){
-                commonaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
-                speciesaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
+                speciesaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.sname+"</a></li>";
             }
             else if (value.an_pl == "Community"){
-                commoncList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
-                speciescList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";
+                speciescList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.sname+"</a></li>";
             }
             else{
-                commonoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.scomname+"</a></li>";
-                speciesoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ">"+value.sname+"</a></li>";   
+                speciesoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.sname+"</a></li>";   
             }
+    
+            })
+            // sort for scomname and repeat
+            var testDATA = data.rows; 
+            testDATA = testDATA.sort((a,b)=> {
+            var a1 = a.scomname.toLowerCase();
+            var b1 = b.scomname.toLowerCase();
+            return a1<b1 ?-1:a1> b1? 1 :0;
+            })
+            // repeat here
+            $.each(testDATA, function(key, value)
+            {  
+                if(value.an_pl == "Plant")
+                {
+                commonpList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">' +value.scomname+"</a></li>";
+                }
+                else if (value.an_pl == "Animal"){
+                commonaList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.scomname+"</a></li>";
+                }
+                else if (value.an_pl == "Community"){
+                commoncList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.scomname+"</a></li>";
+                }
+                else{
+                commonoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.scomname+"</a></li>";
+                }
             })
 
-            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of " + coords + " " + onClickCounty + " ,GA";
+            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of selected point (WGS84 " + coords + ") in " + onClickCounty + " County, GA";
             localStorage.setItem("radiusLocation", radiusLocation);
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> unique species have been identified within the coordinates " + coords + ", " +onClickCounty + " County." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p>For more detailed information ' + '<a href = "radius_list.html" target="_blank" >click here</a></p>';
+            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within the coordinates " + coords + ", " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p>More info ' + '<a href = "distance_list.html" target="_blank" >click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
@@ -344,6 +379,7 @@ var searchData = liveSearch.rows;
                 document.getElementById("commonName").style.display = "none"
             }
                             }
+          
             });          
         }
         $( "#button" ).click(function() {
@@ -364,10 +400,11 @@ var searchData = liveSearch.rows;
                  <p>Search for elements within<span id="programmatic"></span><span id="distance"></span></p>
                  
                 
-                <div id="results">Click the map to query using your chosen radius.</div>
+                <div id="results">Click the map to query using your chosen distance.</div>
             </div>
             <a href="home.html"><div id="dnr_logo"></div></a>
             <a href="http://georgiawildlife.com/"><div id="wrd_logo"></div></a>
+            
         </div>
     </div>
 </body>

@@ -1,0 +1,126 @@
+<html>
+<head>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="element_lists.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Georgia Rare Natural Elements</title>
+<style>
+.range_map_button, .natureserve_explorer, .species_profile_button {
+	margin: 2px;
+	}	
+#exported_on{
+	padding-bottom: 1em;
+	font-size: 14px;
+}
+section, header {
+	padding:0;
+	
+}
+#row_count{
+	padding-top: 1em;
+}
+h4{
+	margin: 1em 1.5em .5em 1.5em;
+}
+
+@media screen and (max-width:1000px) {
+
+section, header {
+	width: 100%;
+	
+}
+
+}
+
+</style>
+</head>
+
+<body>
+    <header id="headerArea">
+		<a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wildlife_resources_logo_white.png" title="Georgia Department of Natural Resources, Wildlife Resources Division" alt="Wildlife Resources Logo"></a>
+		<a href="home.html"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>	
+	</header>
+    <section>
+	<h2 id="location">Distance Map List</h2>
+	
+	<div id="no_info"></div>
+	<div id="row_count"></div>
+    <div id="listArea">
+			<h4 id="Animals" style="display: none">ANIMALS</h4>
+			<ul id="animalList"></ul>
+
+			<h4 id="Plants" style="display: none">PLANTS</h4>
+			<ul id="plantList"></ul>
+
+			<h4 id="Communities" style="display: none">COMMUNITIES</h4>
+			<ul id="communityList"></ul>
+
+			<h4 id="Other" style="display: none">OTHER</h4>
+			<ul id="otherList"></ul>
+	
+	</div>
+	<div id="exported_on"></div>
+    </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+		
+		if (localStorage.getItem("radiusmap") === null) {
+			var noData = '<br>&nbsp;&nbsp;&nbsp;No data transferred from the given distance. Please click <a href ="radius_map.html">here</a>'
+			document.getElementById('no_info').innerHTML = noData;
+			}
+			else{
+			var recs = JSON.parse(localStorage.getItem("radiusmap"));
+			var radiusLocation = localStorage.getItem("radiusLocation");
+			document.getElementById('location').innerHTML = radiusLocation;
+			var animalData = "";
+			var plantData = "";
+			var rowNum = "";
+			var communityData = "";
+			var otherData = "";
+			var exportDate;
+			$.each(recs.rows, function(key, value){
+				rowNum = "&nbsp;&nbsp;&nbsp;" + recs.rows.length + " element records in list"
+				exportDate = value.exportdate;
+				console.log(exportDate);
+				var swapStatus = value.swapstatus
+				if(value.swapstatus == true){
+					swapStatus = "Yes"
+				}
+				else {
+					swapStatus = "No"
+				}
+				var sname_formatted = value.sname.split(' ').join('+');
+				var profileLink = "<a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>';
+				var rangeLink = '<a href="range_maps2.html?es_id=' + value.es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"><img src="img/range_map3.png" class="range_map_button" alt="range map button"></a>';
+				var exploreLink = '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=' + sname_formatted +  '"title="NatureServe Explorer Report for element" target="_blank"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
+				
+				if (value.an_pl == "Animal"){
+					document.getElementById("Animals").style.display = "block";
+					animalData += "<li>" + "<b><i>" + value.sname + " </i></b>(" + value.scomname + "), " + "<b> Rank:</b> " + value.grank + "/" + value.srank +", <b>Ga:</b> " + value.usesa + ", <b>US:</b> " + value.sprot + ", <b>SWAP:</b> " + swapStatus + ", <b>EOs:</b> " + value.eo_count + ", <b>Habitat: </b>" + value.sshabitat + profileLink + rangeLink + exploreLink + "</li>";
+
+				}
+				if (value.an_pl == "Plant"){
+					document.getElementById("Plants").style.display = "block";
+					plantData += "<li>" + "<b><i>" + value.sname + " </i></b>(" + value.scomname + "), " + "<b> Rank:</b> " + value.grank + "/" + value.srank +", <b>Ga:</b> " + value.usesa + ", <b>US:</b> " + value.sprot + ", <b>SWAP:</b> " + swapStatus + ", <b>EOs:</b> " + value.eo_count + ", <b>Habitat: </b>" + value.sshabitat + profileLink + rangeLink + exploreLink + "</li>";
+				}
+				if (value.an_pl == "Community"){
+					document.getElementById("Communities").style.display = "block";
+					communityData += "<li>" + "<b><i>" + value.sname + " </i></b>(" + value.scomname + "), " + "<b> Rank:</b> " + value.grank + "/" + value.srank +", <b>Ga:</b> " + value.usesa + ", <b>US:</b> " + value.sprot + ", <b>SWAP:</b> " + swapStatus + ", <b>EOs:</b> " + value.eo_count + ", <b>Habitat: </b>" + value.sshabitat + profileLink + rangeLink + exploreLink + "</li>";
+				}
+				if (value.an_pl == "Other"){
+					document.getElementById("Other").style.display = "block";
+					otherData += "<li>" + "<b><i>" + value.sname + " </i></b>(" + value.scomname + "), " + "<b> Rank:</b> " + value.grank + "/" + value.srank +", <b>Ga:</b> " + value.usesa + ", <b>US:</b> " + value.sprot + ", <b>SWAP:</b> " + swapStatus + ", <b>EOs:</b> " + value.eo_count + ", <b>Habitat: </b>" + value.sshabitat + profileLink + rangeLink + exploreLink + "</li>";
+				}
+
+			});
+			document.getElementById('row_count').innerHTML = rowNum;
+			document.getElementById('animalList').innerHTML = animalData;
+			document.getElementById('plantList').innerHTML = plantData;
+			document.getElementById('communityList').innerHTML = communityData;
+			document.getElementById('otherList').innerHTML = otherData;
+			document.getElementById('exported_on').innerHTML = 'Element records are selected from  generalized quarter quad EO data that was exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportDate;
+			}
+</script>
+</body>
+</html>
