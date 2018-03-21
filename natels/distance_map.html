@@ -39,6 +39,10 @@ a:visited {
     -webkit-box-shadow: 0 0 5px #888;
     box-shadow: 0 0 5px #888;
     border-radius: 10px;
+    border-style: solid;
+    border-color: #999;
+    border-width: 2px;
+    border-radius: 10px;
 }
 h3 {
     margin: 0 0 5px 0;
@@ -255,7 +259,6 @@ var searchData = liveSearch.rows;
           var mp = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
           //display mouse coordinates
           coords = mp.x.toFixed(3) + ", " + mp.y.toFixed(3);
-            
             // use the circle for the query geometry
             qParcels.geometry = qGeom;
             // use .then to make a promise to run after county is found
@@ -345,7 +348,7 @@ var searchData = liveSearch.rows;
 
             var radiusLocation = "Rare natural elements within " + radiusValue + " miles of selected point (WGS84 " + coords + ") in " + onClickCounty + " County, GA";
             localStorage.setItem("radiusLocation", radiusLocation);
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within the coordinates " + coords + ", " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p>More info ' + '<a href = "distance_list.html" target="_blank" >click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
+            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within the coordinates " + coords + ", " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >More info ' + 'click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');

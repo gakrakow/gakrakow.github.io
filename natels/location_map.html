@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Location Map</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.23/"></script>
+    <style>
+      html, body, #map {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script>
+      require([
+    "esri/Color",
+    "dojo/_base/array",
+    "esri/geometry/Point",
+    "esri/geometry/webMercatorUtils",
+    "esri/graphic",
+    "esri/layers/FeatureLayer",
+    "esri/map",
+    "esri/renderers/SimpleRenderer",
+    "esri/renderers/TemporalRenderer",
+    "esri/renderers/TimeClassBreaksAger",
+    "esri/symbols/SimpleLineSymbol",
+    "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/tasks/query", 
+    "esri/tasks/QueryTask",
+    "esri/geometry/Circle",
+    "esri/TimeExtent",
+    "dojo/domReady!"
+  ], function (Color, arrayUtils, Point, webMercatorUtils, Graphic, FeatureLayer, Map, SimpleRenderer, TemporalRenderer,
+    TimeClassBreaksAger, SimpleLineSymbol, SimpleFillSymbol, SimpleMarkerSymbol, Query, QueryTask, Circle, TimeExtent) {
+      var current_miles = '"' + getURLParameter('miles'); + '"';
+      var current_distance = '"' + getURLParameter('distance'); + '"';
+        var map, featureLayer, qGeom;
+        var OBJECTID_COUNTER = 1000;
+        var TRACKID_COUNTER = 1;
+        
+        //onorientationchange doesn't always fire in a timely manner in Android so check for both orientationchange and resize
+        var supportsOrientationChange = "onorientationchange" in window, orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+
+        window.addEventListener(orientationEvent, function (){
+        orientationChanged();
+         }, false);
+
+        map = new Map("map", {
+            basemap: "streets",
+            center: [-83.441162, 33.247875],
+            zoom: 7
+        });
+
+        // query task and query for parcels
+        var qtParcels = new QueryTask("https://services6.arcgis.com/9QlSLDqa0P1cHLhu/arcgis/rest/services/quarterquad/FeatureServer/0");
+        var qParcels = new Query();
+        qParcels.returnGeometry = true;
+        qParcels.outFields = ["*"];
+
+        map.on("load", mapLoadedHandler);
+
+        function mapLoadedHandler(maploadEvent){
+            console.log("map loaded", maploadEvent);
+            
+
+            //create a layer definition for the gps points
+      var layerDefinition = {
+        "objectIdField": "OBJECTID",
+        "trackIdField": "TrackID",
+        "geometryType": "esriGeometryPoint",
+        "timeInfo": {
+          "startTimeField": "DATETIME",
+          "endTimeField": null,
+          "timeExtent": [1277412330365],
+          "timeInterval": 1,
+          "timeIntervalUnits": "esriTimeUnitsMinutes"
+        },
+        "fields": [
+          {
+            "name": "OBJECTID",
+            "type": "esriFieldTypeOID",
+            "alias": "OBJECTID",
+            "sqlType": "sqlTypeOther"
+          },
+          {
+            "name": "TrackID",
+            "type": "esriFieldTypeInteger",
+            "alias": "TrackID"
+          },
+          {
+            "name": "DATETIME",
+            "type": "esriFieldTypeDate",
+            "alias": "DATETIME"
+          }
+        ]
+      };
+
+      var featureCollection = {
+        layerDefinition: layerDefinition,
+        featureSet: null
+      };
+      featureLayer = new FeatureLayer(featureCollection);
+
+      //setup a temporal renderer
+      var sms = new SimpleMarkerSymbol().setColor(new Color([255, 0, 0])).setSize(8);
+      var observationRenderer = new SimpleRenderer(sms);
+      var latestObservationRenderer = new SimpleRenderer(new SimpleMarkerSymbol());
+      var infos = [
+        {
+          minAge: 0,
+          maxAge: 1,
+          color: new Color([255, 0, 0])
+        }, {
+          minAge: 1,
+          maxAge: 5,
+          color: new Color([255, 153, 0])
+        }, {
+          minAge: 5,
+          maxAge: 10,
+          color: new Color([255, 204, 0])
+        }, {
+          minAge: 10,
+          maxAge: Infinity,
+          color: new Color([0, 0, 0, 0])
+        }
+      ];
+      var ager = new TimeClassBreaksAger(infos, TimeClassBreaksAger.UNIT_MINUTES);
+      var sls = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+        new Color([255, 0, 0]), 3);
+      var trackRenderer = new SimpleRenderer(sls);
+      var renderer = new TemporalRenderer(observationRenderer, latestObservationRenderer,
+        trackRenderer, ager);
+      featureLayer.setRenderer(renderer);
+      map.addLayer(featureLayer);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
+        navigator.geolocation.watchPosition(showLocation, locationError);
+      }
+      
+    }
+
+    function locationError(error){
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("Location not provided");
+          break;
+
+        case error.POSITION_UNAVAILABLE:
+          alert("Current location not available");
+          break;
+
+        case error.TIMEOUT:
+          alert("Timeout");
+          break;
+
+        default:
+          alert("unknown error");
+          break;
+      }
+    }
+     
+    function zoomToLocation(location){
+       var pt= webMercatorUtils.geographicToWebMercator(new Point(location.coords.longitude,
+        location.coords.latitude));
+      map.centerAndZoom(pt, 16);
+    }
+
+    function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
+    }
+    
+    function showLocation(location){
+      if (location.coords.accuracy <= 500) {
+        var now = new Date();
+        var attributes = {};
+        attributes.OBJECTID = OBJECTID_COUNTER;
+        attributes.DATETIME = now.getTime();
+        attributes.TrackID = TRACKID_COUNTER;
+        OBJECTID_COUNTER++;
+        TRACKID_COUNTER++;
+
+        var pt = webMercatorUtils.geographicToWebMercator(new Point(location.coords.longitude,
+          location.coords.latitude));
+
+// generate a circle of the radius around location using pt
+        qGeom = new Circle(pt, {
+                "radius": current_distance,
+                "spatialReference": pt.spatialReference,
+                radiusUnit: current_miles
+            });
+
+var circleGra = new Graphic(qGeom, new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                                  new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+                                  new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])));
+            map.graphics.add(circleGra);
+// end of circle
+        var graphic = new Graphic(new Point(pt, map.spatialReference), null, attributes);
+
+        featureLayer.applyEdits([graphic], null, null, function (adds){
+          map.setTimeExtent(new TimeExtent(null, new Date()));
+          map.centerAt(graphic.geometry);
+          //qGeom will draw a circle and allow a adjustable radius while pt will only select quarterquad on that  specific coords
+          qParcels.geometry = qGeom;
+          
+          qtParcels.execute(qParcels, handleQueryResults);
+
+        });
+      }
+      else {
+        console.warn("Point not added due to low accuracy: " + location.coords.accuracy);
+      }
+    }
+
+    function handleQueryResults(results) {
+      var elNumber = [];
+            var exportdate;
+            arrayUtils.forEach(results.features, function (feat) {
+            
+            elNumber.push(feat.attributes["es_id"]);
+            });
+            var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+            
+            
+            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ') ORDER BY sname', function(data){
+            localStorage.setItem("radiusmap", JSON.stringify(data));
+
+            });
+    }
+
+
+    function orientationChanged(){
+      if (map) {
+        map.reposition();
+        map.resize();
+      }
+    }
+    
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+  </body>
+</html>

@@ -7,7 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" type="text/css" href="natels.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <style>
+#popup {
+    width: 329px;
+    height: 375px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(108, 117, 88, 0.85);
+    border: 5px solid #000;
+    margin: auto;
+    color: #effdce;
+    position:fixed;
+}
+
 a:active {
 color: #b35c13;
 text-decoration: underline;
@@ -20,6 +37,36 @@ a:link
 }
   
 </style>
+<script>
+
+$( function() {
+    var spinner = $( "#spinner" ).spinner(
+        {
+      spin: function( event, ui ) {
+        if ( ui.value > 25 ) {
+          $( this ).spinner( "value", 1 );
+          return false;
+        } else if ( ui.value < 1 ) {
+          $( this ).spinner( "value", 25 );
+          return false;
+        }
+      }
+    }
+    );
+    })
+$( function() {
+    $( "input" ).checkboxradio({
+    icon: false
+    });
+});
+
+function show_dialog(){
+    document.getElementById('popup').style.display = "block";
+}
+function hide_dialog(){
+    document.getElementById('popup').style.display = "none";
+}
+</script>
 </head>
 
 <body>
@@ -47,8 +94,28 @@ a:link
     <img src="img/eco4.png" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
 <a href="hex24_rare_elements_map.html" title="Georgia 24 km Hexagon EOs by clicking on map">
     <img src="img/hex24.png" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
+<!--<a href="distance_map.html" title="Georgia elements based on point location">
+    <img src="img/pointlocation.png" alt="Georgia elements based on point location"></a>
+<a href="javascript:;" title="Georgia elements base don current location">
+    <img src="img/nearlocation.png" onclick="show_dialog()" alt="Georgia elements base don current location"></a>-->
 </section>
-
+        <section id="popup" style='display:none'>
+        <form action="location_map.html">
+                <p>
+        <fieldset>
+        <legend>Select a Unit of distance: </legend>
+        <label for="miles">Miles</label>
+        <input type="radio" name="miles" value="esriMiles" id="radio-1">
+        <label for="kilometers">Kilometers</label>
+        <input type="radio" name="kilometers" value="esriKilometers" id="radio-2">
+        </fieldset>    
+        <label for="spinner">Select a number:</label>
+        <input id="spinner" name="distance">
+        </p> 
+      <button id="submit" onclick="hide_dialog()">Submit</button>     
+    </form>
+    <button onclick="hide_dialog()">Close</button> 
+</section>
   <section>
     <h2>Zipped ESRI shapefiles for viewing rare element locations</h2>
     <p>These zipped shapefiles can be imported into most GIS programs including ArcGIS, ArcPro, QGIS and many more. The files contain many duplicate area polygons, one for each rare natural element located within a given area. In a GIS program, the user can select one or more polygons and derive a list of elements within those areas. The data can then be copied to other databases or spreadsheets to be further processed and analyzed. The shapefiles tend to be rather large so they may run slow in your GIS program. The approximate file size is given for each.</p>
