@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <style>
+#center{
+	margin-top: 30px;    
+	}
 #popup {
     width: 329px;
-    height: 375px;
+    height: 230px;
     top: 0;
     bottom: 0;
     left: 0;
@@ -94,24 +97,24 @@ function hide_dialog(){
     <img src="img/eco4.png" alt="Georgia Level 4 Ecoregion EOs by clicking on map"></a>
 <a href="hex24_rare_elements_map.html" title="Georgia 24 km Hexagon EOs by clicking on map">
     <img src="img/hex24.png" alt="Georgia 24 km Hexagon EOs by clicking on map"></a>
-<!--<a href="distance_map.html" title="Georgia elements based on point location">
+<a href="distance_map.html" title="Georgia elements based on point location">
     <img src="img/pointlocation.png" alt="Georgia elements based on point location"></a>
 <a href="javascript:;" title="Georgia elements base don current location">
-    <img src="img/nearlocation.png" onclick="show_dialog()" alt="Georgia elements base don current location"></a>-->
+    <img src="img/nearlocation.png" onclick="show_dialog()" alt="Georgia elements base don current location"></a>
 </section>
         <section id="popup" style='display:none'>
         <form action="location_map.html">
-                <p>
+                <div id="center">
         <fieldset>
         <legend>Select a Unit of distance: </legend>
         <label for="miles">Miles</label>
-        <input type="radio" name="miles" value="esriMiles" id="radio-1">
+        <input type="radio" name="miles" value="esriMiles" checked id="radio-1">
         <label for="kilometers">Kilometers</label>
-        <input type="radio" name="kilometers" value="esriKilometers" id="radio-2">
+        <input type="radio" name="miles" value="esriKilometers" id="radio-2">
         </fieldset>    
         <label for="spinner">Select a number:</label>
         <input id="spinner" name="distance">
-        </p> 
+        </div> 
       <button id="submit" onclick="hide_dialog()">Submit</button>     
     </form>
     <button onclick="hide_dialog()">Close</button> 
