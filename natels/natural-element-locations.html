@@ -103,7 +103,7 @@ function hide_dialog(){
     <img src="img/nearlocation.png" onclick="show_dialog()" alt="Georgia elements base don current location"></a>
 </section>
         <section id="popup" style='display:none'>
-        <form action="location_map.html">
+        <form action="https://1990dlp.github.io/Secure-Map/">
                 <div id="center">
         <fieldset>
         <legend>Select a Unit of distance: </legend>
@@ -113,7 +113,7 @@ function hide_dialog(){
         <input type="radio" name="miles" value="esriKilometers" id="radio-2">
         </fieldset>    
         <label for="spinner">Select a number:</label>
-        <input id="spinner" name="distance">
+        <input id="spinner" name="distance" value="3">
         </div> 
       <button id="submit" onclick="hide_dialog()">Submit</button>     
     </form>
