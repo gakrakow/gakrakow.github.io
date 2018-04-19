@@ -64,6 +64,9 @@
 
     #dnr_logo {
         background-image: url(img/georgia-rare-natural-elements-half-size.png);
+        background-repeat: no-repeat;
+        background-size:contain;
+        background-color: white;
         border-style: solid;
         border-color: #999;
         border-width: 2px;
@@ -77,6 +80,27 @@
         margin-bottom: 5px;
         padding: 10px 38px;
         box-shadow: 0 0 10px #999;
+        z-index: 40;
+    }
+    #wrd_logo {
+        background-image: url(img/wrd_logo.png);
+        background-repeat: no-repeat;
+        background-size:contain;
+        background-color: white;
+        border-style: solid;
+        border-color: #999;
+        border-width: 2px;
+        border-radius: 10px;
+        outline-width: 2px;
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        left: 10px;
+        bottom: 95px;
+        margin-bottom: 5px;
+        padding: 10px 38px;
+        box-shadow: 0 0 10px #999;
+        z-index: 40;
     }
 
       #layer_selector {
@@ -195,6 +219,7 @@
       </ul>
     </div>
     <a href="home.html"><div id="dnr_logo"></div></a>
+    <a href="http://georgiawildlife.com/"><div id="wrd_logo"></div></a>
     <div id="shp_link"></div>
     <div id='export_date'></div>
     

@@ -104,9 +104,7 @@ li{
         box-shadow: 0 0 10px #999;
         z-index: 40;
     }
-.dijitNumberTextBox {
-    width: 35px;
-}
+
 #button{
     display: block; 
     margin: 0 auto;
@@ -156,9 +154,6 @@ ul{
 #controls{
   font-size: 80%;  
 }
-.dijitNumberTextBox {
-    width: 25px;
-}
 #export_date{
     font-size: 9px;
 }
@@ -174,31 +169,38 @@ require([
     "dojo/parser", "esri/graphic",
     "esri/Color", "dojo/_base/array", "dojo/dom",
     "esri/config", "esri/map","esri/geometry/webMercatorUtils", "esri/geometry/Circle",
-    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
-    "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberTextBox", "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton", 
+    "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol",
+    "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberSpinner", "dijit/form/Select",  "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton", 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
     "dojo/domReady!"], function (
         parser, Graphic,
         Color, arrayUtils, dom,
         esriConfig, Map,webMercatorUtils, Circle,
-        SimpleFillSymbol, SimpleLineSymbol,
-        Query, QueryTask, NumberTextBox, Menu, MenuItem, ComboButton) {
+        SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol,
+        Query, QueryTask, NumberSpinner, Select, Menu, MenuItem, ComboButton) {
         // create layout dijits
         parser.parse();
         var radiusValue = 5;
         var distSelect = "esriMiles";
-        new NumberTextBox({
-		  value: "5",
-          name: "programmatic",
-          constraints:{min: 1,max:25},
-          onChange: function(value){
+        
+        var mySpinner = new NumberSpinner({
+        value: 5,
+        smallDelta: 1,
+        constraints: { min:1, max:25, places:0 },
+        onChange: function(value){
 			radiusValue = value;
-			}
-    }, "programmatic").startup();
+			},
+        id: "integerspinner3",
+        style: "width:50px"
+    }, "spinnerId").startup();
+
+
 runOncePerDay(); // run the code
 runOncePerDay(); // does not run the code
 var liveSearch = JSON.parse(localStorage.getItem("Searchdata"));
 var searchData = liveSearch.rows;
+
+
 // start of dropdown button
  var menu = new Menu({ style: "display: none;"});
     var menuItem1 = new MenuItem({
@@ -222,6 +224,7 @@ var searchData = liveSearch.rows;
     button.placeAt(distance);
     button.startup();
 // end of combobutton
+
 		// other map suggestions - osm
         map = new Map("map", {
             basemap: "streets",
@@ -360,6 +363,30 @@ var searchData = liveSearch.rows;
                                   new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])));
             map.graphics.add(circleGra);
 			
+            var symbol = new SimpleMarkerSymbol(
+            SimpleMarkerSymbol.STYLE_CIRCLE, 
+            12, 
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SOLID,
+              new Color([210, 105, 30, 0.5]), 
+              1
+            ), 
+            new Color([210, 105, 30, 0.9])
+          );
+          pointCenter = new Graphic(qGeom, symbol);
+
+          map.graphics.add(pointCenter); // add dot on selection
+          // zoom based on radius picked
+          if(radiusValue <= 5){
+          map.centerAndZoom(pointCenter.geometry.center, 13); 
+          }
+          else if (radiusValue <= 10){
+            map.centerAndZoom(pointCenter.geometry.center, 12);    
+          }
+          else if (radiusValue <= 25){
+            map.centerAndZoom(pointCenter.geometry.center, 11);    
+          }
+          
             function commonFunction(value) {
 			var x = document.getElementById("commonName");
 			if (x.style.display === "none") {
@@ -382,6 +409,7 @@ var searchData = liveSearch.rows;
                 document.getElementById("commonName").style.display = "none"
             }
                             }
+                            
           
             });          
         }
@@ -400,7 +428,7 @@ var searchData = liveSearch.rows;
         <div id="map" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">
             <div id="controls">
                 <button id="button">Show/Hide Results</button>
-                 <p>Search for elements within<span id="programmatic"></span><span id="distance"></span></p>
+                 <p>Search for elements within<span id="spinnerId"></span><span id="distance"></span></p>
                  
                 
                 <div id="results">Click the map to query using your chosen distance.</div>
