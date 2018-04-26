@@ -167,14 +167,14 @@ ul{
 <script>
 require([
     "dojo/parser", "esri/graphic",
-    "esri/Color", "dojo/_base/array", "dojo/dom",
+    "esri/Color", "dojo/_base/array", "dojo/sniff", "dojo/dom",
     "esri/config", "esri/map","esri/geometry/webMercatorUtils", "esri/geometry/Circle",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol",
     "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberSpinner", "dijit/form/Select",  "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton", 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
     "dojo/domReady!"], function (
         parser, Graphic,
-        Color, arrayUtils, dom,
+        Color, arrayUtils, sniff, dom,
         esriConfig, Map,webMercatorUtils, Circle,
         SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol,
         Query, QueryTask, NumberSpinner, Select, Menu, MenuItem, ComboButton) {
@@ -377,16 +377,33 @@ var searchData = liveSearch.rows;
 
           map.graphics.add(pointCenter); // add dot on selection
           // zoom based on radius picked
+          if(sniff("android") || sniff("ios")){
+            if(radiusValue <= 10){
+          map.centerAndZoom(pointCenter.geometry.center, 11); 
+          }
+          else if (radiusValue <= 15){
+            map.centerAndZoom(pointCenter.geometry.center, 10);    
+          }
+          else if (radiusValue <= 25){
+            map.centerAndZoom(pointCenter.geometry.center, 9);
+
+
+          }
+          }//end of if
+          else{
           if(radiusValue <= 5){
           map.centerAndZoom(pointCenter.geometry.center, 13); 
           }
           else if (radiusValue <= 10){
             map.centerAndZoom(pointCenter.geometry.center, 12);    
           }
-          else if (radiusValue <= 25){
+          else if (radiusValue <= 23){
             map.centerAndZoom(pointCenter.geometry.center, 11);    
           }
-          
+          else if (radiusValue >= 24){
+            map.centerAndZoom(pointCenter.geometry.center, 10);    
+          }
+          }//end of else
             function commonFunction(value) {
 			var x = document.getElementById("commonName");
 			if (x.style.display === "none") {
