@@ -29,16 +29,42 @@ h4{
 fieldset{
 margin: 1em;
 }
+#custombox{
+	display: none;
+}
 
-@media screen and (max-width:1000px) {
 
-section, header {
-	width: 100%;
+
+@media screen and (min-width:1510px){
+.container{
+position: absolute;
+left: 50%;
+margin-left: -780px;
+margin-top: -126px;
+}
+.sortmethod{
+	position:fixed;
+	width:300px;
+	background-color: rgba(255,255,255,0.9);
+}
+.checkboxOptions{
+	position: fixed;
+	top: 200px;
+	max-width: 300px;
+	background-color: rgba(255,255,255,0.9);
 	
 }
+#custombox{
+	display: block;
+}
 
 }
 
+@media print{
+	.customize_button{
+		display: none;
+	}
+}
 </style>
 </head>
 
@@ -52,9 +78,10 @@ section, header {
 	
 	<div id="no_info"></div>
 	<a href="#" title="Filter rare elements by ranks, status and element groups. Also choose information to display with each element."><img src="img/customize.png" class="customize_button" alt="Customize appearance of list"></a>
+	<div class="container">
 	<div class="sortmethod" style="display:none">
+			<h2 id= "custombox">Customize Options</h2>
 	<fieldset>
-	<legend>Select Sorting Method</legend>
 	<input type="radio" name="order_by" value="sname"  id="sname" checked> Sort by Scientific Name <br>
 	<input type="radio" name="order_by" value="scomname"  id="scomname"> Sort by Common Name <br>
 	</fieldset>	
@@ -69,8 +96,9 @@ section, header {
   <input type="checkbox" name="show_range_map_link"  id='show_range_map_link' checked> Show link to range map<br>
   <input type="checkbox" name="show_ns_explorer_link"  id="show_ns_explorer_link" checked> Show link to NatureServe Explorer<br>
   <input type="checkbox" name="show_sshabitat"  id="show_sshabitat" checked> Show Georgia short habitat description<br>
-        </div>
 	</fieldset>
+</div>
+</div>
 	<div id="row_count"></div>
     <div id="listArea">
 			<h4 id="Animals" style="display: none">ANIMALS</h4>
@@ -125,41 +153,71 @@ section, header {
 					swapStatus = "No"
 				}
 				var sname_formatted = value.sname.split(' ').join('+');
-				var profileLink = "<a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>';
-				var rangeLink = '<a href="range_maps2.html?es_id=' + value.es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"><img src="img/range_map3.png" class="range_map_button" alt="range map button"></a>';
+				var profileLink = "<a href=http://georgiabiodiversity.org/natels/profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>';
+				var rangeLink = '<a href="http://georgiabiodiversity.org/natels/range_maps2.html?es_id=' + value.es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"><img src="img/range_map3.png" class="range_map_button" alt="range map button"></a>';
 				var exploreLink = '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=' + sname_formatted +  '"title="NatureServe Explorer Report for element" target="_blank"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
 				
-
 				if (value.an_pl == "Animal"){
 					document.getElementById("Animals").style.display = "block";
 					animalData += "<li>" + '<b><i><span class="sname">' + value.sname + ' </span></i></b>(<span class="scomname">' + value.scomname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat+ '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
-
-					scomanimalData +=  "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat+ '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 
 				}
 				if (value.an_pl == "Plant"){
 					document.getElementById("Plants").style.display = "block";
 					plantData += "<li>" + '<b><i><span class="sname">' + value.sname + ' </span></i></b>(<span class="scomname">' + value.scomname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 
-					scomplantData += "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 				}
 				if (value.an_pl == "Community"){
 					document.getElementById("Communities").style.display = "block";
 					communityData += "<li>" + '<b><i><span class="sname">' + value.sname + ' </span></i></b>(<span class="scomname">' + value.scomname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +', </span><span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat+ '</span><span class="show_profile_link">'  + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 
-					scomcommunityData += "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 				}
 				if (value.an_pl == "Other"){
 					document.getElementById("Other").style.display = "block";
 					otherData += "<li>" + '<b><i><span class="sname">' + value.sname + ' </span></i></b>(<span class="scomname">' + value.scomname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' +profileLink + '</span><span class ="show_range_map_link">'+ rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 
+				}
+			});
+			var sortComName = recs.rows.sort(GetSortOrder("scomname")); // sort by scomname *overwrites var recs if placed elsewhere
+			$.each(sortComName, function(key, value){
+				rowNum = "&nbsp;&nbsp;&nbsp;" + recs.rows.length + " element records in list"
+				exportDate = value.exportdate;
+				var swapStatus = value.swapstatus
+				if(value.swapstatus == true){
+					swapStatus = "Yes"
+				}
+				else {
+					swapStatus = "No"
+				}
+				var sname_formatted = value.sname.split(' ').join('+');
+				var profileLink = "<a href=http://georgiabiodiversity.org/natels/profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>';
+				var rangeLink = '<a href="http://georgiabiodiversity.org/natels/range_maps2.html?es_id=' + value.es_id + '"title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"><img src="img/range_map3.png" class="range_map_button" alt="range map button"></a>';
+				var exploreLink = '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName=' + sname_formatted +  '"title="NatureServe Explorer Report for element" target="_blank"><img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
+				
+				if (value.an_pl == "Animal"){
+					document.getElementById("Animals").style.display = "block";
+
+					scomanimalData +=  "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat+ '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
+
+				}
+				if (value.an_pl == "Plant"){
+					document.getElementById("Plants").style.display = "block";
+
+					scomplantData += "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
+				}
+				if (value.an_pl == "Community"){
+					document.getElementById("Communities").style.display = "block";
+
+					scomcommunityData += "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
+				}
+				if (value.an_pl == "Other"){
+					document.getElementById("Other").style.display = "block";
+
 					scomotherData += "<li>" + '<b><i><span class="scomname">' + value.scomname + ' </span></i></b>(<span class="sname">' + value.sname + ', </span>)' + '<span class="show_rank"><b> Rank:</b> ' + value.grank + "/" + value.srank +',</span> <span class="show_status"><b>Ga:</b> ' + value.usesa + ", <b>US:</b> " + value.sprot + ', </span><span class="show_swap"><b>SWAP:</b> ' + swapStatus + ', </span> <span class = "show_eo_count"><b>EOs:</b> ' + value.eo_count + ', </span><span class="show_sshabitat"><b>Habitat: </b>' + value.sshabitat + '</span><span class="show_profile_link">' + profileLink + '</span><span class ="show_range_map_link">' + rangeLink + '</span><span class ="show_ns_explorer_link"' + exploreLink + "</span></li>";
 				}
-
-				
 			});
 			// sorts the sname and comname based on radio button
-			$( ".sortmethod" ).change( function(){	
+			$( ".sortmethod" ).change( function(event){	
 			if($('input[name=order_by]:checked', '.sortmethod').val() == "scomname"){
 				document.getElementById('animalList').innerHTML = scomanimalData;
 				document.getElementById('plantList').innerHTML = scomplantData;
@@ -176,7 +234,7 @@ section, header {
 			});	
 
 			//check the checkboxOptions div for any changes
-			$( ".checkboxOptions" ).change( function(){
+			$( ".checkboxOptions" ).change( function(event){
 			// checks if checkbox is checked/unchecked
 				var getElement = event.target.id;
 				var checked = $( 'input[name="' + getElement+ '"' ).prop('checked');
@@ -189,7 +247,17 @@ section, header {
 			}
 				
 				});
-			
+			//function that sorts a json array by given value
+			function GetSortOrder(prop) {  
+			return function(a, b) {  
+				if (a[prop] > b[prop]) {  
+					return 1;  
+				} else if (a[prop] < b[prop]) {  
+					return -1;  
+				}  
+				return 0;  
+				}  
+					} 
 			
 			document.getElementById('row_count').innerHTML = rowNum;
 			document.getElementById('animalList').innerHTML = animalData;
