@@ -170,8 +170,7 @@ require([
     "esri/Color", "dojo/_base/array", "dojo/sniff", "dojo/dom",
     "esri/config", "esri/map","esri/geometry/webMercatorUtils", "esri/geometry/Circle",
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol",
-    "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberSpinner", "dijit/form/Select",  "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton", 
-    "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+    "esri/tasks/query", "esri/tasks/QueryTask", "dijit/form/NumberSpinner", "dijit/form/Select",  "dijit/Menu", "dijit/MenuItem", "dijit/form/ComboButton",   "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
     "dojo/domReady!"], function (
         parser, Graphic,
         Color, arrayUtils, sniff, dom,
@@ -200,31 +199,24 @@ runOncePerDay(); // does not run the code
 var liveSearch = JSON.parse(localStorage.getItem("Searchdata"));
 var searchData = liveSearch.rows;
 
-
-// start of dropdown button
- var menu = new Menu({ style: "display: none;"});
-    var menuItem1 = new MenuItem({
-        label: "miles",
-        onClick: function(){ distSelect = "esriMiles";}
-    });
-    menu.addChild(menuItem1);
-
-    var menuItem2 = new MenuItem({
-        label: "kilometers",
-        onClick: function(){ distSelect = "esriKilometers";}
-    });
-    menu.addChild(menuItem2);
-    menu.startup();
-//end of dropdown button
-//start of combobutton
-    var button = new ComboButton({
-        label: "miles/kilometers",
-        dropDown: menu
-    });
+// simple select button to change the distSelect variable to either miles or kilometers
+var button = new Select({
+        name: "SelectDistance",
+        style: "margin-left:.25em",
+        options: [
+            { label: "Miles",
+            value: "esriMiles",
+            selected: true },
+            { label: "Kilometers", 
+            value: "esriKilometers",},
+        ]
+    })
     button.placeAt(distance);
     button.startup();
-// end of combobutton
-
+    button.on('change', function(){
+        distSelect = button.value;
+    })
+// end of select
 		// other map suggestions - osm
         map = new Map("map", {
             basemap: "streets",
@@ -349,9 +341,9 @@ var searchData = liveSearch.rows;
                 }
             })
 
-            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of (WGS84: " + coords + ") in " + onClickCounty + " County, GA";
+            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of (WGS84: " + coords + ") in " + onClickCounty + " County, GA, using Quarter Quad data";
             localStorage.setItem("radiusLocation", radiusLocation);
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + "(WGS84), " +onClickCounty + " County, GA using Quarter Quad data." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >For more info ' + 'click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
+            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + "(WGS84), " +onClickCounty + " County, GA using Quarter Quad data." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >More detailed list ' + 'click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
            
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
