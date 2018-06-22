@@ -368,6 +368,8 @@ var button = new Select({
                 commonoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.scomname+"</a></li>";
                 }
             })
+			
+			// check if variables are populated if not give them the value of none 
 			if (speciespList == ""){
 				speciespList = "None"
 				commonpList = "None"
