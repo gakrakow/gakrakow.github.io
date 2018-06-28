@@ -335,10 +335,6 @@ var button = new Select({
             exportdate = value.exportdate
             if(value.an_pl == "Plant")
             {
-<<<<<<< HEAD
-=======
-
->>>>>>> c6703c16ecd9c164b28114ee3957b821f50d3c82
                 speciespList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.sname+"</a></li>";
             }
             else if (value.an_pl == "Animal"){
@@ -376,8 +372,8 @@ var button = new Select({
                 commonoList += "<li><a href=profile.html?es_id="+ value.es_id+  "&fus_tab_id="+ value.fus_tab_id + "&group="+ value.header_group + ' target="_blank">'+value.scomname+"</a></li>";
                 }
             })
-			
-			// check if variables are populated if not give them the value of none 
+
+			// check if variables are populated if not give them the value of none
 			if (speciespList == ""){
 				speciespList = "None"
 				commonpList = "None"
@@ -397,11 +393,11 @@ var button = new Select({
 
             var radiusLocation = "Rare natural elements within " + radiusValue + " miles of " + coords + " (WGS84) in " + onClickCounty + " County, GA, using generalized quarter quad locations";
             localStorage.setItem("radiusLocation", radiusLocation);
-<<<<<<< HEAD
+
             dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA using generalized quarter quad locations." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >More detailed list ' + 'click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
-=======
+
             dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA using generalized quarter quad locations." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >Click here for more detailed list </a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
->>>>>>> c6703c16ecd9c164b28114ee3957b821f50d3c82
+
 
             var commonLink = document.getElementById('commonButton');
 			var scientificLink = document.getElementById('scientificButton');
