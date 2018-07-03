@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="https://js.arcgis.com/3.23/esri/css/esri.css">
 <head>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 html, body {
@@ -12,12 +13,25 @@ html, body {
     margin: 0;
     padding: 0;
 }
-a:link {
-    text-decoration: none;
-}
 
-a:visited {
+h2, h1{
+margin: 0;
+text-align: center;
+}
+.dijitTextBox{
+margin-left: 8px
+}
+a.stylelink:link, a.stylelink:visited {
+    border-radius: 15px;
+    background-color: lightgray;
+    color: black;
+    padding: 14px 25px;
+    text-align: center;
     text-decoration: none;
+    display: inline-block;
+}
+a.stylelink:hover, a.stylelink:active {
+    background-color: #878787;
 }
 #map {
     margin: 0;
@@ -26,11 +40,10 @@ a:visited {
 #title{
 	position: absolute;
 	font-size: 10px;
-	top: 18px;
+	top: 12px;
 	left: 60px;
-    font-family: arial;
     margin: 5px;
-    padding: 5px;
+    padding: 12px;
     z-index: 40;
     background: #fff;
     color: #444;
@@ -45,11 +58,10 @@ a:visited {
 }
 #controls {
     position: absolute;
-    font-family: arial;
     right: 10px;
-    top: 10px;
+    top: 12px;
     margin: 5px;
-    padding: 5px;
+    padding: 10px;
     z-index: 40;
     background: #fff;
     color: #444;
@@ -217,7 +229,7 @@ require([
 			radiusValue = value;
 			},
         id: "integerspinner3",
-        style: "width:50px"
+        style: "width:50px", 
     }, "spinnerId").startup();
 
 
@@ -391,12 +403,11 @@ var button = new Select({
 				commonoList = "None"
 				}
 
-            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of " + coords + " (WGS84) in " + onClickCounty + " County, GA, using generalized quarter quad locations";
+            var radiusLocation = "Rare natural elements within" + radiusValue + " miles of " + coords + " (WGS84) in " + onClickCounty + " County, GA, using generalized quarter quad locations";
             localStorage.setItem("radiusLocation", radiusLocation);
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA using generalized quarter quad locations." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >More detailed list ' + 'click here</a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA using generalized quarter quad locations." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank" >Click here for more detailed list </a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
+            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank " class="stylelink" >Click here for more detailed list </a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
 
 
             var commonLink = document.getElementById('commonButton');
@@ -490,7 +501,8 @@ var button = new Select({
     <div data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="design:'headline',gutters:false" style="width: 100%; height: 100%; margin: 0;">
         <div id="map" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">
 			<div id="title">
-			<h2>Search for elements by clicking on map</h2>
+			<h1>Search for elements by clicking on map</h1>
+            <h2>Uses generalized quarter quad locations.</h2>
 			</div>
             <div id="controls">
                 <button id="button">Show/Hide Results</button>
