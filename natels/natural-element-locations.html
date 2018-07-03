@@ -12,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <style>
 #center{
-	margin-top: 30px;    
+	margin-top: 30px;
 	}
 #popup {
     width: 329px;
@@ -21,7 +21,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(108, 117, 88, 0.85);
+    background: rgba(108, 117, 88);
     border: 5px solid #000;
     margin: auto;
     color: #effdce;
@@ -38,7 +38,7 @@ a:link
     color: #b35c13;
 
 }
-  
+
 </style>
 <script>
 
@@ -81,7 +81,7 @@ function hide_dialog(){
 </header>
 
 <section>
-<p id="about" class="float" style="font-size:14px">This page has information about the location of rare natural elements. The locations have been generalized  (made less precise) by assigning various map units to the locations. If you require exact locations of rare natural elements, please submit an information request. For details, see instructions at <a href="http://georgiawildlife.com/conservation/species-of-concern#requesting-info">Requesting Information for Sites</a></p>   
+<p id="about" class="float" style="font-size:14px">This page has information about the location of rare natural elements. The locations have been generalized  (made less precise) by assigning various map units to the locations. If you require exact locations of rare natural elements, please submit an information request. For details, see instructions at <a href="http://georgiawildlife.com/conservation/species-of-concern#requesting-info">Requesting Information for Sites</a></p>
 <h2>Element Locations by Clicking on Map Areas</h2>
 <a href="cnty_rare_elements_map.html" title="Georgia county EOs by clicking on map">
     <img src="img/cnty.png" alt="Georgia county EOs by clicking on map"></a>
@@ -111,13 +111,13 @@ function hide_dialog(){
         <input type="radio" name="miles" value="esriMiles" checked id="radio-1">
         <label for="kilometers">Kilometers</label>
         <input type="radio" name="miles" value="esriKilometers" id="radio-2">
-        </fieldset>    
+        </fieldset>
         <label for="spinner">Select a number:</label>
         <input id="spinner" name="distance" value="3">
-        </div> 
-      <button id="submit" onclick="hide_dialog()">Submit</button>     
+        </div>
+      <button id="submit" onclick="hide_dialog()">Submit</button>
     </form>
-    <button onclick="hide_dialog()">Close</button> 
+    <button onclick="hide_dialog()">Close</button>
 </section>
   <section>
     <h2>Zipped ESRI shapefiles for viewing rare element locations</h2>
@@ -176,7 +176,7 @@ function hide_dialog(){
 
 <section>
 <h2>Zipped ESRI shapefiles of the map layers used in this data portal</h2>
-<p>These zipped ESRI shapefiles can be joined with CSV element location files above to do GIS analysis and make maps. 
+<p>These zipped ESRI shapefiles can be joined with CSV element location files above to do GIS analysis and make maps.
 <nav id="shapefile-layers">
     <ul class="data_link">
         <li><a href=
