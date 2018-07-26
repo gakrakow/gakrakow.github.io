@@ -438,11 +438,11 @@ var button = new Select({
 				commonoList = "None"
 				}
 
-            var radiusLocation = "Rare natural elements within" + radiusValue + " miles of " + coords + " (WGS84) in " + onClickCounty + " County, GA, using generalized quarter quad locations";
+            var radiusLocation = "Rare natural elements within " + radiusValue + " miles of " + coords + " (WGS84) in " + onClickCounty + " County, GA, using generalized quarter quad locations";
             localStorage.setItem("radiusLocation", radiusLocation);
 
 
-            dom.byId("results").innerHTML = "<b>A total of <i>" + elNumber.length + "</i> elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank " class="stylelink" >Click here for more detailed list </a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
+            dom.byId("results").innerHTML = "<b>A total of " + elNumber.length + " elements have been identified within " + radiusValue + " " + distSelect.substring(4) + " of the point coordinates " + coords + " (WGS84), " +onClickCounty + " County, GA." + '</b></br><button id="commonButton">Common Name</button>'+'<button id="scientificButton">Scientific Name</button>' +"<hr>" + '<div id="commonName" style="display: none;"><ul><h3>Plants</h3>'+ commonpList  + "<h3>Animals</h3>" + commonaList + "<h3>Community</h3>" + commoncList + "<h3>Other</h3>" + commonoList + '</ul></div><div id="scientificName" style="display: none;"><ul><h3>Plants</h3>'+ speciespList  + "<h3>Animals</h3>" + speciesaList + "<h3>Community</h3>" + speciescList + "<h3>Other</h3>" + speciesoList + '</ul></div>' + '<p><a href = "distance_list.html" target="_blank " class="stylelink" >Click here for more detailed list </a></p><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>" ;
 
 
             var commonLink = document.getElementById('commonButton');
