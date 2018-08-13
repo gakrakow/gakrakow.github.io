@@ -184,9 +184,9 @@
 
     <script id='query_template'  type='text/template'>
         SELECT area.cartodb_id
-            ,area.area_code
-            ,area.rpt_name
-            ,area.area_name
+            ,eo.area_code
+            ,eo.rpt_name
+            ,eo.area_name
             ,eo.es_id
             ,eo.sname
             ,eo.scomname
@@ -194,9 +194,9 @@
             ,eo.age_text
             ,area.the_geom_webmercator
             ,area.the_geom
-        FROM {{area}} area
-        LEFT JOIN eo_web eo ON area.rpt_name = eo.rpt_name
-        WHERE eo.es_id = '{{es_id}}'
+        FROM eo_web eo
+        LEFT JOIN {{area}} area ON area.rpt_name = eo.rpt_name
+        WHERE eo.es_id = '{{es_id}}' and eo.map_areas='{{area}}'
     </script>
     
     <script id="shp_download_tpl" type='text/template'>
