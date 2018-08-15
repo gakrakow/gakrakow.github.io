@@ -12,7 +12,11 @@ font-family: "Montserrat", sans-serif;
 #wrd-logo, #portal-logo {
 height: 65px;
 width: 200px;
-}	
+}
+  img{
+        max-width:640px;
+        max-height:500px;
+    }
 
 .scientific_name {
 font: italic bold 30px serif;
@@ -151,15 +155,15 @@ figure img {
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
 <script src=mmd.min.js></script>
 <script>
-$("#loaded").hide();	
+$("#loaded").hide();
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
     }
 
 $(window).load(function() {
 	$('#preload').hide();
-	$("#loaded").show();	 
-  });	
+	$("#loaded").show();
+  });
 var current_es_id = getURLParameter('es_id');
 var fusion_table = getURLParameter('fus_tab_id');
 var localGroup = getURLParameter('group')
@@ -167,80 +171,28 @@ $( '<img id="group-logo">' ).attr( 'src', 'img/'+localGroup+'.gif').appendTo( "#
 $("#group-logo").wrap("<a href=element_lists.html?request_src=external_link&group=" + localGroup + " target=_blank" + "> </a>");
 
 
-var tags = "&tags=GA_ES_ID_" + current_es_id + "_1,GA_ES_ID_" + current_es_id + "_2,GA_ES_ID_" + current_es_id + "_3,GA_ES_ID_" + current_es_id + "_4,GA_ES_ID_" + current_es_id + "_5,GA_ES_ID_" + current_es_id + "_6,GA_ES_ID_" + current_es_id + "_7,GA_ES_ID_" + current_es_id + "_8,GA_ES_ID_" + current_es_id + "_9,GA_ES_ID_" + current_es_id + "_10&extras=description,tags&format=json&jsoncallback=?"
-
-var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=283f57a676868bb1f7ceab8ab46d91b5" + tags;
+var url = "http://georgiabiodiversity.a2hosted.com/photoapi/request/" + current_es_id;
 
 $.getJSON(url, function(data){
-	var image = data.photos.photo
-	if(image != 0){
-		for(i = 0; i < image.length; i++){
-		var desc_pos = image[i].description._content;
-		var flick_link = "https://www.flickr.com/photos/" + data.photos.photo[i].owner + "/" + data.photos.photo[i].id + "/in/dateposted-public/"
-		var link = "http://farm" + data.photos.photo[i].farm + ".static.flickr.com/" + data.photos.photo[i].server + "/"+data.photos.photo[i].id + "_"+data.photos.photo[i].secret + "_z.jpg";
-		var tagOrder = image[i].tags.slice(-1);
-			if(tagOrder == 1){
-			var img = $( "<img>" ).attr( "src", link).appendTo("#primary-image");
-			$(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc_pos + "</figcaption></figure>");
-			}
-			else{
-			var img = $( "<img>" ).attr( "src", link).appendTo("#supplemental-images");
-			$(img).wrap("<figure><a href=" + flick_link + " target=_blank" + "> </a>" + "<figcaption>" + desc_pos + "</figcaption></figure>");
-			}
-										}
-	}// check if flickr returns anything
-	else
-	{
-		var errorHTML = '<img src=img/noimage.png></img>';
-		$(errorHTML).appendTo("#primary-image");
-	}
+if(data == 0){
+  var errorHTML = '<img src=img/noimage.png></img>';
+    $(errorHTML).appendTo("#primary-image");
+}// check if data returns
+else{
+    for(i=0; data.image[i]; i++){
+    var static_link = "http://georgiabiodiversity.a2hosted.com/photoapi/static/upload_img/" +  current_es_id + "/" + data.image[i].img_filename
+    if(data.image[i].order_id == 1){
+    var img = $( "<img>" ).attr( "src", static_link).appendTo("#primary-image");
+    $(img).wrap('<figure><a href=' + static_link + " target=_blank" + '> </a>' + "<figcaption>" + data.image[i].caption + "</figcaption></figure>");
+    }
+    else{
+      var img = $( "<img>" ).attr( "src", static_link).appendTo("#supplemental-images");
+      $(img).wrap('<figure><a href=' + static_link + " target=_blank" + '> </a>' + "<figcaption>" + data.image[i].caption + "</figcaption></figure>");
+    }
+  }// end of else
+}
 });
-// end of flickr
-		var query = "SELECT * FROM " + 
-		fusion_table + ' WHERE ES_ID =' + current_es_id;
-        var encodedQuery = encodeURIComponent(query);
-		
-        // Construct the URL
-        var url = ['https://www.googleapis.com/fusiontables/v2/query'];
-        url.push('?sql=' + encodedQuery);
-        url.push('&key=AIzaSyCHzvDOeABC3-ZYDMnERKvv05qB4GpYceI');
-        url.push('&callback=?');
-		var html =  '';
-// Send the JSONP request using jQuery
-        $.ajax({ url: url.join(''), dataType: 'jsonp', success: function (data) {
-		
-			var columns = data['columns'];
-            var rows = data['rows'];
-			if(rows != null)
-			{
-			if(rows[0][5] == "Update" ){
-				$('<p style="color:green">*Draft: Profile is under revision</p>').appendTo("#profile_status");
-				}
-			if(rows[0][5] == "Create"){
-			$('<p style="color:green">*Only a partial profile is available for this element</p>').appendTo("#profile_status");
-				}
-			for (var c = 12; c < columns.length; c++) {
-				row_value = mmd(rows[0][c]);
-				column_value = columns[c];	
-				
-				/*if (column_value == 'References'){
-				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
-				html += '<h3>References</h3>' + reference;				
-				}
-				else{*/
-				html += '<h3>' + column_value + '</h3>' + row_value;					
-				//}
-				}
-				document.getElementById('fusion-data').innerHTML = html;
-			}			
-			else if (rows == null)
-			{
-			$('<p style="color:green">*Complete profile information is currently unavailable</p>').appendTo("#profile_status");
-			var errorHTML = '<img src=img/incompleteprofile.png></img>';
-			$(errorHTML).appendTo("#fusion-data");
-			}
-		}
-		});
+// end of photoapi
 
 // Place Carto data in page.
 var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,el_group,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
@@ -253,12 +205,10 @@ $.getJSON(url, function(data) {
     //alert(JSON.stringify(rec));
 	/*'title="Range map in Georgia using GA-DNR, Biotics element occurence data" target="_blank"'*/
     var html = ''
-	var sname = rec.sname;
-	var cname = rec.scomname;
-	// wait for page load to insert sname into a figcaption
-	$(window).on('load', function() {
-	$("figcaption").prepend("<i>" + sname + "</i> " + "(" + cname + ") ");
-	});
+
+	// append formated species name to figcaption
+	$("figcaption").prepend("<i>" + rec.sname + "</i> " + "(" + rec.scomname + ") ");
+
 	var sname_formatted = rec.sname.split(' ').join('+');
 	if (rec.eo_count != 0){
 	//show range button
@@ -268,9 +218,9 @@ $.getJSON(url, function(data) {
 	html += '<img src="img/no-range-map.png" class="range_map_button" alt="range map button">'//'<p><b>Range Map: </b>None</p>'
 	}
 	html += '<a href="http://explorer.natureserve.org/servlet/NatureServe?searchName='+ sname_formatted + '"title="NatureServe Explorer Report for element" target="_blank">' + '<img src="img/natuerserve_explorer_small.png" class="natureserve_explorer" alt="NatureServe button"></a>';
-	
+
 	html += '<a href="about-this-data.html"title="About This Data" target="_blank">' + '<img src="img/about_button_small.png" class="about-button" alt="About button"></a>';
-	//upper two fields are used to create range map and explorer 
+	//upper two fields are used to create range map and explorer
     // old line html += '<hr><div id="sname"><span class="latin">' + rec.sname + '</span> ' + rec.author + '</div>';
 	html += '<hr><div id="sname">' + rec.fsname + '</div>' + '<p style="font-size:20px; margin: 0em 0em .5em;">' + rec.scomname + '</p>';
     html += '<p><b>Federal Protection: </b>' + rec.usesa + '</p>';
@@ -293,6 +243,53 @@ $.getJSON(url, function(data) {
 	}
     document.getElementById('carto-data').innerHTML = html;
 });
- </script> 
+//end of carto
+
+		var query = "SELECT * FROM " +
+		fusion_table + ' WHERE ES_ID =' + current_es_id;
+        var encodedQuery = encodeURIComponent(query);
+
+        // Construct the URL
+        var url = ['https://www.googleapis.com/fusiontables/v2/query'];
+        url.push('?sql=' + encodedQuery);
+        url.push('&key=AIzaSyCHzvDOeABC3-ZYDMnERKvv05qB4GpYceI');
+        url.push('&callback=?');
+		var html =  '';
+// Send the JSONP request using jQuery
+        $.ajax({ url: url.join(''), dataType: 'jsonp', success: function (data) {
+
+			var columns = data['columns'];
+            var rows = data['rows'];
+			if(rows != null)
+			{
+			if(rows[0][5] == "Update" ){
+				$('<p style="color:green">*Draft: Profile is under revision</p>').appendTo("#profile_status");
+				}
+			if(rows[0][5] == "Create"){
+			$('<p style="color:green">*Only a partial profile is available for this element</p>').appendTo("#profile_status");
+				}
+			for (var c = 12; c < columns.length; c++) {
+				row_value = mmd(rows[0][c]);
+				column_value = columns[c];
+
+				/*if (column_value == 'References'){
+				var reference = row_value.replace(/(?:\r\n|\r|\n)/g,'<br />');
+				html += '<h3>References</h3>' + reference;
+				}
+				else{*/
+				html += '<h3>' + column_value + '</h3>' + row_value;
+				//}
+				}
+				document.getElementById('fusion-data').innerHTML = html;
+			}
+			else if (rows == null)
+			{
+			$('<p style="color:green">*Complete profile information is currently unavailable</p>').appendTo("#profile_status");
+			var errorHTML = '<img src=img/incompleteprofile.png></img>';
+			$(errorHTML).appendTo("#fusion-data");
+			}
+		}
+		});
+ </script>
 </body>
 </html>
