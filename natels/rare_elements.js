@@ -168,7 +168,7 @@ function clearNonLocationFilter() {
 function reply_click(es_id) {
     // get the element subnational id
     var el_sql = "SELECT es_id, sname ,scomname ,exportdate , fus_tab_id ,sprot ,usesa ,srank ,grank FROM es_web WHERE es_id = " + es_id;
-    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
+    $.getJSON('https://gakrakow.cartodb.com/api/v2/sql?q='+ el_sql, function(element_object) {
         var el_obj = element_object.rows[0];
         // put all of the element field values as JSON string object into the localStorage
         localStorage.el_obj = JSON.stringify(el_obj);
@@ -239,7 +239,7 @@ function hasOneDayPassed(){
     function runOncePerDay(){
     if( !hasOneDayPassed() ) return false;
     console.log('updating search definitions');
-    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27)', function(data){
+    $.getJSON('https://gakrakow.cartodb.com/api/v2/sql?q=%20SELECT%20es_id%20,%20seotrack,sname%20,header_group%20,scomname%20,fus_tab_id%20FROM%20es_web_all%20es%20WHERE%20seotrack%20IN%20(%27Y%27,%27W%27,%27P%27)', function(data){
     var local = data;
     localStorage.setItem("Searchdata",JSON.stringify(local));
     location.reload();//makes browser reload so that livesearch updates since data is stored locally

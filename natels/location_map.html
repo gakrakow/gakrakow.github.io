@@ -305,7 +305,7 @@ var circleGra = new Graphic(qGeom, new SimpleFillSymbol(SimpleFillSymbol.STYLE_S
             var elNumber = elNumber.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
             
             
-            $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ') ORDER BY sname', function(data){
+            $.getJSON('https://gakrakow.cartodb.com/api/v2/sql?q= SELECT elcode,an_pl, es_id, sname, gname, scomname, exportdate, sprot, usesa, srank, grank, sgenus, sshabitat, header_group, eo_count, sshabitat, fus_tab_id, swapstatus FROM es_web_all es WHERE seotrack IN (%27Y%27,%27W%27,%27P%27) AND es_id in ('+ elNumber + ') ORDER BY sname', function(data){
 			exportdate = data.rows[0].exportdate;
             localStorage.setItem("radiusmap", JSON.stringify(data));
 			dom.byId("results").innerHTML = '<p><b>A total of <i>' + elNumber.length + '</i> elements have been identified around you</b><a href = "distance_list.html" target="_blank" ></p>Click here for element list</a><p id="export_date">Data exported from <a href="http://www.georgiawildlife.com/conservation/species-of-concern">GA-DNR Database</a> on ' + exportdate + "</p>";

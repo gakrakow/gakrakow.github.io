@@ -4,14 +4,14 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+	<script src="https://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <script src="rare_elements.js"></script>
 
     <script>
 function makeList() {
     var sqlQuery = "select es_id, fus_tab_id, header_group, elcode, sname, scomname, srank, grank, sshabitat, exportdate, distr_conf from es_web_all where seotrack = 'W' ORDER BY sname";
-    $.getJSON('http://gakrakow.cartodb.com/api/v2/sql?q=' + sqlQuery, function (data) {
+    $.getJSON('https://gakrakow.cartodb.com/api/v2/sql?q=' + sqlQuery, function (data) {
         var wList = '<p id="list-top-info">' + data.rows.length + ' records in list. Exported from Bioitcs Conservation Database ' + data.rows[0].exportdate + '.</p><ul>';
         data.rows.forEach(function (row) {
             var profile_link =  "<a href=profile.html?es_id=" + row.es_id + "&fus_tab_id="+ row.fus_tab_id + "&group=" + row.header_group + '><img src="img/species_profile.png" class="species_profile_button" alt="species profile button"></a>' 
@@ -25,7 +25,7 @@ function makeList() {
         //alert(wList);
         document.getElementById('listArea').innerHTML = wList;
 
-        document.getElementById('download').innerHTML = '<a href="http://gakrakow.cartodb.com/api/v2/sql?filename=watched-plants' + filenameDate(data.rows[0].exportdate) + "&q=SELECT sname, scomname, srank, grank, sshabitat, distr_conf AS in_georgia, exportdate FROM es_vw es WHERE es.sname IS NOT NULL AND es.elcode IS NOT NULL AND es.srank IS NOT NULL AND es.seotrack = 'W'" + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="img/download-csv.png" class="download_csv" alt="Download CSV Button"></a>';
+        document.getElementById('download').innerHTML = '<a href="https://gakrakow.cartodb.com/api/v2/sql?filename=watched-plants' + filenameDate(data.rows[0].exportdate) + "&q=SELECT sname, scomname, srank, grank, sshabitat, distr_conf AS in_georgia, exportdate FROM es_vw es WHERE es.sname IS NOT NULL AND es.elcode IS NOT NULL AND es.srank IS NOT NULL AND es.seotrack = 'W'" + '&format=CSV" title="Download CSV file of elements on this page for use in a spreadsheet, database or GIS"><img src="img/download-csv.png" class="download_csv" alt="Download CSV Button"></a>';
     });
 };
 </script>

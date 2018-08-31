@@ -181,7 +181,7 @@ if(data == 0){
 }// check if data returns
 else{
     for(i=0; data.image[i]; i++){
-    var static_link = "http://georgiabiodiversity.a2hosted.com/photoapi/static/upload_img/" +  current_es_id + "/" + data.image[i].img_filename
+    var static_link = "https://georgiabiodiversity.a2hosted.com/photoapi/static/upload_img/" +  current_es_id + "/" + data.image[i].img_filename
     if(data.image[i].order_id == 1){
     var img = $( "<img>" ).attr( "src", static_link).appendTo("#primary-image");
     $(img).wrap('<figure><a href=' + static_link + " target=_blank" + '> </a>' + "<figcaption>" + data.image[i].caption + "</figcaption></figure>");
@@ -197,7 +197,7 @@ else{
 
 // Place Carto data in page.
 var sql = "SELECT es_id,fsname,eo_count, sname ,scomname ,exportdate ,author ,swapstatus ,el_group,sprot ,usesa ,srank ,grank, sshabitat FROM es_web_all WHERE es_id = " + current_es_id;
-var url = 'http://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
+var url = 'https://gakrakow.cartodb.com/api/v2/sql?q=' + sql;
 
 $.getJSON(url, function(data) {
     var rec = data.rows[0];
