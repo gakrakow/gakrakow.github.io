@@ -181,7 +181,7 @@ if(data == 0){
 }// check if data returns
 else{
     for(i=0; data.image[i]; i++){
-    var static_link = "https://georgiabiodiversity.a2hosted.com/photoapi/static/upload_img/" +  current_es_id + "/" + data.image[i].img_filename
+    var static_link = "https://georgiabiodiversity.a2hosted.com/natels/static/upload_img/" +  current_es_id + "/" + data.image[i].img_filename
     if(data.image[i].order_id == 1){
     var img = $( "<img>" ).attr( "src", static_link).appendTo("#primary-image");
     $(img).wrap('<figure><a href=' + static_link + " target=_blank" + '> </a>' + "<figcaption>" + data.image[i].caption + "</figcaption></figure>");
