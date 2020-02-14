@@ -8,43 +8,19 @@
 
 <style>
 
-#new-portal-window{
-    background: url(natels/img/cyp.jpeg);
-    padding:5px;
-    margin: 10px 100px;
-    border: 8px solid gray;
-}
-
-#enter-text {
-    font-weight: bold;
-    text-align:center;
-    font-size: 24px;
-    background-color: rgba(66,66,66,66);
-    color: white;
-    text-decoration: none;
-    display: inline-block;
-}
-
-#current-portal-logo {
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-    width: 70%;
-    padding: 50px;
-}
-
 body {
 background-color:#403000;
 color:#6f4e0f;
-font-family:sans-serif;
+padding-right: 30px;
 }
 
 header, section {
     background-color: #fdf8e7;
     width: 900px;
-    padding: 7px;
     margin-right: auto;
     margin-left: auto;
+    text-align: center;
+    padding-right: 24px;
 }
 
 img.top-button {
@@ -52,49 +28,42 @@ img.top-button {
     margin: 5px;
     border-radius: 10px;
     box-shadow: 3px 3px 4px 2px #000000;
+    width: 200px;
+    height: 80px;
 }
 
-@media screen and (max-width:550px) {
+.responsive {
+  width: 100%;
+  height: auto;
+  margin-right: 20px;
+  border:10px solid black;
+}
+
+
+@media screen and (max-width:900px) {
 
 body {
-    margin: 0;
     background-color: #fdf8e7;
-}
-
-#new-portal-window{
-    margin: 10px 25px;
-    border: 8px solid gray;
 }
 
 section,header {
     width: 100%;
-    margin: 0;
-    padding 0;
-    border 0;
+    height: 100%;
 }
 
-#enter-text {
-font-size: 18px;
-}
-
-#current-portal-logo {
-    width: 90%;
-    padding: 0;
-}
 
 </style>
 
 <body>
 <header>
 <a href="http://www.georgiawildlife.com"><img id="wrd-logo" class="top-button" src="img/wrd_logo.png" alt="Wildlife Resources Logo"></a>
-    <a href="https://georgiabiodiversity.a2hosted.com/natels/home"><img id="portal-logo" class="top-button" src="img/georgia-rare-natural-elements.png" alt="Georgia Rare Natural Element Logo"></a>
+    <a href="https://georgiawildlife.com/WildlifeActionPlan"><img id="wildlife-action-plan" class="top-button" src="img/wildlife-action-plan.png" alt="Georgia State Wildlife Action Plan Banner"></a>
+    <a href="https://georgiawildlife.com/WildlifeActionPlan"><img id="wildlife-action-plan" class="top-button" src="img/regional-conservation-info.png" alt="Georgia State Wildlife Action Plan Banner"></a>
 </header>
 
 <section>
-<div id="new-portal-window">
-    <p><a id="enter-text" href="https://georgiabiodiversity.a2hosted.com/natels/home">Click here to enter the latest version of the data portal:</a></p>
-    <a href="https://georgiabiodiversity.a2hosted.com/natels/home"><img id="current-portal-logo" src="natels/img/georgia-rare-natural-elements-logo-medium.png" title="Georgia Rare Natural Element Data Portal" alt="Georgia Rare Natural Element Logo"></a>
-</div>
+    <a href="https://georgiabiodiversity.a2hosted.com/natels/home"><img id="enter-portal-logo" class="responsive" src="enter-portal.png" alt="Georgia State Wildlife Action Plan Banner" >
+    </a>
 </section>
 <br>
   </body>
