@@ -1,3 +1,0 @@
-C:\tmp\NEW_rare_species_profiles\plants\stewartia_malacodendron>pandoc --variable includegraphics="textwidth=1.0" --variable fontf
-amily="Palatino" --variable fontsize="12pt" --variable papersize="letter" --variable geometry="margin=1in" stewartia_malacodendron
-.md -o test2.pdf
